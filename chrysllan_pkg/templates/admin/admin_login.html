@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+    <head>
+    <title>Chrisllan|Admin Login</title>
+    <meta charset= "UTF-8">
+    <meta name= "viewport" content= "width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel= "stylesheet" type= "text/css" href= "{{url_for('static', filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='font/css/all.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='JQanimate.css')}}">
+    <style type= "text/css">
+        .area{
+            min-height: 100vh; background-color: #05003D; 
+        }
+        .login_box{
+            background-color: #EDEBFF; 
+        }
+    </style>
+</head>
+
+<body>
+<div class= "container-fluid">
+	<div class= "row area">
+		<div class= "col align-self-center">
+			<div class= "row justify-content-center">
+				<div class= "col-md-4 login_box rounded py-3 py-xxl-4">
+					<h3 class= "text-center">ADMIN LOGIN</h3>
+
+
+                    {%set deny=get_flashed_messages(category_filter='wrong_admin_login')%}
+                    {%for x in deny%}
+                    <div class="alert alert-danger">{{x}}</div>
+                    {%endfor%}
+
+					<form action= "/admin/login/" method= "post">
+						<div class="mb-3">
+							<label class="form-label">Email</label>
+							<input type="email" name="admin_email" class="form-control" required>
+						</div>
+						<div class="mb-3">
+							<label class= "form-label">Password</label>
+							<input type="password" name="admin_pswd" class="form-control" required>
+                            <input type="hidden" name="csrf_token" class="form-control" value="{{csrf_token()}}">
+						</div>
+						<div class="mb-2 text-center">
+							<button class="btn btn-primary">Login</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- JS Files -->
+<script type="text/javascript" src="{{url_for('static',filename='jquery/jquery.min.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='js/bootstrap.bundle.js')}}"></script>
+</body>
+</html>

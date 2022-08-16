@@ -1,0 +1,41 @@
+{%extends 'user/index.html'%}
+
+{%block title%}Transaction Information{%endblock%}
+
+{%block content%}
+<div class='row mb-2'>
+    <div class="col-md-6 offset-md-3 mt-4">
+        <h2>Your Transaction Reference is {{ref}}</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>Item</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for x in Ord_Details%}
+                <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{x.Ord_details_prod_info.product_name}}</td>
+                    <td>{{x.prod_price}}</td>
+                </tr>
+                {%endfor%}
+                <tr>
+                    <td>Total<td>
+                    <td colspan='2'>{{payable}}<td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="/call/paystack/" class="btn btn-success" id='paymentLink'>Pay Now</a>
+    </div>
+</div>
+{%endblock content%}
+
+{%block scripts%}
+<script type='text/javascript' language='javascript'>
+    
+</script>
+
+{%endblock scripts%}

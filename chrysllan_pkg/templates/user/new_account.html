@@ -1,0 +1,108 @@
+{%extends 'user/index.html'%}
+
+{%block title%}Chrysllan|User Account{%endblock%}
+
+{%block content%}
+<div class='row'>
+    <!--Create account-->
+    <div class='col-md-6' id='create_acct_div'>
+        <h2>Create Account</h2>
+        <div id="feedback"></div>
+        <form class='row row-cols-md-2' id='create_account_form'>
+            <div class='mb-2'>
+                <label class='form-label' for='firstname'>First Name</label>
+                <input type='text' class='form-control' id='firstname' name='firstname'>
+            </div>
+            <div class='mb-2'>
+                <label class='form-label' for='lastname'>Last Name</label>
+                <input type='text' class='form-control' id='lastname' name='lastname'>
+            </div>
+            <div class='mb-2'>
+                <label class='form-label' for='phone'>Phone Number</label>
+                <input type='text' class='form-control' id='phone' name='phone'>
+            </div>
+            <div class='mb-2'>
+                <label class='form-label' for='email'>Email Address</label>
+                <input type='email' class='form-control' id='email' name='email'>
+            </div>
+            <div class='mb-2'>
+                <label class='form-label' for='pswd'>Password</label>
+                <input type='password' class='form-control' id='pswd' name='pswd'>
+            </div>
+            <input type='hidden' class='form-control' name='csrf_token' value='{{csrf_token()}}' id='csrf_token'>
+            <button type='button' class='btn btn-warning form-control' id='createAccountBtn'>Create Account</button>
+        </form>
+        <p class='text-center'>Already have an account?</p>
+        <p class='text-center'><a href='#login_email' style='text-decoration:none; color:orange' id='loginLINK'>LOGIN</a></p>
+    </div>
+
+
+    <!--Login-->
+    <div class='col-md-6' id='logindiv'>
+        <h2>Login</h2>
+        {%set badLogin=get_flashed_messages(category_filter="wrong_details")%}
+        {%for x in badLogin%}
+        <div class="alert alert-danger">{{x}}</div>
+        {%endfor%}
+        {%set please_register=get_flashed_messages(category_filter="reg_needed")%}
+        {%for i in please_register%}
+        <div class="alert alert-danger">{{i}}</div>
+        {%endfor%}
+        <form action='/user/login/' method='post'>
+            <div class='mb-2'>
+                <label class='form-label' for='login_email'>Email Address</label>
+                <input type='email' class='form-control' id='login_email' name='login_email'>
+            </div>
+            <div class='mb-2'>
+                <label class='form-label' for='login_pswd'>Password</label>
+                <input type='password' class='form-control' id='login_pswd' name='login_pswd'>
+            </div>
+            <input type='hidden' class='form-control' name='csrf_token' value='{{csrf_token()}}' id='csrf_token'>
+            <button type='submit' id='btnLOGIN' class='btn btn-success form-control'>LOGIN</button>
+        </form>
+        <p class='text-center'>Don't have an account?</p>
+        <p class='text-center'><a href='#firstname' style='text-decoration:none; color:orange' id='signupLINK'>SIGN UP</a></p>
+    </div>
+</div>
+{%endblock content%}
+
+
+
+
+{%block scripts%}
+<script type='text/javascript' language='javascript'>
+    $(document).ready(function(){
+
+        {# Create Account Ajax Call #}
+
+        $('#createAccountBtn').click(function(){
+            var form=document.getElementById('create_account_form')
+            var formdata=new FormData(form)
+            $.ajax({
+                url:"/user_account_registration/",
+                data:formdata,
+                dataType:"text",
+                type:"post",
+                cache:false,
+                contentType:false,
+                processData:false,
+                success:function(rsp){
+                    if(rsp=="Thank you. Registration Successful."){
+                        $('#feedback').addClass('alert alert-success')
+                        $('#feedback').html(rsp)
+                        $('#createAccountBtn').prop('disabled',true)
+                    }
+                    else{
+                        $('#feedback').addClass('alert alert-danger')
+                        $('#feedback').html(rsp)
+                    }
+                },
+                error:function(errormsg){
+                    console.log(errormsg)
+                }
+            })
+        }) 
+    })
+</script>
+
+{%endblock scripts%}

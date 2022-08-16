@@ -1,0 +1,51 @@
+{%extends 'admin/admindashboard.html'%}
+
+{%block title%}
+Chrisllan|All Messages
+{%endblock title%}
+
+{%block otherpage_styles%}
+@media screen and (max-width:375px){
+    .ord_details{
+        font-size:10px;
+    }
+}
+{%endblock otherpage_styles%}
+
+{%block contents%}
+<div class="row">
+    <h3 style='font-family:"lucida-calligraphy"'>All Orders</h3>
+    <div class="col pt-md-3">
+        <table class='table mytable'>
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>Name</th>
+                    <th>Shipping Address</th>
+                    <th>View Order</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for i in allorders%}
+                <tr class='ord_details'>
+                    <td>{{loop.index}}</td>
+                    <td>{{i.who_ordered.cust_firstname}} {{i.who_ordered.cust_lastname}}</td>
+                    <td>{{i.shipping_address}}</td>
+                    <td><a href="/vieworder/{{i.order_id}}" class="link-success" target="_self">Details</a></td>
+                    <td>{{i.order_status}}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+{%endblock contents%}
+
+{%block scripts%}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.mytable').DataTable();
+    });
+</script>
+{%endblock scripts%}

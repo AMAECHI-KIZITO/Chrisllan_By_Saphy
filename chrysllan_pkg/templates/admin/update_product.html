@@ -1,0 +1,88 @@
+{%extends 'admin/admindashboard.html'%}
+
+{%block title%}
+Chrisllan|Update Product
+{%endblock title%}
+
+{%block contents%}
+<div class="row">
+    <div class="col-md-6 offset-md-3 pt-md-3">
+        <div id='feedback'></div>
+        <form enctype="multipart/form-data" id='update_product'>
+
+            <div class="mb-3">
+                <label for='product_name' class='form-label'>Product Name</label>
+                {%for Name in update%}
+                <input type='text' class='form-control' name='product_name' id='product_name' value='{{Name.product_name}}'>
+                <input type='hidden' class='form-control' name='prod_id' id='product_id' value='{{Name.product_id}}' readonly>
+                {%endfor%}
+            </div>
+
+            <div class="mb-3">
+                {%for cat in update%}
+                <input type='hidden' class='form-control' name='prod_cat' id='product_cat' value='{{cat.product_category}}' readonly>
+                {%endfor%}
+            </div>
+
+            <div class="mb-3">
+                <label for='product_price' class='form-label'>Product Price</label>
+                {%for p in update%}
+                <input type='number' class='form-control' name='product_price' id='product_price' value="{{p.product_price}}"> 
+                {%endfor%}
+            </div>
+
+            <div class="mb-3">
+                <label for='product_image' class='form-label'>Product Image</label>
+                <input type='file' class='form-control' name='product_image' id='product_image'>
+            </div>
+
+            <div class="mb-3">
+                <input type='hidden' class='form-control' name='csrf_token' id='csrf_token' value='{{csrf_token()}}'>
+            </div>
+
+            <div class="mb-3">
+                <button type='button' id='btnUpdateProduct' class='btn btn-success form-control'>Update</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+{%endblock contents%}
+
+{%block scripts%}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#btnUpdateProduct').click(function(){
+            var form = document.getElementById('update_product')
+            var formdata= new FormData(form)
+            $.ajax({
+                url:"/product_update/",
+                data:formdata,
+                dataType:"text",
+                type:"post",
+                cache:false,
+                processData:false,
+                contentType:false,
+                beforeSend:function(){
+                            
+                },
+                success:function(rsp){
+                    if(rsp=='Successfully updated product'){
+                        $('#feedback').addClass('alert alert-success')
+                        $('#feedback').html(rsp)
+                        $('#btnUpdateProduct').prop('disabled',true)
+                    }
+                    else{
+                        $('#feedback').addClass('alert alert-danger')
+                        $('#feedback').html(rsp)
+                    }
+                                
+                },  
+                error:function(msg){
+                    console.log(msg)
+                }
+            })
+        })
+    })
+</script>
+{%endblock scripts%}

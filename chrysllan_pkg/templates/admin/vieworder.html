@@ -1,0 +1,59 @@
+{%extends 'admin/admindashboard.html'%}
+
+{%block title%}
+Chrisllan|All Product
+{%endblock title%}
+
+{%block otherpage_styles%}
+@media screen and (max-width:375px){
+    .ord_details{
+        font-size:10px;
+    }
+}
+{%endblock otherpage_styles%}
+
+{%block contents%}
+<div class="row">
+    <h3 style='font-family:"lucida-calligraphy"'>All Orders</h3>
+    <div class="col pt-md-3">
+        <table class='table mytable'>
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for i in specific%}
+                <tr class='ord_details'>
+                    <td>{{loop.index}}</td>
+                    <td>{{i.Ord_details_prod_info.product_name}}</td>
+                    <td>&#8358;{{i.prod_price}}</td>
+                </tr>
+                {%endfor%}
+                <tr>
+                    <td><b>Payment Status</b><td>
+                    <td colspan='2'><b>{{paystatus.pay_feedback}}</b><td>
+                </tr>
+                <tr>
+                    <td><b>Total</b><td>
+                    <td colspan='2'><b>&#8358;{{amt}}</b><td>
+                </tr>
+            </tbody>
+        </table>
+        <form action='/update_order_status/{{id}}' method='post'>
+            <input type='hidden' value='{{csrf_token()}}' name="csrf_token">
+            <button class='btn btn-success btn-sm'>Change Status</button>
+        </form>
+    </div>
+</div>
+{%endblock contents%}
+
+{%block scripts%}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.mytable').DataTable();
+    });
+</script>
+{%endblock scripts%}

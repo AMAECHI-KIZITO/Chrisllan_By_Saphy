@@ -1,0 +1,48 @@
+{%extends 'admin/admindashboard.html'%}
+
+{%block title%}
+Chrisllan|Edit Product
+{%endblock title%}
+
+{%block otherpage_styles%}
+
+{%endblock otherpage_styles%}
+
+
+{%block contents%}
+<div class="row mt-4">
+    <div class='col mt-4'>
+        <table class='table mytable'>
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th class='d-none d-md-block'>Image</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for i in look%}
+                <tr class='prod_details'>
+                    <td>{{loop.index}}</td>
+                    <td>{{i.product_name}}</td>
+                    <td>{{i.prods_cat_family.cat_name}}</td>
+                    <td>{{"{:,.2f}".format(i.product_price)}}</td>
+                    <td class='d-none d-md-block'><img src="{{url_for('static',filename='productimages/'+i.product_image)}}" class='img-fluid' width='50px' height='50px'></td>
+                    <td><a href="/update/product/{{i.product_id}}">Edit</a></td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+{%endblock contents%}
+
+
+{%block scripts%}
+<script type="text/javascript">
+    
+</script>
+{%endblock scripts%}
