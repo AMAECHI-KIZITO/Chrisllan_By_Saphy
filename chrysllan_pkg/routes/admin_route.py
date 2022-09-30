@@ -1,5 +1,5 @@
 import os
-from flask import render_template,make_response,redirect,session,abort,request,flash,request,jsonify
+from flask import render_template,make_response,redirect,session,abort,request,flash,jsonify
 from sqlalchemy import func
 from datetime import date
 from chrysllan_pkg import app,db
