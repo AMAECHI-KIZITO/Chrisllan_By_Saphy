@@ -1,14 +1,14 @@
 {%extends 'user/index.html'%}
 
-{%block title%}Chrysllan - For Women{%endblock%}
+{%block title%}Chrysllan - Female Accessories {%endblock%}
 
 {%block content%}
 <!--For Women-->
 <div class='row mt-3'>
     <div class='col-12'>       
-        <h3>Female Footware</h3>
+        <h3>Female Accessories</h3>
     </div>
-    {%for f in WFoot%}
+    {%for f in women_acc %}
     <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
         <div class="card" style="width: 18rem;">
             <img class="card-img-top img-fluid" src="{{url_for('static', filename='productimages/'+f.product_image)}}" alt="{{f.product_name}}">

@@ -13,10 +13,12 @@ def home():
     todaysdate=date.today()
     usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
     deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
-    if deetscart!=None:
+    if deetscart!=[]:
         total=0
         for i in deetscart:
             total=total+i.amount
+    else:
+        total=0        
     return render_template('user/index.html',usercart=usercart,cartdeets=deetscart,total=total)
 
 ## Create Account and Login Route
@@ -25,10 +27,12 @@ def user_create_account():
     todaysdate=date.today()
     usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
     deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
-    if deetscart!=None:
+    if deetscart!=[]:
         total=0
         for i in deetscart:
             total=total+i.amount
+    else:
+        total=0
     return render_template('user/new_account.html',usercart=usercart,cartdeets=deetscart,total=total)
 
 ## Contact us Route
@@ -37,10 +41,12 @@ def contactus():
     todaysdate=date.today()
     usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
     deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
-    if deetscart!=None:
+    if deetscart!=[]:
         total=0
         for i in deetscart:
             total=total+i.amount
+    else:
+        total=0
     return render_template('user/contactus.html',usercart=usercart,cartdeets=deetscart,total=total)
 
 
@@ -73,25 +79,43 @@ def shop():
     men_accessories=db.session.query(Product).filter(Product.product_category=='2').all()
     deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
     
-    if deetscart!=None:
+    if deetscart!=[]:
         total=0
         for i in deetscart:
             total=total+i.amount
+    else:
+        total=0
     return render_template('user/shop.html',MFoot=men_footware,WFoot=women_footware,menAcc=men_accessories,usercart=usercart,cartdeets=deetscart,total=total)
 
-## Men Shopping Page
+## Men Footware Shopping Page
 @app.route('/shop/men/')
 def shop_men():
     todaysdate=date.today()
     usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
     men_footware=db.session.query(Product).filter(Product.product_category=='1').all()
-    men_accessories=db.session.query(Product).filter(Product.product_category=='2').all()
     deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
-    if deetscart!=None:
+    if deetscart!=[]:
         total=0
         for i in deetscart:
             total=total+i.amount
-    return render_template('user/shopmen.html',MFoot=men_footware,menAcc=men_accessories,usercart=usercart,cartdeets=deetscart,total=total)
+    else:
+        total=0
+    return render_template('user/shopmen.html',MFoot=men_footware,usercart=usercart,cartdeets=deetscart,total=total)
+
+## Men Accesories Shopping Page
+@app.route('/shop/men/accessories/')
+def shop_men_accessories():
+    todaysdate=date.today()
+    usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
+    men_accessories=db.session.query(Product).filter(Product.product_category=='2').all()
+    deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
+    if deetscart!=[]:
+        total=0
+        for i in deetscart:
+            total=total+i.amount
+    else:
+        total=0
+    return render_template('user/male_accessories.html',menAcc=men_accessories,usercart=usercart,cartdeets=deetscart,total=total)
 
 ## Women Shopping Page
 @app.route('/shop/women/')
@@ -100,11 +124,29 @@ def shop_women():
     usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
     women_footware=db.session.query(Product).filter(Product.product_category=='3').all()
     deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
-    if deetscart!=None:
+    if deetscart!=[]:
         total=0
         for i in deetscart:
             total=total+i.amount
+    else:
+        total=0
     return render_template('user/shopwomen.html',WFoot=women_footware,usercart=usercart,cartdeets=deetscart,total=total)
+
+
+## Women Accessories Shopping Page
+@app.route('/shop/women/accessories/')
+def shop_women_accessores():
+    todaysdate=date.today()
+    usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
+    women_accessories=db.session.query(Product).filter(Product.product_category=='4').all()
+    deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
+    if deetscart!=[]:
+        total=0
+        for i in deetscart:
+            total=total+i.amount
+    else:
+        total=0
+    return render_template('user/female_accessories.html',women_acc=women_accessories,usercart=usercart,cartdeets=deetscart,total=total)
 
 
 ## Subscribe Newsletter
@@ -221,7 +263,7 @@ def removeitem(id):
     flash('Item Removed',category='itemOut')
     return redirect ('/shop/')
 
-## removecartitem
+## empty cart
 @app.route('/emptycart/')
 def emptyCart():
     thedate=date.today()
@@ -273,10 +315,12 @@ def confirmOrder():
     todaysdate=date.today()
     usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
     deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
-    if deetscart!=None:
+    if deetscart!=[]:
         total=0
         for i in deetscart:
             total=total+i.amount
+    else:
+        total=0
     return render_template('user/informationpage.html',Ord_Details=orderdeetsinfo, payable=theamountPayable,ref=reference,usercart=usercart,cartdeets=deetscart,total=total)
 
 # Order Info Page

@@ -5,10 +5,7 @@
 {%block content%}
 <div class='row'>
     <div class='col-12'>       
-        <h4>Men's Collection</h4>
-    </div>
-    <div class='col-12'>       
-        <h6>Men's Footware</h6>
+        <h3>Male Footware</h3>
     </div>
     {%for i in MFoot%}
     <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
@@ -26,29 +23,8 @@
             </div>
         </div>
     </div>
-    {%endfor%}<br><hr>
-    
-    <div class='col-12'>       
-        <h6>Men's Accessories</h6>
-    </div>
-    {%for x in menAcc%}
-    <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top img-fluid" src="{{url_for('static', filename='productimages/'+x.product_image)}}" alt="{{x.product_name}}">
-            <div class="card-body">
-                <h5 class="card-title" style="font-size: 15px;">{{x.product_name}}</h5>
-                <p><span style="font-size: 22px">&#8358 {{"{:,.0f}".format(x.product_price)}} </span></p>
-
-                <form action="/add/cart/{{x.product_id}}" method="post">
-                    <input type='hidden' name='csrf_token' class='form-control' value='{{csrf_token()}}' readonly>
-
-                    <button type='submit' class="btn btn-warning">ADD TO CART</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    {%endfor%}<hr>
-</div><hr>
+    {%endfor%}
+</div>
 {%endblock content%}
 
 {%block scripts%}

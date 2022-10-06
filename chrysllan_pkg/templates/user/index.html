@@ -65,9 +65,6 @@
                                 <li class="nav-item">
                                     <a class="nav-link active" href="/contact-us/"><b>Contact Us</b></a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="/chrisllan/admin/login/"><b>Admin</b></a>
-                                </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link active dropdown-toggle" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>Categories</b>
                                     </a>
@@ -149,18 +146,17 @@
             <!--Popular products-->
             <div class="row mt-5">
 				<div class="col-5">
-					<h3 class="ps-3 animate__animated animate__flip" style="color:#384A62; font-family: 'Times-new-roman';">Popular Products</h3>
+					<h3 class="ps-3 animate__animated animate__flip" style="color:#384A62; font-family: 'Times-new-roman';">Categories</h3>
 				</div>
 			</div>
             <div class="row mx-auto">
 
 				<div class="col-md-6 col-lg-4 col-xl-3 mb-1">
 					<div class="card" style="width: 18rem;">
-  						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/conquer.jpg')}}" alt="Saphire Conquer Flops">
+  						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/male_belt.jpg')}}" alt="bond belt">
   						<div class="card-body">
-    						<h5 class="card-title" style="font-size: 15px;">Men's "ConQuer" Flip Flops</h5>
-    						<p><span style="font-size: 22px">&#8358;8,000 </span></p>
-                            <a href="/shop/men/" class="btn btn-warning">Buy Now</a>
+    						<h5 class="card-title" style="font-size: 15px;">Male Accessories</h5>
+                            <a href="/shop/men/accessories/" class="btn btn-warning">View</a>
   						</div>
 					</div>
 				</div>
@@ -169,19 +165,17 @@
 					<div class="card" style="width: 18rem;">
   						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/turu_ugo.jpg')}}" alt="Saphire Turu Ugo">
   						<div class="card-body">
-    						<h5 class="card-title" style="font-size: 15px;">Men's "Turu Ugo" Pam Slippers</h5>
-    						<p><span style="font-size: 22px">&#8358;9,000 </span></p>
-    						<a href="/shop/men/" class="btn btn-warning">Buy Now</a>
+    						<h5 class="card-title" style="font-size: 15px;">Male Footware</h5>
+    						<a href="/shop/men/" class="btn btn-warning">View</a>
   						</div>
 					</div>
 				</div>
                 <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
 					<div class="card" style="width: 18rem;">
-  						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/uranus.jpg')}}" alt="Saphire Uranus">
+  						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/women_bags.jpg')}}" alt="Female Bag">
   						<div class="card-body">
-    						<h5 class="card-title" style="font-size: 15px;">Female "Uranus" Slippers</h5>
-    						<p><span style="font-size: 22px">&#8358;9,000 </span></p>
-    						<a href="/shop/women/" class="btn btn-warning">Buy Now</a>
+    						<h5 class="card-title" style="font-size: 15px;">Female Bags</h5>
+    						<a href="/shop/women/accessories/" class="btn btn-warning">View</a>
   						</div>
 					</div>
 				</div>
@@ -189,9 +183,8 @@
 					<div class="card" style="width: 18rem;">
   						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/snow.jpg')}}" alt="Saphire Snow">
   						<div class="card-body">
-    						<h5 class="card-title" style="font-size: 15px;">Female "Snow" Slippers</h5>
-    						<p><span style="font-size: 22px">&#8358;6,500 </span></p>
-    						<a href="/shop/women/" class="btn btn-warning">Buy Now</a>
+    						<h5 class="card-title" style="font-size: 15px;">Female Footware</h5>
+    						<a href="/shop/women/" class="btn btn-warning">View</a>
   						</div>
 					</div>
 				</div>
@@ -201,7 +194,7 @@
 
         {%block footer%}
         <!--Footer-->
-        <div class='row align-items-center' style="background-color: #000; color:#fff">
+        <div class='row align-items-center' style="background-color: #000; color:#fff;">
             <div class='col-md-5'>
                 <img src="{{url_for('static', filename='images/correctlogo.png')}}" class='img-fluid'>
             </div>
