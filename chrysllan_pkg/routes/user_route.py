@@ -10,16 +10,36 @@ from chrysllan_pkg.models import *
 @app.route('/')
 @app.route('/chrisllan/')
 def home():
-    todaysdate=date.today()
-    usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
-    deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
-    if deetscart!=[]:
-        total=0
-        for i in deetscart:
-            total=total+i.amount
+    shopping_ID = session.get('user_cart_id')
+    if shopping_ID == None:
+        session['user_cart_id']=int(random.random()*72597584247)
+        shopping_ID = session.get('user_cart_id')
+        
+        todaysdate=date.today()
+        usercart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).count()
+        deetscart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).all()
+        if deetscart!=[]:
+            total=0
+            for i in deetscart:
+                total=total+i.amount
+        else:
+            total=0        
+        return render_template('user/index.html',usercart=usercart,cartdeets=deetscart,total=total)
     else:
-        total=0        
-    return render_template('user/index.html',usercart=usercart,cartdeets=deetscart,total=total)
+        shopping_ID = session.get('user_cart_id')
+        todaysdate=date.today()
+        usercart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).count()
+        deetscart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).all()
+        if deetscart!=[]:
+            total=0
+            for i in deetscart:
+                total=total+i.amount
+        else:
+            total=0        
+        return render_template('user/index.html',usercart=usercart,cartdeets=deetscart,total=total)
+
+
+
 
 ## Create Account and Login Route
 @app.route('/customer/account/')
@@ -34,6 +54,7 @@ def user_create_account():
     else:
         total=0
     return render_template('user/new_account.html',usercart=usercart,cartdeets=deetscart,total=total)
+
 
 ## Contact us Route
 @app.route('/contact-us/')
@@ -69,85 +90,86 @@ def leave_message():
         return "Error. Ensure that a valid phone number and email was provided then try again"
         
 
-## Shopping Page
-@app.route('/shop/')
-def shop():
-    todaysdate=date.today()
-    usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
-    men_footware=db.session.query(Product).filter(Product.product_category=='1').all()
-    women_footware=db.session.query(Product).filter(Product.product_category=='3').all()
-    men_accessories=db.session.query(Product).filter(Product.product_category=='2').all()
-    deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
-    
-    if deetscart!=[]:
-        total=0
-        for i in deetscart:
-            total=total+i.amount
-    else:
-        total=0
-    return render_template('user/shop.html',MFoot=men_footware,WFoot=women_footware,menAcc=men_accessories,usercart=usercart,cartdeets=deetscart,total=total)
-
+        
 ## Men Footware Shopping Page
 @app.route('/shop/men/')
 def shop_men():
-    todaysdate=date.today()
-    usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
-    men_footware=db.session.query(Product).filter(Product.product_category=='1').all()
-    deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
-    if deetscart!=[]:
-        total=0
-        for i in deetscart:
-            total=total+i.amount
+    shopping_ID = session.get('user_cart_id')
+    if shopping_ID != None:
+        todaysdate=date.today()
+        usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
+        men_footware=db.session.query(Product).filter(Product.product_category=='1').all()
+        deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
+        if deetscart!=[]:
+            total=0
+            for i in deetscart:
+                total=total+i.amount
+        else:
+            total=0
+        return render_template('user/shopmen.html',MFoot=men_footware,usercart=usercart,cartdeets=deetscart,total=total)
     else:
-        total=0
-    return render_template('user/shopmen.html',MFoot=men_footware,usercart=usercart,cartdeets=deetscart,total=total)
+        return redirect('/customer/account/')
+    
 
 ## Men Accesories Shopping Page
 @app.route('/shop/men/accessories/')
 def shop_men_accessories():
-    todaysdate=date.today()
-    usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
-    men_accessories=db.session.query(Product).filter(Product.product_category=='2').all()
-    deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
-    if deetscart!=[]:
-        total=0
-        for i in deetscart:
-            total=total+i.amount
+    shopping_ID = session.get('user_cart_id')
+    if shopping_ID != None:
+        todaysdate=date.today()
+        usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
+        men_accessories=db.session.query(Product).filter(Product.product_category=='2').all()
+        deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
+        if deetscart!=[]:
+            total=0
+            for i in deetscart:
+                total=total+i.amount
+        else:
+            total=0
+        return render_template('user/male_accessories.html',menAcc=men_accessories,usercart=usercart,cartdeets=deetscart,total=total)
     else:
-        total=0
-    return render_template('user/male_accessories.html',menAcc=men_accessories,usercart=usercart,cartdeets=deetscart,total=total)
-
+        return redirect('/customer/account/')
+    
+    
 ## Women Shopping Page
 @app.route('/shop/women/')
 def shop_women():
-    todaysdate=date.today()
-    usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
-    women_footware=db.session.query(Product).filter(Product.product_category=='3').all()
-    deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
-    if deetscart!=[]:
-        total=0
-        for i in deetscart:
-            total=total+i.amount
+    shopping_ID = session.get('user_cart_id')
+    if shopping_ID != None:
+        todaysdate=date.today()
+        usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
+        women_footware=db.session.query(Product).filter(Product.product_category=='3').all()
+        deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
+        if deetscart!=[]:
+            total=0
+            for i in deetscart:
+                total=total+i.amount
+        else:
+            total=0
+        return render_template('user/shopwomen.html',WFoot=women_footware,usercart=usercart,cartdeets=deetscart,total=total)
     else:
-        total=0
-    return render_template('user/shopwomen.html',WFoot=women_footware,usercart=usercart,cartdeets=deetscart,total=total)
+        return redirect('/customer/account/')
+
 
 
 ## Women Accessories Shopping Page
 @app.route('/shop/women/accessories/')
 def shop_women_accessores():
-    todaysdate=date.today()
-    usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
-    women_accessories=db.session.query(Product).filter(Product.product_category=='4').all()
-    deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
-    if deetscart!=[]:
-        total=0
-        for i in deetscart:
-            total=total+i.amount
+    shopping_ID = session.get('user_cart_id')
+    if shopping_ID != None:
+        todaysdate=date.today()
+        usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
+        women_accessories=db.session.query(Product).filter(Product.product_category=='4').all()
+        deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
+        if deetscart!=[]:
+            total=0
+            for i in deetscart:
+                total=total+i.amount
+        else:
+            total=0
+        return render_template('user/female_accessories.html',women_acc=women_accessories,usercart=usercart,cartdeets=deetscart,total=total)
     else:
-        total=0
-    return render_template('user/female_accessories.html',women_acc=women_accessories,usercart=usercart,cartdeets=deetscart,total=total)
-
+        return redirect('/customer/account/')
 
 ## Subscribe Newsletter
 @app.route('/subscribe_newsletter/',methods=['POST'])
@@ -225,13 +247,18 @@ def user_login():
     else:
         flash('Please fill out the form',category='wrong_details')
         return redirect('/customer/account/')
-    
+
+
 ## User Logout Route
 @app.route('/customer/logout/')
 def user_logout():
     session.pop('user_id',None)
     session.pop('username',None)
+    session.pop('user_cart_id',None)
     return redirect('/')
+
+
+
 
 ## Subscribe Newsletter
 @app.route('/add/cart/<id>',methods=['POST'])
@@ -253,7 +280,9 @@ def test(id):
     else:
         flash('Dear Customer, kindly register or login to proceed.', category='reg_needed')
         return redirect('/customer/account')
-    
+
+
+   
 ## removecartitem
 @app.route('/removeitem/<id>')
 def removeitem(id):
@@ -262,6 +291,9 @@ def removeitem(id):
     db.session.commit()
     flash('Item Removed',category='itemOut')
     return redirect ('/shop/')
+
+
+
 
 ## empty cart
 @app.route('/emptycart/')
@@ -274,54 +306,65 @@ def emptyCart():
     flash('Cart Empty',category='itemOut')
     return redirect ('/shop/')
 
+
+
+
 ### Update cart quantity
 @app.route('/confirm_order/',methods=['POST'])
 def confirmOrder():
-    total_amount=request.form.get('totalamt')
-    shipping=request.form.get('shipping_address')
-    reference=int((random.random() * 1000000000)+1)
-    session['txn_ref']=reference
-    status='Pending'
-    client=session.get("user_id")
-    the_order_date=date.today()
-    
-    ## This adds to the order table
-    Ord=Order(buyer=client,ref_no=reference,order_date=the_order_date,order_status=status,order_amount=total_amount, shipping_address=shipping)
-    db.session.add(Ord)
-    db.session.commit()
-    
-    #to add to order details table
-    userOrderId=db.session.query(Order).filter(Order.buyer==session.get('user_id'),Order.ref_no==reference).first()
-    OrddID=userOrderId.order_id
-    cart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'),Cart.cart_date==the_order_date).all()
-    for i in cart:
-        Ord_DET=Order_details(order_id=OrddID,prod_id=i.product,prod_price=i.amount)
-        db.session.add(Ord_DET)
-        db.session.delete(i)
-    db.session.commit()
-    
-    ## This is to show the customer the info and initialize payment
-    orderinfo=db.session.query(Order).filter(Order.ref_no==reference, Order.buyer==session.get('user_id')).first()
-    theOrderID=orderinfo.order_id
-    theamountPayable=orderinfo.order_amount
-    orderdeetsinfo=db.session.query(Order_details).filter(Order_details.order_id==theOrderID).all()
-    
-    ## Adding to payment table
-    Txn=Payment(pay_orderid=theOrderID, pay_amt=theamountPayable,pay_ref=reference,pay_status="Pending")
-    db.session.add(Txn)
-    db.session.commit()
-    
-    #passing cart info to the route
-    todaysdate=date.today()
-    usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
-    deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
-    if deetscart!=[]:
-        total=0
-        for i in deetscart:
-            total=total+i.amount
+    if session.get('user_id')!=None and session.get('username')!=None:
+        if session.get('user_cart_id')!=None:
+            total_amount=request.form.get('totalamt')
+            shipping=request.form.get('shipping_address')
+            reference=int((random.random() * 1000000000)+1)
+            session['txn_ref']=reference
+            status='Pending'
+            client=session.get("user_id")
+            the_order_date=date.today()
+            
+            ## This adds to the order table
+            Ord=Order(buyer=client,ref_no=reference,order_date=the_order_date,order_status=status,order_amount=total_amount, shipping_address=shipping)
+            db.session.add(Ord)
+            db.session.commit()
+            
+            #to add to order details table
+            userOrderId=db.session.query(Order).filter(Order.buyer==session.get('user_id'),Order.ref_no==reference).first()
+            OrddID=userOrderId.order_id
+            cart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'),Cart.cart_date==the_order_date).all()
+            for i in cart:
+                Ord_DET=Order_details(order_id=OrddID,prod_id=i.product,prod_price=i.amount)
+                db.session.add(Ord_DET)
+                db.session.delete(i)
+            db.session.commit()
+            
+            ## This is to show the customer the info and initialize payment
+            orderinfo=db.session.query(Order).filter(Order.ref_no==reference, Order.buyer==session.get('user_id')).first()
+            theOrderID=orderinfo.order_id
+            theamountPayable=orderinfo.order_amount
+            orderdeetsinfo=db.session.query(Order_details).filter(Order_details.order_id==theOrderID).all()
+            
+            ## Adding to payment table
+            Txn=Payment(pay_orderid=theOrderID, pay_amt=theamountPayable,pay_ref=reference,pay_status="Pending")
+            db.session.add(Txn)
+            db.session.commit()
+            
+            #passing cart info to the route
+            todaysdate=date.today()
+            usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
+            deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
+            if deetscart!=[]:
+                total=0
+                for i in deetscart:
+                    total=total+i.amount
+            else:
+                total=0
+            return render_template('user/informationpage.html',Ord_Details=orderdeetsinfo, payable=theamountPayable,ref=reference,usercart=usercart,cartdeets=deetscart,total=total)
+        else:
+            return redirect('/')
     else:
-        total=0
-    return render_template('user/informationpage.html',Ord_Details=orderdeetsinfo, payable=theamountPayable,ref=reference,usercart=usercart,cartdeets=deetscart,total=total)
+        return redirect('/customer/account/')
+
+
 
 # Order Info Page
 @app.route('/call/paystack/')
@@ -356,7 +399,10 @@ def paystack():
             return redirect('/shop/')
     else:
         return redirect('/customer/account/')
-    
+ 
+ 
+ 
+   
 ## Second API consumption phase
 @app.route('/paystack_landing/')
 def paystack_landing():
@@ -472,16 +518,6 @@ def paystack_landing():
         return redirect('/customer/account/')
 
 
-        
-# ### WEBHOOK URL        
-# @app.route('/paystack_webhook/',methods=['POST'])
-# def paystack_webhook():
-    
-
-#     if session.get('user_id')!=None and session.get('username')!=None:
-#         return 'hello'
-#     else:
-#         return redirect('/customer/account/')
 
 ### ERROR 404 and 500 Pages
 @app.errorhandler(500)

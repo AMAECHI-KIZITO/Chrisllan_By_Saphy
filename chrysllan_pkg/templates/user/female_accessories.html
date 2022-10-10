@@ -2,6 +2,8 @@
 
 {%block title%}Chrysllan - Female Accessories {%endblock%}
 
+
+
 {%block content%}
 <!--For Women-->
 <div class='row mt-3'>
@@ -9,18 +11,14 @@
         <h3>Female Accessories</h3>
     </div>
     {%for f in women_acc %}
-    <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+    <div class="col-md-6 col-lg-4 mb-1">
         <div class="card" style="width: 18rem;">
             <img class="card-img-top img-fluid" src="{{url_for('static', filename='productimages/'+f.product_image)}}" alt="{{f.product_name}}">
             <div class="card-body">
                 <h5 class="card-title" style="font-size: 15px;">{{f.product_name}}</h5>
                 <p><span style="font-size: 22px">&#8358 {{"{:,.0f}".format(f.product_price)}} </span></p>
-                
-                <form action="/add/cart/{{f.product_id}}" method="post">
-                    <input type='hidden' name='csrf_token' class='form-control' value='{{csrf_token()}}' readonly>
 
-                    <button type='submit' class="btn btn-warning">ADD TO CART</button>
-                </form>
+                <button type="button" id="shopcart" class="btn btn-warning btn-sm float-end" data-bs-toggle="modal" data-bs-target="#menfootware{{f.product_id}}">Order</button>
             </div>
         </div>
     </div>
@@ -28,11 +26,135 @@
 </div>
 {%endblock content%}
 
-{%block scripts%}
-<script type='text/javascript' language='javascript'>
-    $(document).ready(function(){
 
+{% block orderModal %}
+
+{%for x in women_acc%}
+<div class="modal fade" id="menfootware{{x.product_id}}" tabindex="-1" aria-labelledby="Products" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md">
+        <div class="modal-content" id="content_modal">
+
+            <!--modal header-->
+            <div class="modal-header">
+                <h5 modal-dialog-scrollable id="Products">{{x.product_name}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!--modal body-->
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h6>Quantity</h6>
+                            <button type='button' class='btn btn-success btn-sm' onclick='addition{{x.product_id}}()'>
+                                <span><i class='fa-solid fa-plus'></i></span>
+                            </button> 
+
+                            <span id='quantity{{x.product_id}}'>1</span> 
+                            
+                            <button type='button' class='btn btn-danger btn-sm' onclick='substract{{x.product_id}}()'>
+                                <span><i class='fa-solid fa-minus'></i></span>
+                            </button><br><br>
+
+                            <input type='hidden' id='number_of_item{{x.product_id}}' class='form-control'  value=1>
+                            <input type='hidden' id='itemprice{{x.product_id}}' class='form-control' value='{{x.product_price}}'>
+
+                            <button type='button' class='btn btn-success btn-sm float-end d-none' id='addtocart{{x.product_id}}'>
+                                Add into cart
+                            </button>
+
+                            <button type='button' class='btn btn-success btn-sm float-end' id='insertToCart{{x.product_id}}'>
+                                Add To Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--modal footer-->
+            <div class="modal-footer">
+                <div class="row mb-2">
+                    <label class='col-md-5'><b>Total(&#8358;)</b></label>
+                    <div class='col-md-7'>
+                        <input type='number' id='total{{x.product_id}}' class='form-control' value='{{x.product_price}}' style="border:none" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endfor%}
+{% endblock orderModal %}
+
+
+
+
+{%block scripts%}
+{% for i in women_acc%}
+    <script type='text/javascript'>
+
+        qty{{i.product_id}}=1;
+
+        function addition{{i.product_id}}(){
+            ++qty{{i.product_id}};
+            $('#quantity{{i.product_id}}').text(qty{{i.product_id}});
+            $('#number_of_item{{i.product_id}}').val(qty{{i.product_id}});
+            $('#addtocart{{i.product_id}}').click();
+        } 
         
-    })
-</script>
+
+        function substract{{i.product_id}}(){
+            if(qty{{i.product_id}}>1){
+                qty{{i.product_id}}--;
+                $('#quantity{{i.product_id}}').text(qty{{i.product_id}});
+                $('#number_of_item{{i.product_id}}').val(qty{{i.product_id}});
+                $('#addtocart{{i.product_id}}').click();
+            }
+            
+        } 
+        
+
+        $('#addtocart{{i.product_id}}').click(function(){
+            qty_requested=$('#number_of_item{{i.product_id}}').val();
+            itemamount=$('#itemprice{{i.product_id}}').val();
+            newamt=qty_requested*itemamount
+            $('#total{{i.product_id}}').val(newamt);
+        })
+
+        $('#insertToCart{{i.product_id}}').click(function(){
+            cart_temp_id={{session.get("user_cart_id")}};
+            amount_payable = $('#total{{i.product_id}}').val();
+            product= {{i.product_id}};
+            product_qty=$('#number_of_item{{i.product_id}}').val();
+
+            var data2send={'temp_id':cart_temp_id, 'product':product, 'quantity':product_qty,'amount':amount_payable}
+
+
+            $.ajax({
+                url:"/add/cart/{{i.product_id}}",
+                data:data2send,
+                dataType:"text",
+                type:"get",
+                beforeSend:function(){},
+                success:function(rsp){
+                    $('#feedback{{i.product_id}}').addClass('alert alert-success');
+                    $('#feedback{{i.product_id}}').text(rsp);
+                    qty{{i.product_id}}=1;
+                    $('#number_of_item{{i.product_id}}').val(1)
+                    $('#quantity{{i.product_id}}').text(qty{{i.product_id}})
+
+                    //this then refreshes the total of the modal
+                    qty_requested=$('#number_of_item{{i.product_id}}').val();
+                    itemamount=$('#itemprice{{i.product_id}}').val();
+                    newamt=qty_requested*itemamount
+                    $('#total{{i.product_id}}').val(newamt);
+                },  
+                error:function(errormessage){
+                    console.log(errormessage)
+                }
+            })
+
+        })
+    </script>
+{% endfor %}
 {%endblock scripts%}

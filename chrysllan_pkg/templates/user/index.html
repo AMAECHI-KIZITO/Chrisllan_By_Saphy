@@ -48,9 +48,9 @@
             {%block navigation%}
             <!--Navigation-->
             <div class="row" style="position:sticky; top:0px; z-index:5">
-                <nav class="navbar navbar-expand-lg navbar-light bg-light pt-3 pb-3 px-5">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light pt-1 pb-1">
                     <div class="container-fluid">
-                        <a class="navbar-brand brandname animate__animated animate__bounce" href="/chrisllan/" style="font-family:'lucida-calligraphy'"><h3 id='herBRAND'>Chrisllan by Saphy</h3></a>
+                        <a class="navbar-brand brandname animate__animated animate__bounce" href="/chrisllan/" style="font-family:'lucida-calligraphy';"><h1 id='herBRAND'>Chrisllan by Saphy</h1></a>
                         <button class=" btn btn-sm navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                         </button>
@@ -60,17 +60,16 @@
                                     <a class="nav-link active" aria-current="page" href="/chrisllan/"><b>Home</b></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="/shop/"><b>Shop</b></a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link active" href="/contact-us/"><b>Contact Us</b></a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link active dropdown-toggle" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>Categories</b>
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li><a class="dropdown-item" href="/shop/men/">Men</a></li>
-                                        <li><a class="dropdown-item" href="/shop/women/">Women</a></li>
+                                        <li><a class="dropdown-item" href="/shop/men/">Men Footware</a></li>
+                                        <li><a class="dropdown-item" href="/shop/men/accessories/">Men Accessories</a></li>
+                                        <li><a class="dropdown-item" href="/shop/women/">Female Footware</a></li>
+                                        <li><a class="dropdown-item" href="/shop/women/accessories/">Female Accessories</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -81,9 +80,9 @@
                                 <a>Hello {{session.get('username')}}</a>
                                 {%endif%}
 
-                                {%if session.get('user_id')==None and session.get('username')==None%}
+                                {#{%if session.get('user_id')==None and session.get('username')==None%}
                                 <a href="/customer/account/"><i class="fa-solid fa-cart-shopping"></i></a>
-                                {%else%}
+                                {%else%}#}
                                 <button type="button" id="shopcart" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#orderPlaced" style="position: relative">
 
                                     <i class="fa-solid fa-cart-shopping">
@@ -97,9 +96,8 @@
                                             {%endif%}
                                         {%endif%}
                                     </i>
-
                                 </button>
-                                {%endif%}
+                                {#{%endif%}#}
                             </div>
                         </div>
                     </div>
@@ -114,13 +112,13 @@
                     <div class='row small align-items-center d-md-none text-center'>
                         <div class='col pt-5'>
                             <h2 style="color:white; font-family:'lucida-calligraphy'">Good Footware Takes You Good Places</h2>
-                            <a href='/shop/' class='btn btn-warning'>Shop</a>
+                            <a href='#categories' class='btn btn-warning'>Shop</a>
                         </div>
                     </div>
                 </div>
                 <div class='col-md-6 d-none d-md-block'>
                     <h2 style="color:white; font-family:'lucida-calligraphy'; font-size:35px" class='d-none d-md-block text-center'>Good Footware Takes You Good Places</h2>
-                    <p class="text-center"><a href='/shop/' class='btn btn-warning btn-lg'>Shop Now</a></p>
+                    <p class="text-center"><a href='#categories' class='btn btn-warning btn-lg'>Shop Now</a></p>
                 </div>
             </div>
 
@@ -146,11 +144,11 @@
             <!--Popular products-->
             <div class="row mt-5">
 				<div class="col-5">
-					<h3 class="ps-3 animate__animated animate__flip" style="color:#384A62; font-family: 'Times-new-roman';">Categories</h3>
+					<h3 class="ps-3 animate__animated animate__flip" id="categories" style="color:#384A62; font-family: 'Times-new-roman';">Categories</h3>
 				</div>
 			</div>
-            <div class="row mx-auto">
 
+            <div class="row mx-auto">
 				<div class="col-md-6 col-lg-4 col-xl-3 mb-1">
 					<div class="card" style="width: 18rem;">
   						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/male_belt.jpg')}}" alt="bond belt">
@@ -317,6 +315,9 @@
             </div>
         </div>
 
+
+        {% block orderModal %}
+        {% endblock orderModal %}
 
         {%autoescape false%}
         <script type="text/javascript" src="{{url_for('static',filename='jquery/jquery.min.js')}}"></script>
