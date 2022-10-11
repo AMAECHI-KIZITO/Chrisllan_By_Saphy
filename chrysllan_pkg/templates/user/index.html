@@ -62,6 +62,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link active" href="/contact-us/"><b>Contact Us</b></a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="/contact-us/"><b>{{session.get('user_cart_id')}}</b></a>
+                                </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link active dropdown-toggle" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>Categories</b>
                                     </a>
@@ -83,19 +86,16 @@
                                 {#{%if session.get('user_id')==None and session.get('username')==None%}
                                 <a href="/customer/account/"><i class="fa-solid fa-cart-shopping"></i></a>
                                 {%else%}#}
+
+
                                 <button type="button" id="shopcart" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#orderPlaced" style="position: relative">
 
                                     <i class="fa-solid fa-cart-shopping">
-                                        {%if session.get('user_id')==None and session.get('username')==None%}
-                                        <span class="badge bg-danger rounded-pill" id='items_in_cart' style="position: absolute; font-size: 10px"></span>
-                                        {%else%}
-                                            {%if usercart==0%}
-                                            <span class="badge bg-danger rounded-pill" id='items_in_cart' style="position: absolute; font-size: 10px">0</span>
-                                            {%else%}
+                                        {% if usercart != 0%}
                                             <span class="badge bg-danger rounded-pill" id='items_in_cart' style="position: absolute; font-size: 10px">{{usercart}}</span>
-                                            {%endif%}
-                                        {%endif%}
+                                        {% endif %}
                                     </i>
+
                                 </button>
                                 {#{%endif%}#}
                             </div>
@@ -201,7 +201,6 @@
                     <div class="col-md-3 mb-3">
                         <h5>Information</h5>
                         <a href='/chrisllan/' class="d-block links">Home</a>
-                        <a href='/shop/' class="d-block links">Shop</a>
                         <a href="#" class="d-block links">About Us</a>
                         <a href='/contact-us/' class="d-block links">Contact Us</a>
                         {#<a href="#" class="d-block links">Terms & Conditions</a>#}
@@ -246,17 +245,19 @@
                         <h5 modal-dialog-scrollable id="Chrisllan_by_saphy">Your Shopping Cart</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    {%if usercart!=0%}
+
                     <div class="modal-body">
                         <div class="container">
                             <div class="row">
                             	<div class="col-12 text-center">
                             		<h3><b>Products List</b></h3>
-                                    <p>Click the delete icon to remove a particular item.</p>
+                                    <p id='deleteitemFeedback'></p>
                             	</div>
                             </div>
                             
                             <div class="row">
-                                {%if usercart!=0%}
+                                
                             	<div class="col-12">
                             		<form action="/confirm_order/" method="post">
                                         <div class="row mb-2 d-none d-md-flex">
@@ -279,8 +280,11 @@
                                             <div class='col-md-2'>
                                                 <input type='number' name='adjusted_quantity' class='form-control' min='1' value='{{c.product_qty}}' readonly>
                                             </div>
+                                            <div class='col-md-2 d-none'>
+                                                <input type='hidden' name='discard{{c.cart_id}}' id='discard{{c.cart_id}}' class='form-control' value='{{c.cart_id}}' readonly>
+                                            </div>
                                             <div class='col-md-2'>
-                                                <a href='/removeitem/{{c.cart_id}}' class='link-danger'><i class='fa-solid fa-trash-can'></i></a>
+                                                <button type="button" id='removeitem{{c.cart_id}}' class='btn btn-danger btn-sm'><i class='fa-solid fa-trash-can'></i></button>
                                             </div>
                                         </div>
                                         {%endfor%}
@@ -293,11 +297,7 @@
 
                                         <button type="submit" id='confirmOrder' class="btn form-control btn-success mt-4">Confirm Order</button>
                                     </form>
-                                    
                             	</div>
-                                {%else%}
-                                <div><h4>Nothing in Cart</h4></div>
-                                {%endif%}
                             </div>
                         </div>
                     </div>
@@ -309,8 +309,15 @@
                                 <input type='number' class='form-control' value='{{total}}' style="border:none" readonly>
                             </div>
                         </div>
-                        <a href='/emptycart/' class='btn btn-danger'>Empty Cart</a>
+                        <button type='button' class='btn btn-danger btn-sm' id='btnEmptyCart'>Empty Cart</button>
                     </div>
+
+                    {%else%}
+                    <div>
+                        <p class="text-center"><img class="img-fluid" src="{{url_for('static', filename='images/empty_cart.png')}}" width='100px' height='100px'></p>
+                    </div>
+                    <h3 class='text-center'>Nothing in cart</h3> 
+                    {%endif%}
                 </div>
             </div>
         </div>
@@ -363,6 +370,62 @@
                 })
             })
         </script>
+
+
+        <!--This controls the modal delete item ajax-->
+        {% for c in cartdeets %}
+            <script type='text/javascript'>
+                $('#removeitem{{c.cart_id}}').click(function(){
+                    
+                    discardID=$('#discard{{c.cart_id}}').val();
+
+                    var data2send={'trash':discardID}
+
+                    $.ajax({
+                        url:"/removeitem/",
+                        data:data2send,
+                        dataType:"text",
+                        type:"get",
+                        beforeSend:function(){},
+                        success:function(rsp){
+                            $('#deleteitemFeedback').addClass('alert alert-success')
+                            $('#deleteitemFeedback').text(rsp)
+                            location.reload()
+                        },  
+                        error:function(errormessage){
+                            console.log(errormessage)
+                        }
+                    })
+                })
+            </script>
+        {% endfor %}
+
+
+        <script type='text/javascript'>
+            // empty cart
+            $('#btnEmptyCart').click(function(){
+                cartuseriD={{session.get('user_cart_id')}}
+    
+                var data2send={'emptycartID':cartuseriD}
+
+                $.ajax({
+                    url:"/emptycart/",
+                    data:data2send,
+                    dataType:"text",
+                    type:"get",
+                    beforeSend:function(){},
+                    success:function(rsp){
+                        $('#deleteitemFeedback').addClass('alert alert-success');
+                        $('#deleteitemFeedback').text(rsp);
+                        location.reload()
+                    },
+                    error:function(errormessage){
+                        console.log(errormessage)
+                    }
+                })
+            })
+        </script>
+
         {%endblock scripts%}
         <script type="text/javascript" src="{{url_for('static',filename='js/bootstrap.bundle.js')}}"></script>
         {%endautoescape%}

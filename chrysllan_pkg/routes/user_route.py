@@ -12,31 +12,35 @@ from chrysllan_pkg.models import *
 def home():
     shopping_ID = session.get('user_cart_id')
     if shopping_ID == None:
-        session['user_cart_id']=int(random.random()*72597584247)
+        session['user_cart_id']=int(random.random()*452358)
         shopping_ID = session.get('user_cart_id')
         
         todaysdate=date.today()
         usercart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).count()
         deetscart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).all()
+        
         if deetscart!=[]:
             total=0
             for i in deetscart:
                 total=total+i.amount
+            return render_template('user/index.html',usercart=usercart,cartdeets=deetscart,total=total)
         else:
             total=0        
-        return render_template('user/index.html',usercart=usercart,cartdeets=deetscart,total=total)
+            return render_template('user/index.html',usercart=usercart,cartdeets=deetscart,total=total)
     else:
         shopping_ID = session.get('user_cart_id')
         todaysdate=date.today()
+        
         usercart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).count()
         deetscart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).all()
         if deetscart!=[]:
             total=0
             for i in deetscart:
                 total=total+i.amount
+            return render_template('user/index.html',usercart=usercart,cartdeets=deetscart,total=total)
         else:
             total=0        
-        return render_template('user/index.html',usercart=usercart,cartdeets=deetscart,total=total)
+            return render_template('user/index.html',usercart=usercart,cartdeets=deetscart,total=total)
 
 
 
@@ -45,30 +49,36 @@ def home():
 @app.route('/customer/account/')
 def user_create_account():
     todaysdate=date.today()
-    usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
-    deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
+    shopping_ID = session.get('user_cart_id')
+    
+    usercart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).count()
+    deetscart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).all()
     if deetscart!=[]:
         total=0
         for i in deetscart:
             total=total+i.amount
+        return render_template('user/new_account.html',usercart=usercart,cartdeets=deetscart,total=total)
     else:
         total=0
-    return render_template('user/new_account.html',usercart=usercart,cartdeets=deetscart,total=total)
+        return render_template('user/new_account.html',usercart=usercart,cartdeets=deetscart,total=total)
 
 
 ## Contact us Route
 @app.route('/contact-us/')
 def contactus():
     todaysdate=date.today()
-    usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
-    deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
+    shopping_ID = session.get('user_cart_id')
+    
+    usercart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).count()
+    deetscart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).all()
     if deetscart!=[]:
         total=0
         for i in deetscart:
             total=total+i.amount
+        return render_template('user/contactus.html',usercart=usercart,cartdeets=deetscart,total=total)
     else:
         total=0
-    return render_template('user/contactus.html',usercart=usercart,cartdeets=deetscart,total=total)
+        return render_template('user/contactus.html',usercart=usercart,cartdeets=deetscart,total=total)
 
 
 ## Drop a contact message
@@ -97,9 +107,9 @@ def shop_men():
     shopping_ID = session.get('user_cart_id')
     if shopping_ID != None:
         todaysdate=date.today()
-        usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
         men_footware=db.session.query(Product).filter(Product.product_category=='1').all()
-        deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
+        usercart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).count()
+        deetscart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).all()
         if deetscart!=[]:
             total=0
             for i in deetscart:
@@ -117,9 +127,9 @@ def shop_men_accessories():
     shopping_ID = session.get('user_cart_id')
     if shopping_ID != None:
         todaysdate=date.today()
-        usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
         men_accessories=db.session.query(Product).filter(Product.product_category=='2').all()
-        deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
+        usercart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).count()
+        deetscart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).all()
         if deetscart!=[]:
             total=0
             for i in deetscart:
@@ -137,9 +147,10 @@ def shop_women():
     shopping_ID = session.get('user_cart_id')
     if shopping_ID != None:
         todaysdate=date.today()
-        usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
         women_footware=db.session.query(Product).filter(Product.product_category=='3').all()
-        deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
+        
+        usercart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).count()
+        deetscart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).all()
         if deetscart!=[]:
             total=0
             for i in deetscart:
@@ -158,9 +169,9 @@ def shop_women_accessores():
     shopping_ID = session.get('user_cart_id')
     if shopping_ID != None:
         todaysdate=date.today()
-        usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
         women_accessories=db.session.query(Product).filter(Product.product_category=='4').all()
-        deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
+        usercart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).count()
+        deetscart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).all()
         if deetscart!=[]:
             total=0
             for i in deetscart:
@@ -260,37 +271,38 @@ def user_logout():
 
 
 
-## Subscribe Newsletter
-@app.route('/add/cart/<id>',methods=['POST'])
-def test(id):
-    if session.get('user_id')!=None and session.get('username')!=None:
-        prod_deets=db.session.query(Product).get(id)
-        itemID=prod_deets.product_id
-        itemPrice=prod_deets.product_price
-        client=session.get('user_id')
-        quantity='1'
-        thedate=date.today()
-        NewCart=Cart(buyer_id=client,product=itemID,product_qty=quantity,amount=itemPrice,cart_date=thedate)
+## Add to Cart
+@app.route('/add/cart/')
+def test():
+    shopping_ID = session.get('user_cart_id')
+    if shopping_ID != None:
+        productid=request.args.get('product')
+        quantity=request.args.get('quantity')
+        amount_payable=request.args.get('amount')
+        user_cart_no=request.args.get('temp_id')
+        today_date=date.today()
         
-        db.session.add(NewCart)
-        db.session.commit()
-        flash('Item added to cart',category='itemAdded')
-        return redirect('/shop/')
-        
+        try:
+            add_to_cart=Cart(user_cart_id=user_cart_no, product=productid, product_qty=quantity, amount=amount_payable,cart_date=today_date)
+            db.session.add(add_to_cart)
+            db.session.commit()
+            return "Item Added"
+        except:
+            return "Something went wrong. Please Try again"
     else:
-        flash('Dear Customer, kindly register or login to proceed.', category='reg_needed')
-        return redirect('/customer/account')
+        return redirect('/')
 
 
    
 ## removecartitem
-@app.route('/removeitem/<id>')
-def removeitem(id):
-    itemtoremove=db.session.query(Cart).get(id)
-    db.session.delete(itemtoremove)
+@app.route('/removeitem/')
+def removeitem():
+    item2remove=request.args.get('trash')
+    
+    discard=db.session.query(Cart).get(item2remove)
+    db.session.delete(discard)
     db.session.commit()
-    flash('Item Removed',category='itemOut')
-    return redirect ('/shop/')
+    return "Item Deleted"
 
 
 
@@ -298,15 +310,13 @@ def removeitem(id):
 ## empty cart
 @app.route('/emptycart/')
 def emptyCart():
-    thedate=date.today()
-    itemtoremove=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'),Cart.cart_date==thedate).all()
-    for i in itemtoremove:
-        db.session.delete(i)
+    user_cart_id=request.args.get('emptycartID')
+    incenerate_cart=db.session.query(Cart).filter(Cart.user_cart_id==user_cart_id).all()
+    if incenerate_cart != []:
+        for trash in incenerate_cart:
+            db.session.delete(trash)
         db.session.commit()
-    flash('Cart Empty',category='itemOut')
-    return redirect ('/shop/')
-
-
+        return "Cart Emptied"
 
 
 ### Update cart quantity

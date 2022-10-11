@@ -44,6 +44,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col">
+                            <div id='feedback{{x.product_id}}'></div>
                             <h6>Quantity</h6>
                             <button type='button' class='btn btn-success btn-sm' onclick='addition{{x.product_id}}()'>
                                 <span><i class='fa-solid fa-plus'></i></span>
@@ -89,71 +90,147 @@
 
 
 {%block scripts%}
-{% for i in MFoot%}
-    <script type='text/javascript'>
 
-        qty{{i.product_id}}=1;
 
-        function addition{{i.product_id}}(){
-            ++qty{{i.product_id}};
-            $('#quantity{{i.product_id}}').text(qty{{i.product_id}});
-            $('#number_of_item{{i.product_id}}').val(qty{{i.product_id}});
-            $('#addtocart{{i.product_id}}').click();
-        } 
-        
+    {% for i in MFoot%}
+        <script type='text/javascript'>
 
-        function substract{{i.product_id}}(){
-            if(qty{{i.product_id}}>1){
-                qty{{i.product_id}}--;
+            qty{{i.product_id}}=1;
+
+            function addition{{i.product_id}}(){
+                ++qty{{i.product_id}};
                 $('#quantity{{i.product_id}}').text(qty{{i.product_id}});
                 $('#number_of_item{{i.product_id}}').val(qty{{i.product_id}});
                 $('#addtocart{{i.product_id}}').click();
-            }
+            } 
             
-        } 
-        
 
-        $('#addtocart{{i.product_id}}').click(function(){
-            qty_requested=$('#number_of_item{{i.product_id}}').val();
-            itemamount=$('#itemprice{{i.product_id}}').val();
-            newamt=qty_requested*itemamount
-            $('#total{{i.product_id}}').val(newamt);
-        })
+            function substract{{i.product_id}}(){
+                if(qty{{i.product_id}}>1){
+                    qty{{i.product_id}}--;
+                    $('#quantity{{i.product_id}}').text(qty{{i.product_id}});
+                    $('#number_of_item{{i.product_id}}').val(qty{{i.product_id}});
+                    $('#addtocart{{i.product_id}}').click();
+                }
+                
+            } 
+            
 
-        $('#insertToCart{{i.product_id}}').click(function(){
-            cart_temp_id={{session.get("user_cart_id")}};
-            amount_payable = $('#total{{i.product_id}}').val();
-            product= {{i.product_id}};
-            product_qty=$('#number_of_item{{i.product_id}}').val();
+            $('#addtocart{{i.product_id}}').click(function(){
+                qty_requested=$('#number_of_item{{i.product_id}}').val();
+                itemamount=$('#itemprice{{i.product_id}}').val();
+                newamt=qty_requested*itemamount
+                $('#total{{i.product_id}}').val(newamt);
+            })
 
-            var data2send={'temp_id':cart_temp_id, 'product':product, 'quantity':product_qty,'amount':amount_payable}
+            $('#insertToCart{{i.product_id}}').click(function(){
+                cart_temp_id={{session.get("user_cart_id")}};
+                amount_payable = $('#total{{i.product_id}}').val();
+                product= {{i.product_id}};
+                product_qty=$('#number_of_item{{i.product_id}}').val();
 
+                var data2send={'temp_id':cart_temp_id, 'product':product, 'quantity':product_qty,'amount':amount_payable}
+
+
+                $.ajax({
+                    url:"/add/cart/",
+                    data:data2send,
+                    dataType:"text",
+                    type:"get",
+                    beforeSend:function(){},
+                    success:function(rsp){
+                        if(rsp="Item Added"){
+                            $('#feedback{{i.product_id}}').addClass('alert alert-success');
+                            $('#feedback{{i.product_id}}').text(rsp);
+                            qty{{i.product_id}}=1;
+                            $('#number_of_item{{i.product_id}}').val(1)
+                            $('#quantity{{i.product_id}}').text(qty{{i.product_id}})
+
+                            //this then refreshes the total of the modal
+                            qty_requested=$('#number_of_item{{i.product_id}}').val();
+                            itemamount=$('#itemprice{{i.product_id}}').val();
+                            newamt=qty_requested*itemamount
+                            $('#total{{i.product_id}}').val(newamt);
+
+                            //Reload the page
+                            location.reload()
+                        }
+                        else{
+                            $('#feedback{{i.product_id}}').addClass('alert alert-danger');
+                            $('#feedback{{i.product_id}}').text(rsp);
+                            qty{{i.product_id}}=1;
+                            $('#number_of_item{{i.product_id}}').val(1)
+                            $('#quantity{{i.product_id}}').text(qty{{i.product_id}})
+
+                            //this then refreshes the total of the modal
+                            qty_requested=$('#number_of_item{{i.product_id}}').val();
+                            itemamount=$('#itemprice{{i.product_id}}').val();
+                            newamt=qty_requested*itemamount
+                            $('#total{{i.product_id}}').val(newamt);
+                            
+                            //Reload the page
+                            location.reload()
+                        }
+                        
+                    },  
+                    error:function(errormessage){
+                        console.log(errormessage)
+                    }
+                })
+            })
+        </script>
+    {% endfor %}
+    
+    <!--This controls the modal delete item ajax-->
+    {% for c in cartdeets %}
+    <script type='text/javascript'>
+        $('#removeitem{{c.cart_id}}').click(function(){
+            
+            discardID=$('#discard{{c.cart_id}}').val();
+
+            var data2send={'trash':discardID}
 
             $.ajax({
-                url:"/add/cart/{{i.product_id}}",
+                url:"/removeitem/",
                 data:data2send,
                 dataType:"text",
                 type:"get",
                 beforeSend:function(){},
                 success:function(rsp){
-                    $('#feedback{{i.product_id}}').addClass('alert alert-success');
-                    $('#feedback{{i.product_id}}').text(rsp);
-                    qty{{i.product_id}}=1;
-                    $('#number_of_item{{i.product_id}}').val(1)
-                    $('#quantity{{i.product_id}}').text(qty{{i.product_id}})
-
-                    //this then refreshes the total of the modal
-                    qty_requested=$('#number_of_item{{i.product_id}}').val();
-                    itemamount=$('#itemprice{{i.product_id}}').val();
-                    newamt=qty_requested*itemamount
-                    $('#total{{i.product_id}}').val(newamt);
+                    $('#deleteitemFeedback').addClass('alert alert-success')
+                    $('#deleteitemFeedback').text(rsp)
+                    location.reload()
                 },  
                 error:function(errormessage){
                     console.log(errormessage)
                 }
             })
-
         })
     </script>
-{% endfor %}
+    {% endfor %}
+
+    <script type='text/javascript'>
+        // empty cart
+        $('#btnEmptyCart').click(function(){
+            cartuseriD={{session.get('user_cart_id')}}
+
+            var data2send={'emptycartID':cartuseriD}
+
+            $.ajax({
+                url:"/emptycart/",
+                data:data2send,
+                dataType:"text",
+                type:"get",
+                beforeSend:function(){},
+                success:function(rsp){
+                    $('#deleteitemFeedback').addClass('alert alert-success');
+                    $('#deleteitemFeedback').text(rsp);
+                    location.reload()
+                },
+                error:function(errormessage){
+                    console.log(errormessage)
+                }
+            })
+        })
+    </script>
 {%endblock scripts%}
