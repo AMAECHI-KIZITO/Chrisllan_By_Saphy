@@ -1,16 +1,17 @@
 <!doctype html>
 <html>
 <head>
-    <title>{%block title%}Chrysllan||Admin{%endblock title%}</title>
+    <title>{%block title%}Chrysllan - Admin Dashboard{%endblock title%}</title>
     <meta charset= "UTF-8">
     <meta name= "viewport" content= "width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel= "stylesheet" type= "text/css" href= "{{url_for('static', filename='css/bootstrap.css')}}">
     <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='font/css/all.css')}}">
     <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='JQanimate.css')}}">
     <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='DataTables/datatables.min.css')}}">
+    <link rel="icon" href="{{url_for('static',filename="images/myicon.ico")}}" type="image/x-icon">
     <style type= "text/css">
         div{
-            border: 0px solid red 
+            border: 0px solid red;
         }
         .main_col{ 
             min-height: 93vh; 
@@ -31,19 +32,27 @@
             background-color: #000;
         }
         {%block otherpage_styles%}
+
         {%endblock%}
     </style>
 </head>
 
 <body>
-    <div class= "container-fluid">
+    <div class="container-fluid">
         <div class="row"  id="banner">
-            <div class= "col-12">
-                <h3 id='herBRAND' style='font-family:"lucida-calligraphy"'>Chrisllan by Saphy</h3></a>
+            <div class="col-10">
+                <h3 id='herBRAND' style='font-family:"lucida-calligraphy"'>Chrisllan by Saphy</h3>
+            </div>
+            <div class="col-2 d-md-none">
+                <button type='button' class='btn' style='background-color: #04002C;' data-bs-toggle="offcanvas" data-bs-target="#menu" aria-controls="menu">
+
+                    <i class='fa-solid fa-bars text-success'></i>
+
+                </button>
             </div>
         </div>
         <div class="row">
-            <div class= "col-md-3 main_col" id="panel">
+            <div class= "col-md-3 main_col d-none d-md-block" id="panel">
                 <div class= "row" style= "border-top: 1px solid #EDEBFF">
                     <div class= "col py-2">
                         <h4 class= "text-center">Welcome {{session.get('admin_name')}}</h4>
@@ -66,13 +75,13 @@
                                 <a href="/admin/allproducts/" class="nav-link text-light">All Products</a>
                             </li>
                             <li class="nav-item navig mb-1">
-                                <a href="/admin/allorders/" class="nav-link text-light">All Orders</a>
+                                <a href="/admin/today-orders/" class="nav-link text-light">Today Orders</a>
                             </li>
                             <li class="nav-item navig mb-1">
                                 <a href="/admin/messages/" class="nav-link text-light">Messages</a>
                             </li>
                             <li class="nav-item navig mb-1">
-                                <a href="/admin/passwordchange/" class="nav-link text-light">Change Password</a>
+                                <a href="/admin/passwordchange/" class="nav-link text-light">Password Settings</a>
                             </li>
                             <li class="nav-item navig mb-1">
                                 <a href="/admin/logout/" class="nav-link text-light">Logout</a>
@@ -107,6 +116,47 @@
                     </div>
                 </div>
                 {% endblock contents %}
+            </div>
+        </div>
+    </div>
+
+    <!--Off Canvas Menu-->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="menu" aria-labelledby="menuLabel" style='background-color: #04002C;'>
+        <div class="offcanvas-header">
+            <h4 class= "text-center text-light">Welcome {{session.get('admin_name')}}</h4>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" style='background-color: #fff;'></button>
+        </div>
+
+        <div class="offcanvas-body">
+            <div class="row mt-3">
+                <div class="col">
+                    <ul class="nav flex-column nav-fill">
+                        <li class="nav-item navig mb-1">
+                            <a href="/admin/dashboard/" class="nav-link text-light">Dashboard</a>
+                        </li>
+                        <li class="nav-item navig mb-1">
+                            <a href="/admin/add/product/" class="nav-link text-light">Add Product</a>
+                        </li>
+                        <li class="nav-item navig mb-1">
+                            <a href="/admin/edit/product/" class="nav-link text-light">Edit Product</a>
+                        </li>
+                        <li class="nav-item navig mb-1">
+                            <a href="/admin/allproducts/" class="nav-link text-light">All Products</a>
+                        </li>
+                        <li class="nav-item navig mb-1">
+                            <a href="/admin/allorders/" class="nav-link text-light">Today Orders</a>
+                        </li>
+                        <li class="nav-item navig mb-1">
+                            <a href="/admin/messages/" class="nav-link text-light">Messages</a>
+                        </li>
+                        <li class="nav-item navig mb-1">
+                            <a href="/admin/passwordchange/" class="nav-link text-light">Change Password</a>
+                        </li>
+                        <li class="nav-item navig mb-1">
+                            <a href="/admin/logout/" class="nav-link text-light">Logout</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

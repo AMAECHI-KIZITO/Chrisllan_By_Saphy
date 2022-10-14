@@ -1,11 +1,15 @@
 {%extends 'admin/admindashboard.html'%}
 
 {%block title%}
-Chrisllan|Edit Product
+Chrisllan - Edit Product
 {%endblock title%}
 
 {%block otherpage_styles%}
-
+@media screen and (max-width:375px){
+    .table{
+        font-size:13px;
+    }
+}
 {%endblock otherpage_styles%}
 
 
@@ -18,7 +22,7 @@ Chrisllan|Edit Product
                     <th>S/N</th>
                     <th>Name</th>
                     <th>Category</th>
-                    <th>Price</th>
+                    <th>Price(&#8358;)</th>
                     <th class='d-none d-md-block'>Image</th>
                     <th>Action</th>
                 </tr>
@@ -29,7 +33,7 @@ Chrisllan|Edit Product
                     <td>{{loop.index}}</td>
                     <td>{{i.product_name}}</td>
                     <td>{{i.prods_cat_family.cat_name}}</td>
-                    <td>{{"{:,.2f}".format(i.product_price)}}</td>
+                    <td>{{"{:,.0f}".format(i.product_price)}}</td>
                     <td class='d-none d-md-block'><img src="{{url_for('static',filename='productimages/'+i.product_image)}}" class='img-fluid' width='50px' height='50px'></td>
                     <td><a href="/update/product/{{i.product_id}}">Edit</a></td>
                 </tr>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='en'>
     <head>
-        <title>{%block title%}Chrysllan - Home{%endblock%}</title>
+        <title>{%block title%}Track Orders{%endblock%}</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta name="author" content="Amaechi Tochukwu">
@@ -10,40 +10,33 @@
 		<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/bootstrap.css')}}">
 		<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='font/css/all.css')}}">
         <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='JQanimate.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='DataTables/datatables.min.css')}}">
         <link rel="shortcut icon" href="{{url_for('static',filename="images/myicon.ico")}}" type="image/x-icon">
         <link rel="icon" href="{{url_for('static',filename="images/myicon.ico")}}" type="image/x-icon">
 
 		<style type="text/css">
-            .topside{
-                background-color:#000;
-            }
-            .imageside{
-                min-height:400px;
-                background-image: url("{{url_for("static",filename="images/removedBG.png")}}");
-                background-position: top;
-                background-repeat: no-repeat;
-                background-attachment: scroll;
-                background-size: cover;
-            }
-            .small{
+            .tablerow{
                 min-height:400px;
             }
-            .links{
-				text-decoration: none;
-				color: #fff;
-			}
-            .links:hover{
-				color: orange;
-			}
+
 
             {%block styles%}
-            {%endblock styles%}
-
             @media screen and (max-width:375px){
                 #herBRAND{
                     font-size:16px
                 }
+                #DataTables_Table_0_length{
+                    display:none;
+                }
+                #DataTables_Table_0_filter{
+                    font-size:12px;
+                    float:right;
+                }
+                #DataTables_Table_0_wrapper{
+                    font-size:13px;
+                }
             }
+            {%endblock styles%}
         </style>
     </head>
     <body>
@@ -53,7 +46,7 @@
             <div class="row" style="position:sticky; top:0px; z-index:5">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light pt-1 pb-1">
                     <div class="container-fluid">
-                        <a class="navbar-brand brandname animate__animated animate__bounce" href="/chrisllan/" style="font-family:'lucida-calligraphy';"><h2 id='herBRAND'>Chrisllan by Saphy</h2></a>
+                        <a class="navbar-brand brandname animate__animated animate__bounce" href="/chrisllan/" style="font-family:'lucida-calligraphy';"><h4 id='herBRAND'>Chrisllan by Saphy</h4></a>
                         <button class=" btn btn-sm navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                         </button>
@@ -63,20 +56,7 @@
                                     <a class="nav-link active" aria-current="page" href="/chrisllan/"><b>Home</b></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="/contact-us/"><b>Contact Us</b></a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link active" href="/track-orders/"><b>Track Orders</b></a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link active dropdown-toggle" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>Categories</b>
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li><a class="dropdown-item" href="/shop/men/">Men Footware</a></li>
-                                        <li><a class="dropdown-item" href="/shop/men/accessories/">Men Accessories</a></li>
-                                        <li><a class="dropdown-item" href="/shop/women/">Female Footware</a></li>
-                                        <li><a class="dropdown-item" href="/shop/women/accessories/">Female Accessories</a></li>
-                                    </ul>
                                 </li>
                             </ul>
                             <div>
@@ -109,140 +89,43 @@
             {%endblock navigation%}
 
             {%block content%}
-            <!--First part-->
-            <div class='row topside align-items-center'>
-                <div class='col-md-6 imageside'>
-                    <div class='row small align-items-center d-md-none text-center'>
-                        <div class='col pt-5'>
-                            <h2 style="color:white; font-family:'lucida-calligraphy'">Good Footware Takes You Good Places</h2>
-                            <a href='#categories' class='btn btn-warning'>Shop</a>
-                        </div>
-                    </div>
+            <div class="row tablerow mt-3">
+                <div class="col">
+                    <table class='table mytable'>
+                        <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Ref No</th>
+                                <th>Date</th>
+                                <th>View</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%for order in order_history%}
+                            <tr>
+                                <td>{{loop.index}}</td>
+                                <td>{{order.ref_no}}</td>
+                                <td>{{order.order_date.strftime("%d %b %Y")}}</td>
+                                <td><a href="/customer/orderdetails/{{order.order_id}}" class="link-success">Details</a></td>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
                 </div>
-                <div class='col-md-6 d-none d-md-block'>
-                    <h2 style="color:white; font-family:'lucida-calligraphy'; font-size:35px" class='d-none d-md-block text-center'>Good Footware Takes You Good Places</h2>
-                    <p class="text-center"><a href='#categories' class='btn btn-warning btn-lg'>Shop Now</a></p>
-                </div>
-            </div>
-
-            <!--Newsletter-->
-            <div class='row py-5' style="background-color:#ECE8D9">
-                <div class='col'>
-                    <h2 class='text-center animate__animated animate__backInRight' style="font-family:'lucida-calligraphy'">Stay Updated</h2>
-                    <p class='text-center'>Be the first to know about our latest collection, flash sales and discounts. Chrisllan has your back <i class='fa-solid fa-face-smile'></i></p>
-                    <p class='text-center'>Note: Only google mailing accounts are allowed</p>
-
-                    <form class="row" id='newsletter'>
-                        <div class="col-md-6 offset-md-3 mb-3">
-                            <input type="email" id="email" name="emailaddress" placeholder="Example@gmail.com" class="col-9 form-control" style="color:#B0B8C2">
-                            <input type="hidden" name="csrf_token" id='csrf' class="form-control" value="{{csrf_token()}}">
-                        </div>
-                        <div class="col-md-6 offset-md-3">
-                            <button type="button" id='subscribeBTN' class="btn col-md-4 offset-md-4" style="background-color:#384A62; color:#fff">Subscribe</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!--Popular products-->
-            <div class="row mt-5">
-				<div class="col-5">
-					<h3 class="ps-3 animate__animated animate__flip" id="categories" style="color:#384A62; font-family: 'Times-new-roman';">Categories</h3>
-				</div>
-			</div>
-
-            <div class="row mx-auto">
-				<div class="col-md-6 col-lg-4 col-xl-3 mb-1">
-					<div class="card" style="width: 18rem;">
-  						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/male_belt.jpg')}}" alt="bond belt">
-  						<div class="card-body">
-    						<h5 class="card-title" style="font-size: 15px;">Male Accessories</h5>
-                            <a href="/shop/men/accessories/" class="btn btn-warning">View</a>
-  						</div>
-					</div>
-				</div>
-
-				<div class="col-md-6 col-lg-4 col-xl-3 mb-1">
-					<div class="card" style="width: 18rem;">
-  						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/turu_ugo.jpg')}}" alt="Saphire Turu Ugo">
-  						<div class="card-body">
-    						<h5 class="card-title" style="font-size: 15px;">Male Footware</h5>
-    						<a href="/shop/men/" class="btn btn-warning">View</a>
-  						</div>
-					</div>
-				</div>
-                <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
-					<div class="card" style="width: 18rem;">
-  						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/women_bags.jpg')}}" alt="Female Bag">
-  						<div class="card-body">
-    						<h5 class="card-title" style="font-size: 15px;">Female Bags</h5>
-    						<a href="/shop/women/accessories/" class="btn btn-warning">View</a>
-  						</div>
-					</div>
-				</div>
-                <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
-					<div class="card" style="width: 18rem;">
-  						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/snow.jpg')}}" alt="Saphire Snow">
-  						<div class="card-body">
-    						<h5 class="card-title" style="font-size: 15px;">Female Footware</h5>
-    						<a href="/shop/women/" class="btn btn-warning">View</a>
-  						</div>
-					</div>
-				</div>
             </div>
             {%endblock content%}
 
+
             {%block footer%}
             <!--Footer-->
-            <div class='row align-items-center' style="background-color: #000; color:#fff;">
-                <div class='col-md-5'>
-                    <p class='text-center'><img src="{{url_for('static', filename='images/correctlogo.png')}}" class='img-fluid'></p>
-                </div>
-                <div class='col-md-7'>
-                    <div class='row'>
-                        <div class="col-md-3 mb-2">
-                            <h5>Information</h5>
-                            <a href='/chrisllan/' class="d-block links">Home</a>
-                            <a href="#" class="d-block links">About Us</a>
-                            <a href='/contact-us/' class="d-block links">Contact Us</a>
-                            {#<a href="#" class="d-block links">Terms & Conditions</a>#}
-                            
-                        </div>
-                        <div class="col-md-3 mb-2">
-                            <h5>Account</h5>
-                            <a href='/customer/account/' class="d-block links">Login/Register</a>
-                            <a href='/customer/logout/' class="d-block links">Logout</a>
-                        </div>
-                        <div class="col-md-3 mb-2">
-                            <h5>Follow us</h5>
-                            <div class="row">
-                                <div class="col-1">
-                                    <a class="d-block links" href='tel:+2347085684444'><i class="fa-solid fa-phone text-warning"></i></a>
-                                </div>
-                                <div class="col-1">
-                                    <a class="d-block links" href='https://instagram.com/chrisllanbysaphy?igshid=YmMyMTA2M2Y='><i class='fa-brands fa-instagram' style='color:#c13584'></i></a>
-                                </div>
-                                <div class="col-1">
-                                    <a class="d-block links" href='https://api.whatsapp.com/message/UNJ47YVYH3EGO1?autoload=1&app_absent=0'><i class='fa-brands fa-whatsapp text-success'></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class='row'>
-                    <div class='col-12'>
-                        <p class='text-center' style="font-size:10px">
-                            &copy; 2022<a href="mailto:thisisamaechi@gmail.com" style="text-decoration:none; color:orange"> Amaechi. </a>All Rights Reserved.
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <div></div>
             {%endblock footer%}
         </div>
         
 
         
+
+
         <!--Cart MODAL-->
 		<div class="modal fade" id="orderPlaced" tabindex="-1" aria-labelledby="Chrisllan_by_saphy" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
@@ -341,6 +224,8 @@
         <script type='text/javascript'>
             $(document).ready(function(){
 
+                $('.mytable').DataTable();
+
                 $('#subscribeBTN').click(function(){
 
                     var form = document.getElementById('newsletter')
@@ -435,6 +320,7 @@
 
         {%endblock scripts%}
         <script type="text/javascript" src="{{url_for('static',filename='js/bootstrap.bundle.js')}}"></script>
+        <script type="text/javascript" src="{{url_for('static',filename='DataTables/datatables.min.js')}}"></script>
         {%endautoescape%}
     </body>
 </html>

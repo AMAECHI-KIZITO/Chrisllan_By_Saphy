@@ -1,11 +1,11 @@
 {%extends 'admin/admindashboard.html'%}
 
 {%block title%}
-Chrisllan|Add Product
+Chrisllan - Add Product
 {%endblock title%}
 
 {%block contents%}
-<div class="row">
+<div class="row mt-3">
     <div class="col-md-6 offset-md-3 pt-md-3">
         <div>
             <h2>Add New Product</h2>
@@ -45,6 +45,9 @@ Chrisllan|Add Product
             <div class="mb-3">
                 <button type='button' id='btnAddProduct' class='btn btn-success form-control'>Add</button>
             </div>
+            <div class="mb-3 d-none">
+                <button type='reset' id='btnAddProductReset' class='btn btn-success form-control'>Reset</button>
+            </div>
 
         </form>
     </div>
@@ -70,13 +73,13 @@ Chrisllan|Add Product
                     },
                     success:function(rsp){
                         if(rsp=='Successfully added product'){
-                            $('#feedback').addClass('alert alert-success')
-                            $('#feedback').html(rsp)
-                            $('#btnAddProduct').prop('disabled',true)
+                            $('#feedback').addClass('alert alert-success');
+                            $('#feedback').html(rsp);
+                            $('#btnAddProductReset').click();
                         }
                         else{
-                            $('#feedback').addClass('alert alert-danger')
-                            $('#feedback').html(rsp)
+                            $('#feedback').addClass('alert alert-danger');
+                            $('#feedback').html(rsp);
                         }
                                 
                     },  

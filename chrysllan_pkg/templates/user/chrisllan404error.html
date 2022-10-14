@@ -13,21 +13,20 @@
 		<style type="text/css">
             
             
-            .small{
-                min-height:400px;
-            }
-            .links{
-				text-decoration: none;
-				color: #fff;
-			}
-            .links:hover{
-				color: orange;
-			}
+            .container-fluid{
+                min-height:500px;
+                background-image: url("{{url_for('static',filename='images/cute404.png')}}");
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: contain;
+                
 
-            @media screen and (max-width:375px){
-                #herBRAND{
-                    font-size:13px
-                }
+            }
+            .error404{
+                min-height:480px;
+                align-items:center;
+                justify-content:center;
             }
         </style>
     </head>
@@ -37,16 +36,11 @@
             
             {%block content%}
             <!--First part-->
-            <div class='row topside align-items-center mt-5'>
-                <div class='col-md-6 imageside'>
-                    <img class="img-fluid" alt='error404' src="{{url_for('static',filename='images/error404pic.jpg')}}">
-                </div>
-
-                <div class="col-md-6">
-                    <h3>Like you, these children couldn't find what they were looking for.</h3>
-                    <p>{{error}}</p>
-                    <p>No worries. You can still shop with us by clicking the link below.</p>
-                    <a class="btn btn-warning" href="/shop/">Shop Now</a>
+            <div class='row error404'>
+                <div class="col">
+                    <h2 class='text-danger'>Ouch! Page Not Found</h2>
+                    <h6>No worries. Shop with us by clicking the link below.</h6>
+                    <a class="btn btn-warning float-start" href="/">Home</a>
                 </div>
             </div>
 
@@ -64,7 +58,6 @@
 
         {%autoescape false%}
         <script type="text/javascript" src="{{url_for('static',filename='jquery/jquery.min.js')}}"></script>
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
         {%block scripts%}
         <script type='text/javascript'>

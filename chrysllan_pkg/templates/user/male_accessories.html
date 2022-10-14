@@ -1,22 +1,21 @@
 {%extends 'user/index.html'%}
 
-{%block title%}Chrysllan - For Women{%endblock%}
+{%block title%}Chrysllan - For Men{%endblock%}
 
 {%block content%}
-<!--For Women-->
-<div class='row mt-3'>
+<div class='row'>
     <div class='col-12'>       
-        <h3>Female Footware</h3>
+        <h3>Male Accessories</h3>
     </div>
-    {%for f in WFoot%}
-    <div class="col-md-6 col-lg-4 mb-1">
+    {%for x in menAcc%}
+    <div class="col-md-6 col-lg-4 mb-3">
         <div class="card" style="width: 18rem;">
-            <img class="card-img-top img-fluid" src="{{url_for('static', filename='productimages/'+f.product_image)}}" alt="{{f.product_name}}">
+            <img class="card-img-top img-fluid" src="{{url_for('static', filename='productimages/'+x.product_image)}}" alt="{{x.product_name}}">
             <div class="card-body">
-                <h5 class="card-title" style="font-size: 15px;">{{f.product_name}}</h5>
-                <p><span style="font-size: 22px">&#8358 {{"{:,.0f}".format(f.product_price)}} </span></p>
+                <h5 class="card-title" style="font-size: 15px;">{{x.product_name}}</h5>
+                <p><span style="font-size: 22px">&#8358 {{"{:,.0f}".format(x.product_price)}} </span></p>
 
-                <button type="button" id="shopcart" class="btn btn-warning btn-sm float-end" data-bs-toggle="modal" data-bs-target="#menfootware{{f.product_id}}">Order</button>
+                <button type="button" id="shopcart" class="btn btn-warning btn-sm float-end" data-bs-toggle="modal" data-bs-target="#menfootware{{x.product_id}}">Order</button>
             </div>
         </div>
     </div>
@@ -27,7 +26,7 @@
 
 {% block orderModal %}
 
-{%for x in WFoot%}
+{%for x in menAcc%}
 <div class="modal fade" id="menfootware{{x.product_id}}" tabindex="-1" aria-labelledby="Products" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md">
         <div class="modal-content" id="content_modal">
@@ -89,7 +88,7 @@
 
 
 {%block scripts%}
-    {% for i in WFoot%}
+    {% for i in menAcc%}
         <script type='text/javascript'>
 
             qty{{i.product_id}}=1;
