@@ -45,7 +45,7 @@ def home():
 
 
 
-## Create Account and Login Route
+## Create Account Route
 @app.route('/customer/account/')
 def user_create_account():
     todaysdate=date.today()
@@ -61,6 +61,24 @@ def user_create_account():
     else:
         total=0
         return render_template('user/new_account.html',usercart=usercart,cartdeets=deetscart,total=total)
+    
+    
+## Login Route
+@app.route('/customer/login/')
+def user_login():
+    todaysdate=date.today()
+    shopping_ID = session.get('user_cart_id')
+    
+    usercart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).count()
+    deetscart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).all()
+    if deetscart!=[]:
+        total=0
+        for i in deetscart:
+            total=total+i.amount
+        return render_template('user/loginpage.html',usercart=usercart,cartdeets=deetscart,total=total)
+    else:
+        total=0
+        return render_template('user/loginpage.html',usercart=usercart,cartdeets=deetscart,total=total)
 
 
 ## Contact us Route
@@ -234,7 +252,7 @@ def create_account():
     
 ## User Login
 @app.route('/user/login/',methods=['POST'])
-def user_login():
+def user_login_verification():
     user_email=request.form.get('login_email')
     user_code=request.form.get('login_pswd')
     
@@ -250,14 +268,14 @@ def user_login():
                 return redirect("/chrisllan/")
             else:
                 flash('Details Incorrect',category='wrong_details')
-                return redirect('/customer/account/')
+                return redirect('/customer/login/')
             
         else:
             flash('Invalid Login Credentials',category='wrong_details')
-            return redirect('/customer/account/')
+            return redirect('/customer/login/')
     else:
         flash('Please fill out the form',category='wrong_details')
-        return redirect('/customer/account/')
+        return redirect('/customer/login/')
 
 
 ## User Logout Route
@@ -306,7 +324,6 @@ def removeitem():
 
 
 
-
 ## empty cart
 @app.route('/emptycart/')
 def emptyCart():
@@ -324,7 +341,9 @@ def emptyCart():
 def confirmOrder():
     if session.get('user_id')!=None and session.get('username')!=None:
         if session.get('user_cart_id')!=None:
+            
             total_amount=request.form.get('totalamt')
+            cartID=request.form.get('userCartNumber')
             shipping=request.form.get('shipping_address')
             reference=int((random.random() * 1000000000)+1)
             session['txn_ref']=reference
@@ -333,35 +352,37 @@ def confirmOrder():
             the_order_date=date.today()
             
             ## This adds to the order table
-            Ord=Order(buyer=client,ref_no=reference,order_date=the_order_date,order_status=status,order_amount=total_amount, shipping_address=shipping)
+            Ord=Order(buyer=client, ref_no=reference, order_date=the_order_date, order_status=status, order_amount=total_amount, shipping_address=shipping, order_payment='Pending')
             db.session.add(Ord)
             db.session.commit()
             
+            
             #to add to order details table
             userOrderId=db.session.query(Order).filter(Order.buyer==session.get('user_id'),Order.ref_no==reference).first()
+            
+            #this is the order ID
             OrddID=userOrderId.order_id
-            cart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'),Cart.cart_date==the_order_date).all()
-            for i in cart:
-                Ord_DET=Order_details(order_id=OrddID,prod_id=i.product,prod_price=i.amount)
+            
+            cartinfo=db.session.query(Cart).filter(Cart.user_cart_id==cartID).all()
+            for i in cartinfo:
+                Ord_DET=Order_details(order_id=OrddID, prod_id=i.product, product_qty=i.product_qty, prod_price=i.amount)
                 db.session.add(Ord_DET)
-                db.session.delete(i)
+                #db.session.delete(i)
             db.session.commit()
             
             ## This is to show the customer the info and initialize payment
             orderinfo=db.session.query(Order).filter(Order.ref_no==reference, Order.buyer==session.get('user_id')).first()
             theOrderID=orderinfo.order_id
             theamountPayable=orderinfo.order_amount
+            
             orderdeetsinfo=db.session.query(Order_details).filter(Order_details.order_id==theOrderID).all()
             
-            ## Adding to payment table
-            Txn=Payment(pay_orderid=theOrderID, pay_amt=theamountPayable,pay_ref=reference,pay_status="Pending")
-            db.session.add(Txn)
-            db.session.commit()
+           
             
             #passing cart info to the route
             todaysdate=date.today()
-            usercart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).count()
-            deetscart=db.session.query(Cart).filter(Cart.buyer_id==session.get('user_id'), Cart.cart_date==todaysdate).all()
+            usercart=db.session.query(Cart).filter(Cart.user_cart_id==cartID).count()
+            deetscart=db.session.query(Cart).filter(Cart.user_cart_id==cartID).all()
             if deetscart!=[]:
                 total=0
                 for i in deetscart:
@@ -372,8 +393,14 @@ def confirmOrder():
         else:
             return redirect('/')
     else:
-        return redirect('/customer/account/')
+        return redirect('/customer/login/')
 
+
+## Bad Internet
+@app.route('/connection/failed/')
+def no_internet():
+    session.pop("user_cart_id", None)
+    return render_template("user/badinternet.html")
 
 
 # Order Info Page
@@ -381,39 +408,99 @@ def confirmOrder():
 def paystack():
     if session.get('user_id')!=None and session.get('username')!=None:
         loggedin=session.get('user_id')
-        orderinfo=db.session.query(Order).filter(Order.ref_no==session.get('txn_ref')).first()
         buyerinfo=db.session.query(Customer).get(loggedin)
         
+        orderinfo=db.session.query(Order).filter(Order.ref_no==session.get('txn_ref')).first()
+        
+        
+        #writing into payment table
+        try:
+            pay=Payment(pay_orderid=orderinfo.order_id, pay_amt=orderinfo.order_amount, pay_ref=session.get('txn_ref'), pay_date=datetime.now(), pay_status="Pending", pay_feedback='Pending')
+            db.session.add(pay)
+            db.session.commit()
+        except:
+            the_duplicate=db.session.query(Payment).filter(Payment.pay_ref==session.get('txn_ref')).first()
+            db.session.delete(the_duplicate)
+            
+            pay=Payment(pay_orderid=orderinfo.order_id, pay_amt=orderinfo.order_amount, pay_ref=session.get('txn_ref'), pay_date=datetime.now(), pay_status="Pending", pay_feedback='Pending')
+            db.session.add(pay)
+            db.session.commit()
+        
         #here we send info to paystack
-        data = {"email":buyerinfo.cust_email,"amount":orderinfo.order_amount*100, "reference":session.get('txn_ref')}
-        headers = {"Content-Type": "application/json","Authorization":"Bearer sk_test_2d885e99a5f8c0ca434f5862d78a5de5603962cd"}
-        response = requests.post("https://api.paystack.co/transaction/initialize",headers=headers, data=json.dumps(data))
-        rsp_json = response.json()
+        data = {
+            "email":buyerinfo.cust_email,
+            "amount":orderinfo.order_amount*100, 
+            "reference":session.get('txn_ref')
+        }
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization":"Bearer sk_test_2d885e99a5f8c0ca434f5862d78a5de5603962cd"
+        }
         
-        #return rsp_json....It will result in a message like shown below
-        # {
-        #     "data": {
-        #         "access_code": "3upv551a9azib4e", 
-        #         "authorization_url": "https://checkout.paystack.com/3upv551a9azib4e", 
-        #         "reference": "688931979"
-        #     }, 
-        #     "message": "Authorization URL created", 
-        #     "status": true
-        # }
-        
-        if rsp_json['status'] == True:
-            url = rsp_json['data']['authorization_url']
-            return redirect(url)
-        else:
-            flash("Unable to complete. Please try again",category='payerror')
-            return redirect('/shop/')
+        try:
+            response = requests.post("https://api.paystack.co/transaction/initialize",headers=headers, data=json.dumps(data))
+            rsp_json = response.json()
+            
+            #return rsp_json....It will result in a message like shown below
+            # {
+            #     "data": {
+            #         "access_code": "3upv551a9azib4e", 
+            #         "authorization_url": "https://checkout.paystack.com/3upv551a9azib4e", 
+            #         "reference": "688931979"
+            #     }, 
+            #     "message": "Authorization URL created", 
+            #     "status": true
+            # }
+            
+            if rsp_json['status'] == True and rsp_json['message']=="Authorization URL created":
+                url = rsp_json['data']['authorization_url']
+                
+                #delete cart items 
+                cartitems=db.session.query(Cart).filter(Cart.user_cart_id==session.get('user_cart_id')).all()
+                for cart in cartitems:
+                    db.session.delete(cart)
+                db.session.commit()
+                
+                
+                # pop the cart id session
+                session.pop('user_cart_id',None)
+                
+                return redirect(url)
+        except:
+            #discard payment record
+            discard_payment=db.session.query(Payment).filter(Payment.pay_ref==session.get('txn_ref')).first()
+            order_request_id=discard_payment.pay_orderid
+            
+            db.session.delete(discard_payment)
+            
+            #delete order_details record
+            discard_ord_details=db.session.query(Order_details).filter(Order_details.order_id==order_request_id).all()
+            for i in discard_ord_details:
+                db.session.delete(i)
+            
+            
+            # update order record
+            update_order=db.session.query(Order).get(order_request_id)
+            update_order.order_status='Network Failed'
+            update_order.order_payment='Failed'
+            
+            #delete cart details
+            cartitems=db.session.query(Cart).filter(Cart.user_cart_id==session.get('user_cart_id')).all()
+            for cart in cartitems:
+                db.session.delete(cart)
+            db.session.commit()
+                
+            # pop the cart id session
+            session.pop('user_cart_id',None)
+            
+            return redirect('/connection/failed/')
     else:
         return redirect('/customer/account/')
  
  
  
    
-## Second API consumption phase
+## Second API consumption phase. Transaction Verification Phase
 @app.route('/paystack_landing/')
 def paystack_landing():
     """This route would have been configured in the paystack developer dashboard, this is where user would be redirected to after inputing their card details, here you will confirm the transaction status and update your db accordingly"""
@@ -423,107 +510,49 @@ def paystack_landing():
         ref = session.get('txn_ref')
         pay_ord_id = Payment.query.filter(Payment.pay_ref==ref).first()
         pOID=pay_ord_id.pay_orderid
-        headers = {"Content-Type": "application/json","Authorization":"Bearer sk_test_2d885e99a5f8c0ca434f5862d78a5de5603962cd"}
+        
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization":"Bearer sk_test_2d885e99a5f8c0ca434f5862d78a5de5603962cd"
+        }
+        
         response = requests.get(f"https://api.paystack.co/transaction/verify/{ref}", headers=headers)
         rsp_json = response.json() 
-        #uncomment this out to see the structure of what paystack returns, then you would be able to pick what you need
-        #return rsp_json... This will give something like this
         
-        # {
-        #     "status": true,
-        #     "message": "Verification successful",
-        #     "data": {
-        #         "amount": 27000,
-        #         "currency": "NGN",
-        #         "transaction_date": "2016-10-01T11:03:09.000Z",
-        #         "status": "success",
-        #         "reference": "DG4uishudoq90LD",
-        #         "domain": "test",
-        #         "metadata": 0,
-        #         "gateway_response": "Successful",
-        #         "message": null,
-        #         "channel": "card",
-        #         "ip_address": "41.1.25.1",
-        #         "log": {
-        #         "time_spent": 9,
-        #         "attempts": 1,
-        #         "authentication": null,
-        #         "errors": 0,
-        #         "success": true,
-        #         "mobile": false,
-        #         "input": [],
-        #         "channel": null,
-        #         "history": [{
-        #             "type": "input",
-        #             "message": "Filled these fields: card number, card expiry, card cvv",
-        #             "time": 7
-        #             },
-        #             {
-        #             "type": "action",
-        #             "message": "Attempted to pay",
-        #             "time": 7
-        #             },
-        #             {
-        #             "type": "success",
-        #             "message": "Successfully paid",
-        #             "time": 8
-        #             },
-        #             {
-        #             "type": "close",
-        #             "message": "Page closed",
-        #             "time": 9
-        #             }
-        #         ]
-        #         }
-        #         "fees": null,
-        #         "authorization": {
-        #         "authorization_code": "AUTH_8dfhjjdt",
-        #         "card_type": "visa",
-        #         "last4": "1381",
-        #         "exp_month": "08",
-        #         "exp_year": "2018",
-        #         "bin": "412345",
-        #         "bank": "TEST BANK",
-        #         "channel": "card",
-        #         "signature": "SIG_idyuhgd87dUYSHO92D",
-        #         "reusable": true,
-        #         "country_code": "NG",
-        #         "account_name": "BoJack Horseman"
-        #         },
-        #         "customer": {
-        #         "id": 84312,
-        #         "customer_code": "CUS_hdhye17yj8qd2tx",
-        #         "first_name": "BoJack",
-        #         "last_name": "Horseman",
-        #         "email": "bojack@horseman.com"
-        #         },
-        #         "plan": "PLN_0as2m9n02cl0kp6",
-        #         "requested_amount": 1500000
-        #     }
-        # }
+        customerdeets=db.session.query(Customer).get(loggedin)
         
         if rsp_json['status'] == True: 
             data = rsp_json['data']
             actual_amt = data['amount']/100
             feedback = data['gateway_response']
+            
+            # update order record
+            update_order=db.session.query(Order).get(pOID)
+            update_order.order_payment='Paid'
+            
             #update payment table
             pay = Payment.query.filter(Payment.pay_ref==ref).first()
             pay.pay_status = 'Paid'
             pay.pay_feedback =feedback
             db.session.commit()
             
-            flash("Successfully Paid. Thank you for your patronage",  category='payment_successful')
-            return redirect('/shop/') 
-            # or direct the user to their dashboard where they would see their transaction history as Paid
+            return render_template('user/txn_success.html',customer=f'{customerdeets.cust_firstname} {customerdeets.cust_lastname}', trn_ref=ref, currency=data['currency'], amount=actual_amt, day_of_txn=date.today())
         else:
             data = rsp_json['data']
             actual_amt = data['amount']/100
             feedback = data['gateway_response']
-            pay = Payment(pay_orderid=pOID,pay_amt=actual_amt,pay_status='Failed',pay_feedback='Transaction Failed')
-            db.session.add(pay)
+            
+            # update order record
+            update_order=db.session.query(Order).get(pOID)
+            update_order.order_payment='Failed'
+            
+            #update payment table
+            pay = Payment.query.filter(Payment.pay_ref==ref).first()
+            pay.pay_status = 'Failed'
+            pay.pay_feedback ='Transaction Failed'
             db.session.commit()
-            flash("Payment Unsuccessful. Please try again.",  category='payment_unsuccessful')
-            return redirect('/shop/') 
+            
+            return render_template('user/txn_failed.html',customer=f'{customerdeets.cust_firstname} {customerdeets.cust_lastname}', trn_ref=ref, currency=data['currency'], amount=actual_amt, day_of_txn=date.today())
     else:
         return redirect('/customer/account/')
 
@@ -534,6 +563,59 @@ def paystack_landing():
 def internal_server_error(error):
     return render_template('user/chrisllan500error.html',error=error),500
 
+
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('user/chrisllan404error.html',error=error),404
+
+
+
+# Track Order View
+@app.route('/track-orders/')
+def track_orders():
+    if session.get('user_id') !=None and session.get('username') != None:
+        todaysdate=date.today()
+        shopping_ID = session.get('user_cart_id')
+        
+        usercart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).count()
+        deetscart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).all()
+        
+        #getting the customer order history
+        order_history=db.session.query(Order).filter(Order.buyer==session.get('user_id')).order_by(Order.order_date.desc()).all()
+        
+        if deetscart != []:
+            total=0
+            for i in deetscart:
+                total=total+i.amount
+            return render_template('user/trackorders.html', usercart=usercart, cartdeets=deetscart, total=total, order_history=order_history)
+        else:
+            total=0
+            return render_template('user/trackorders.html', usercart=usercart, cartdeets=deetscart, total=total, order_history=order_history)
+    else:
+        return redirect('/customer/login/')
+    
+# customer order details
+@app.route('/customer/orderdetails/<id>')
+def customer_order_details(id):
+    if session.get('user_id') !=None and session.get('username') != None:
+        todaysdate=date.today()
+        shopping_ID = session.get('user_cart_id')
+        
+        usercart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).count()
+        deetscart=db.session.query(Cart).filter(Cart.user_cart_id==shopping_ID).all()
+        
+        
+        order_deets=db.session.query(Order_details).filter(Order_details.order_id==id).all()
+        
+        order=db.session.query(Order).filter(Order.order_id==id).first()
+        
+        if deetscart != []:
+            total=0
+            for i in deetscart:
+                total=total+i.amount
+            return render_template('user/trackorderdetails.html', usercart=usercart, cartdeets=deetscart, total=total, order_deets=order_deets, order=order)
+        else:
+            total=0
+            return render_template('user/trackorderdetails.html', usercart=usercart, cartdeets=deetscart, total=total, order_deets=order_deets, order=order)
+    else:
+        return redirect('/customer/login/')

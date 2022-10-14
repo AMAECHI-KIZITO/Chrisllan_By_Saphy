@@ -108,11 +108,11 @@ def all_products():
         return redirect('/chrisllan/admin/login/')
     
 ## All Orders
-@app.route('/admin/allorders/')
+@app.route('/admin/today-orders/')
 def all_orders():
     if session.get('admin_id')!=None and session.get('admin_name')!=None:
-        allorders=db.session.query(Order).order_by(Order.order_date.desc()).all()
-        return render_template('admin/allorders.html',allorders=allorders)
+        allorders=db.session.query(Order).filter(Order.order_date==date.today(),Order.order_payment=='Paid').order_by(Order.order_date.desc()).all()
+        return render_template('admin/todayorders.html',allorders=allorders)
     else:
         return redirect('/chrisllan/admin/login/')
     
@@ -130,10 +130,9 @@ def all_messages():
 def view_order_details(id):
     if session.get('admin_id')!=None and session.get('admin_name')!=None:
         specific=db.session.query(Order_details).filter(Order_details.order_id==id).all()
-        paystatus=db.session.query(Payment).filter(Payment.pay_orderid==id).first()
-        price=db.session.query(Order).filter(Order.order_id==id).first()
-        amt=price.order_amount
-        return render_template('admin/vieworder.html',specific=specific,id=id,amt=amt,paystatus=paystatus)
+        order=db.session.query(Order).filter(Order.order_id==id).first()
+        amt=order.order_amount
+        return render_template('admin/vieworder.html', specific=specific, id=id, amt=amt, order=order)
     else:
         return redirect('/chrisllan/admin/login/')
     
@@ -216,11 +215,12 @@ def updatedproducts():
                 originalfile = "chrysllan_pkg/static/productimages/"+original_filename
                 prod_img.save(originalfile)
                 
-                PROD_UPDATE=db.session.query(Product).get(id)
-                PROD_UPDATE.product_name=prod_name
-                PROD_UPDATE.product_price=prod_price
-                PROD_UPDATE.product_image=original_filename
+                prod_update=db.session.query(Product).get(id)
+                prod_update.product_name=prod_name
+                prod_update.product_price=prod_price
+                prod_update.product_image=original_filename
                 db.session.commit()
+                
                 return f'Successfully updated product'
             else:
                 return "Please upload a .jpg or .jpeg image." 

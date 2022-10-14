@@ -2,15 +2,26 @@
 
 {%block title%}Transaction Information{%endblock%}
 
+{%block navigation%}
+<div class="row" style="position:sticky; top:0px; z-index:5">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light pt-1 pb-1">
+        <div class="container-fluid">
+            <a class="navbar-brand brandname" style="font-family:'lucida-calligraphy';"><h2 id='herBRAND'>Chrisllan by Saphy</h2></a>
+        </div>
+    </nav>
+</div>
+{%endblock navigation%}
+
 {%block content%}
 <div class='row mb-2'>
     <div class="col-md-6 offset-md-3 mt-4">
         <h2>Your Transaction Reference is {{ref}}</h2>
-        <table class="table table-striped">
+        <table class="table table-striped" style='font-size:14px'>
             <thead>
                 <tr>
                     <th>S/N</th>
                     <th>Item</th>
+                    <th>Qty</th>
                     <th>Price(&#8358;)</th>
                 </tr>
             </thead>
@@ -19,6 +30,7 @@
                 <tr>
                     <td>{{loop.index}}</td>
                     <td>{{x.Ord_details_prod_info.product_name}}</td>
+                    <td>{{x.product_qty}}</td>
                     <td>{{x.prod_price}}</td>
                 </tr>
                 {%endfor%}
@@ -28,14 +40,17 @@
                 </tr>
             </tbody>
         </table>
-        <a href="/call/paystack/" class="btn btn-success" id='paymentLink'>Pay Now</a>
+        <a href="/call/paystack/" class="btn btn-success form-control" id='paymentLink'>Pay With Paystack</a>
     </div>
 </div>
 {%endblock content%}
 
+
+{%block footer%}
+<div class="d-none"></div>
+{%endblock footer%}
+
+
 {%block scripts%}
-<script type='text/javascript' language='javascript'>
-    
-</script>
 
 {%endblock scripts%}

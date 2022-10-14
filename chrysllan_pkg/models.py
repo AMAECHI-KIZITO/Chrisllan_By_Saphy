@@ -9,7 +9,7 @@ class Admin(db.Model):
     admin_email=db.Column(db.String(80), nullable=False)
     admin_pswd=db.Column(db.String(200),nullable=False)
  
- 
+
     
 class Customer(db.Model):
     cust_id=db.Column(db.Integer(), primary_key=True, autoincrement=True)
@@ -51,10 +51,12 @@ class Order(db.Model):
     buyer=db.Column(db.Integer(), db.ForeignKey('customer.cust_id'))#FK
     shipping_address=db.Column(db.Text(),nullable=False)
     ref_no=db.Column(db.Integer(), nullable=False)
-    order_date=db.Column(db.Date(), nullable=False, default=datetime.now())
-    order_status=db.Column(db.Enum('Completed', 'Pending'), nullable=False)
+    order_date=db.Column(db.Date(), nullable=False, default=date.today())
+    order_status=db.Column(db.Enum('Completed', 'Pending','Network Failed'), nullable=False)
     order_amount=db.Column(db.Float(), nullable=False)
-
+    order_payment=db.Column(db.Enum('Paid', 'Pending', 'Failed'), nullable=True, default='Pending')
+    
+    
     who_ordered=db.relationship('Customer',backref='cust_orders')
 
     
@@ -62,12 +64,12 @@ class Order_details(db.Model):
     details_id=db.Column(db.Integer(), primary_key=True, autoincrement=True)
     order_id=db.Column(db.Integer(), db.ForeignKey('order.order_id'))#FK
     prod_id=db.Column(db.Integer(), db.ForeignKey('product.product_id'))#FK
+    product_qty=db.Column(db.Integer(), nullable=False)
     prod_price=db.Column(db.Float(), nullable=False)
     
     Ord_details_prod_info=db.relationship('Product',backref='orderdetails_deets')
     
-   
-
+  
     
 class Payment(db.Model):
     pay_id = db.Column(db.Integer(), primary_key=True, autoincrement=True)

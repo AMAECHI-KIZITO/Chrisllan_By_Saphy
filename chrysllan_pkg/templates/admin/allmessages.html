@@ -6,14 +6,23 @@ Chrisllan - All Messages
 
 {%block otherpage_styles%}
 @media screen and (max-width:375px){
-    .ord_details{
-        font-size:10px;
+    @media screen and (max-width:375px){
+        #DataTables_Table_0_length{
+            display:none;
+        }
+        #DataTables_Table_0_filter{
+            font-size:12px;
+            float:right;
+        }
+        #DataTables_Table_0_wrapper{
+            font-size:12px;
+        }
     }
 }
 {%endblock otherpage_styles%}
 
 {%block contents%}
-<div class="row">
+<div class="row mt-3">
     <h2 style='font-family:"lucida-calligraphy"'>Messages</h2>
     <div class="col pt-md-3">
         <table class='table mytable'>
@@ -21,17 +30,15 @@ Chrisllan - All Messages
                 <tr>
                     <th>S/N</th>
                     <th>Name</th>
-                    <th>Email Address</th>
                     <th>Message</th>
-                    <th>Date Sent</th>
+                    <th>Date</th>
                 </tr>
             </thead>
             <tbody>
                 {%for i in msg%}
-                <tr class='ord_details'>
+                <tr>
                     <td>{{loop.index}}</td>
                     <td>{{i.name}}</td>
-                    <td>{{i.email}}</td>
                     <td><a href="/view/message/{{i.contact_us_id}}" class='link-success'>View</a></td>
                     <td>{{i.date_sent}}</td>
                 </tr>

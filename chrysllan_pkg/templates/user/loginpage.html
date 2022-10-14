@@ -1,40 +1,48 @@
 {%extends 'user/index.html'%}
 
-{%block title%}Chrysllan - Create Account{%endblock%}
+{%block title%}Chrysllan - Login{%endblock%}
+
+
+{%block styles%}
+#loginrow{
+    min-height:400px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+{%endblock styles%}
+
 
 {%block content%}
-<div class='row'>
-    <!--Create account-->
-    <div class='col-md-6' id='create_acct_div'>
-        <h2>Create Account</h2>
-        <div id="feedback"></div>
-        <form class='row row-cols-md-2' id='create_account_form'>
+<div class='row' id='loginrow'>
+    <!--Login-->
+    <div class='col-md-6' id='logindiv'>
+        <h2 class='text-center' style='font-family:"lucida-calligraphy";'>Login</h2>
+        {%set badLogin=get_flashed_messages(category_filter="wrong_details")%}
+        {%for x in badLogin%}
+        <div class="alert alert-danger">{{x}}</div>
+        {%endfor%}
+
+        {%set please_register=get_flashed_messages(category_filter="reg_needed")%}
+        {%for i in please_register%}
+        <div class="alert alert-danger">{{i}}</div>
+        {%endfor%}
+
+
+        <form action='/user/login/' method='post'>
             <div class='mb-2'>
-                <label class='form-label' for='firstname'>First Name</label>
-                <input type='text' class='form-control' id='firstname' name='firstname'>
+                <label class='form-label' for='login_email'>Email Address</label>
+                <input type='email' class='form-control' id='login_email' name='login_email'>
             </div>
             <div class='mb-2'>
-                <label class='form-label' for='lastname'>Last Name</label>
-                <input type='text' class='form-control' id='lastname' name='lastname'>
-            </div>
-            <div class='mb-2'>
-                <label class='form-label' for='phone'>Phone Number</label>
-                <input type='text' class='form-control' id='phone' name='phone'>
-            </div>
-            <div class='mb-2'>
-                <label class='form-label' for='email'>Email Address</label>
-                <input type='email' class='form-control' id='email' name='email'>
-            </div>
-            <div class='mb-2'>
-                <label class='form-label' for='pswd'>Password</label>
-                <input type='password' class='form-control' id='pswd' name='pswd'>
+                <label class='form-label' for='login_pswd'>Password</label>
+                <input type='password' class='form-control' id='login_pswd' name='login_pswd'>
             </div>
             <input type='hidden' class='form-control' name='csrf_token' value='{{csrf_token()}}' id='csrf_token'>
-            <button type='button' class='btn btn-success form-control rounded-pill' id='createAccountBtn'>Create Account</button>
-            <button type='reset' class='btn btn-danger form-control rounded-pill d-none' id='createAccountResetBtn'>Erase Form</button>
+            <button type='submit' id='btnLOGIN' class='btn btn-success form-control'>LOGIN</button>
         </form>
-        <p class='text-center'>Already have an account?</p>
-        <p class='text-center'><a href='/customer/login/' style='text-decoration:none; color:green' id='loginLINK'>LOGIN</a></p>
+        <p class='text-center'>Don't have an account?</p>
+        <p class='text-center'><a href='/customer/account/' style='text-decoration:none; color:green' id='signupLINK'>SIGN UP</a></p>
     </div>
 </div>
 {%endblock content%}
@@ -61,10 +69,9 @@
                 processData:false,
                 success:function(rsp){
                     if(rsp=="Thank you. Registration Successful."){
-                        $('#feedback').removeClass('alert alert-danger')
                         $('#feedback').addClass('alert alert-success')
                         $('#feedback').html(rsp)
-                        $('#createAccountResetBtn').click()
+                        $('#createAccountBtn').prop('disabled',true)
                     }
                     else{
                         $('#feedback').addClass('alert alert-danger')

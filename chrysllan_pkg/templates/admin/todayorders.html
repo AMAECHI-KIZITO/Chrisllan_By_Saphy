@@ -1,39 +1,44 @@
 {%extends 'admin/admindashboard.html'%}
 
 {%block title%}
-Chrisllan - All Orders
+Chrisllan - Today's Orders
 {%endblock title%}
 
 {%block otherpage_styles%}
-@media screen and (max-width:375px){
-    .ord_details{
-        font-size:10px;
+@media screen and (max-width:425px){
+    #DataTables_Table_0_length{
+        display:none;
+    }
+    #DataTables_Table_0_filter{
+        font-size:12px;
+        float:right;
+    }
+    #DataTables_Table_0_wrapper{
+        font-size:12px;
     }
 }
 {%endblock otherpage_styles%}
 
 {%block contents%}
-<div class="row">
-    <h3 style='font-family:"lucida-calligraphy"'>All Orders</h3>
+<div class="row mt-3">
+    <h3 style='font-family:"lucida-calligraphy"'>Today's Orders</h3>
     <div class="col pt-md-3">
         <table class='table mytable'>
             <thead>
                 <tr>
                     <th>S/N</th>
                     <th>Name</th>
-                    <th>Shipping Address</th>
-                    <th>View Order</th>
-                    <th>Status</th>
+                    <th>Order</th>
+                    <th>View</th>
                 </tr>
             </thead>
             <tbody>
                 {%for i in allorders%}
-                <tr class='ord_details'>
+                <tr>
                     <td>{{loop.index}}</td>
                     <td>{{i.who_ordered.cust_firstname}} {{i.who_ordered.cust_lastname}}</td>
-                    <td>{{i.shipping_address}}</td>
-                    <td><a href="/vieworder/{{i.order_id}}" class="link-success" target="_self">Details</a></td>
                     <td>{{i.order_status}}</td>
+                    <td><a href="/vieworder/{{i.order_id}}" class="link-success" target="_self">Details</a></td>
                 </tr>
                 {%endfor%}
             </tbody>

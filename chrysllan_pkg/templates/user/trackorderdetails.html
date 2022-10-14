@@ -1,19 +1,17 @@
-{%extends 'admin/admindashboard.html'%}
+{% extends 'user/trackorders.html' %}
 
-{%block title%}
-Chrisllan - View Orders Details
-{%endblock title%}
+{%block title%}Order Details{%endblock%}
 
-{%block otherpage_styles%}
+{%block styles%}
 @media screen and (max-width:375px){
-    
     .table{
-        font-size:14px;
+        font-size:12px;
     }
 }
-{%endblock otherpage_styles%}
+{%endblock styles%}
 
-{%block contents%}
+
+{%block content%}
 <div class="row">
     <div class="col mt-3" style=" font-family:'lucida-calligraphy'; ">
         <h2 class='text-center'>Order Details</h2><hr>
@@ -24,20 +22,21 @@ Chrisllan - View Orders Details
     </div>
 </div>
 
-<div class="row">
-    <div class="col pt-md-3">
+
+<div class="row mt-2">
+    <div class="col">
         <table class='table'>
             <thead>
                 <tr>
                     <th>S/N</th>
-                    <th>Name</th>
+                    <th>Product Name</th>
                     <th>Quantity</th>
                     <th>Price(&#8358;)</th>
                 </tr>
             </thead>
             <tbody>
-                {%for i in specific%}
-                <tr>
+                {%for i in order_deets%}
+                <tr class='ord_details'>
                     <td>{{loop.index}}</td>
                     <td>{{i.Ord_details_prod_info.product_name}}</td>
                     <td>{{i.product_qty}}</td>
@@ -46,24 +45,10 @@ Chrisllan - View Orders Details
                 {%endfor%}
                 <tr>
                     <td><b>Total</b><td>
-                    <td colspan='2'><b>&#8358;{{amt}}</b><td>
+                    <td colspan='2'><b>&#8358;{{order.order_amount}}</b><td>
                 </tr>
             </tbody>
         </table>
-        {% if order.order_status != 'Completed'%}
-        <form action='/update_order_status/{{id}}' method='post'>
-            <input type='hidden' value='{{csrf_token()}}' name="csrf_token">
-            <button class='btn btn-success btn-sm'>Change Status</button>
-        </form>
-        {% endif %}
     </div>
 </div>
-{%endblock contents%}
-
-{%block scripts%}
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('.mytable').DataTable();
-    });
-</script>
-{%endblock scripts%}
+{%endblock content%}
