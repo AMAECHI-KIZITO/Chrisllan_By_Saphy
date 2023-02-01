@@ -41,7 +41,7 @@
 
             @media screen and (max-width:375px){
                 #herBRAND{
-                    font-size:16px
+                    font-size:22px
                 }
             }
         </style>
@@ -54,9 +54,16 @@
                 <nav class="navbar navbar-expand-lg navbar-light bg-light pt-1 pb-1">
                     <div class="container-fluid">
                         <a class="navbar-brand brandname animate__animated animate__bounce" href="/chrisllan/" style="font-family:'lucida-calligraphy';"><h2 id='herBRAND'>Chrisllan by Saphy</h2></a>
-                        <button class=" btn btn-sm navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+
+                        <button class=" btn btn-sm navbar-toggler d-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
                         </button>
+
+                        <button class="btn btn-outline-dark d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasStart" aria-controls="offcanvasStart">
+                            <i class="fa-solid fa-bars" style="color: #000000;"></i>
+                        </button>
+                        
+                        
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li class="nav-item">
@@ -86,9 +93,7 @@
                                 <a>Hello {{session.get('username')}}</a>
                                 {%endif%}
 
-                                {#{%if session.get('user_id')==None and session.get('username')==None%}
-                                <a href="/customer/account/"><i class="fa-solid fa-cart-shopping"></i></a>
-                                {%else%}#}
+                                
 
 
                                 <button type="button" id="shopcart" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#orderPlaced" style="position: relative">
@@ -98,9 +103,7 @@
                                             <span class="badge bg-danger rounded-pill" id='items_in_cart' style="position: absolute; font-size: 10px">{{usercart}}</span>
                                         {% endif %}
                                     </i>
-
                                 </button>
-                                {#{%endif%}#}
                             </div>
                         </div>
                     </div>
@@ -130,15 +133,14 @@
                 <div class='col'>
                     <h2 class='text-center animate__animated animate__backInRight' style="font-family:'lucida-calligraphy'">Stay Updated</h2>
                     <p class='text-center'>Be the first to know about our latest collection, flash sales and discounts. Chrisllan has your back <i class='fa-solid fa-face-smile text-success'></i></p>
-                    <p class='text-center'>Note: Only google mailing accounts are allowed</p>
 
                     <form class="row" id='newsletter'>
                         <div class="col-md-6 offset-md-3 mb-3">
-                            <input type="email" id="email" name="emailaddress" placeholder="Example@gmail.com" class="col-9 form-control" style="color:#B0B8C2">
+                            <input type="email" id="email" name="emailaddress" placeholder="Example@gmail.com" class="form-control" style="color:#B0B8C2">
                             <input type="hidden" name="csrf_token" id='csrf' class="form-control" value="{{csrf_token()}}">
                         </div>
                         <div class="col-md-6 offset-md-3">
-                            <button type="button" id='subscribeBTN' class="btn col-md-4 offset-md-4" style="background-color:#384A62; color:#fff">Subscribe</button>
+                            <button type="button" id='subscribeBTN' class="btn col-md-4 offset-md-4" style="background-color:#384A62; color:#fff;">Subscribe</button>
                         </div>
                     </form>
                 </div>
@@ -242,7 +244,129 @@
         </div>
         
 
-        
+        <!-- Off canvas-->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasStart" aria-labelledby="offcanvasStartLabel" style="color:black; background-color:#ECE8D9">
+            <div class="offcanvas-header">
+                <h2 style="font-family:'lucida-calligraphy';">Chrisllan by Saphy</h2>
+                <button type="button" class="btn-close text-reset btn-outline-dark" data-bs-dismiss="offcanvas" aria-label="Close" style="background-color:#ECE8D9"></button>
+            </div>
+            <div class="offcanvas-body">
+                
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <p class="text-center">
+                                    <a class="nav-link active" aria-current="page" href="/chrisllan/" style="text-decoration:none; color:#000">
+                                        <b>Home</b>
+                                    </a>
+                                </p>
+                            </li>
+
+                            <li class="nav-item">
+                                <p class="text-center">
+                                    <a class="nav-link active" href="/contact-us/" style="text-decoration:none; color:#000">
+                                        <b>Contact Us</b>
+                                    </a>
+                                </p>
+                            </li>
+
+                            <li class="nav-item">
+                                <p class="text-center">
+                                    <a class="nav-link active" href="/track-orders/" style="text-decoration:none; color:#000">
+                                        <b>Track Orders</b>
+                                    </a>
+                                </p>
+                            </li>
+
+                            <li class="nav-item">
+                                <p class="text-center">
+                                    <a type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" aria-controls="offcanvasEnd"><b>Categories</b>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <div class="col-12">
+                        {%if session.get('username')==None and session.get('user_id')==None%}
+                            <a href='/customer/login/' class="ms-2"><i class="fa-solid fa-user pe-2"></i></a>
+                        {%else%}
+                            <a>Hi, {{session.get('username')}}</a>
+                        {%endif%}
+
+                        <button type="button" id="shopcart" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#orderPlaced" style="position: relative">
+
+                            <i class="fa-solid fa-cart-shopping">
+                                {% if usercart != 0%}
+                                    <span class="badge bg-danger rounded-pill" id='items_in_cart' style="position: absolute; font-size: 10px">{{usercart}}</span>
+                                {% endif %}
+                            </i>
+
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories Off canvas-->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel" style="color:black; background-color:#ECE8D9">
+            <div class="offcanvas-header">
+                <h2 style="font-family:'lucida-calligraphy';">Categories</h2>
+                <button type="button" class="btn-close text-reset btn-outline-dark" data-bs-dismiss="offcanvas" aria-label="Close" style="background-color:#ECE8D9"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                            <li class="nav-item">
+                                <p class="text-center">
+                                    <a class="nav-link active" href="/shop/men/" style="text-decoration:none; color:#000">Men Footware</a>
+                                </p>
+                            </li>
+
+                            <li class="nav-item">
+                                <p class="text-center">
+                                    <a class="nav-link active" href="/shop/men/accessories/" style="text-decoration:none; color:#000">Men Accessories</a>
+                                </p>
+                            </li>
+
+                            <li class="nav-item">
+                                <p class="text-center">
+                                    <a class="nav-link active" href="/shop/women/" style="text-decoration:none; color:#000">Female Footware</a>
+                                </p>
+                            </li>
+
+                            <li class="nav-item">
+                                <p class="text-center">
+                                    <a class="nav-link active" href="/shop/women/accessories/" style="text-decoration:none; color:#000">Female Accessories</a>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-12">
+                        {%if session.get('username')==None and session.get('user_id')==None%}
+                            <a href='/customer/login/' class="ms-2"><i class="fa-solid fa-user pe-2"></i></a>
+                        {%else%}
+                            <a>Hi, {{session.get('username')}}</a>
+                        {%endif%}
+
+                        <button type="button" id="shopcart" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#orderPlaced" style="position: relative">
+
+                            <i class="fa-solid fa-cart-shopping">
+                                {% if usercart != 0%}
+                                    <span class="badge bg-danger rounded-pill" id='items_in_cart' style="position: absolute; font-size: 10px">{{usercart}}</span>
+                                {% endif %}
+                            </i>
+
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <!--Cart MODAL-->
 		<div class="modal fade" id="orderPlaced" tabindex="-1" aria-labelledby="Chrisllan_by_saphy" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
@@ -360,13 +484,10 @@
                         success:function(rsp){
                             if(rsp=='Successfully Registered'){
                                 swal("Thank you", "Registration Successful", "success");
-                                $('#emailaddress').val()==""
-                            }
-                            else if(rsp=='Please provide a valid Google mail account'){
-                                swal("Registration Unsuccessful", "Please provide a valid gmail address", "error");
+                                document.getElementById("email").value='';
                             }
                             else{
-                                swal("Registration Unsuccessful", "Please fill out all fields", "error");
+                                swal("Registration Unsuccessful", rsp, "error");
                             }
                                 
                         },  

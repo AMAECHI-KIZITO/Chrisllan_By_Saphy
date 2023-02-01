@@ -200,21 +200,44 @@ def shop_women_accessores():
     else:
         return redirect('/customer/account/')
 
+
+def validate_email(email):
+    regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+    if (re.search(regex, email)):
+        return True
+    else:
+        return False
+    
+    
 ## Subscribe Newsletter
 @app.route('/subscribe_newsletter/',methods=['POST'])
 def reg_newsletter():
     usermail=request.form.get('emailaddress')
-    the_csrf=request.form.get('csrf_token')
+    # the_csrf=request.form.get('csrf_token')
     
     if usermail=="":
         return 'Please fill out all fields'
     else:
-        if usermail.endswith('@gmail.com'):
-            with open('newsletter.txt','a')as file:
-                file.write(f"{usermail} \n")
-            return 'Successfully Registered'
+        email_validation = validate_email(usermail)
+        
+        if email_validation is True:
+            check_email_presence = Newsletter_subscription.query.filter(Newsletter_subscription.email==usermail).first()
+            if check_email_presence is None:
+                add_to_newsletter = Newsletter_subscription(email = usermail, date_reg=date.today())
+                db.session.add(add_to_newsletter)
+                db.session.commit()
+                return 'Successfully Registered'
+            else:
+                return 'Email Already Registered'
         else:
-            return 'Please provide a valid Google mail account'
+            return 'Please provide a valid email'
+        
+        # if usermail.endswith('@gmail.com'):
+        #     with open('newsletter.txt','a')as file:
+        #         file.write(f"{usermail} \n")
+        #     return 'Successfully Registered'
+        # else:
+        #     return 'Please provide a valid Google mail account'
         
 
 ## Create Account User

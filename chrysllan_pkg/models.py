@@ -79,6 +79,7 @@ class Payment(db.Model):
     pay_date=db.Column(db.DateTime(), default=datetime.now())
     pay_status=db.Column(db.Enum('Paid', 'Pending', 'Failed'), nullable=True, default='Pending')
     pay_feedback=db.Column(db.String(255), nullable=True)
+  
     
 class Contact_us(db.Model):
     contact_us_id=db.Column(db.Integer(),primary_key=True, autoincrement=True, nullable=False)
@@ -87,3 +88,8 @@ class Contact_us(db.Model):
     phone=db.Column(db.String(11),nullable=False)
     message=db.Column(db.Text(),nullable=False)
     date_sent=db.Column(db.DateTime(),default=date.today())
+    
+class Newsletter_subscription(db.Model):
+    id=db.Column(db.Integer(),primary_key=True, autoincrement=True, nullable=False)
+    email=db.Column(db.String(100),nullable=False,unique=True)
+    date_reg=db.Column(db.Date(),default=date.today())
