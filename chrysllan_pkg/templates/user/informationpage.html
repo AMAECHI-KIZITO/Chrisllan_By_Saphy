@@ -26,21 +26,21 @@
                 </tr>
             </thead>
             <tbody>
-                {%for x in Ord_Details%}
-                <tr>
-                    <td>{{loop.index}}</td>
-                    <td>{{x.Ord_details_prod_info.product_name}}</td>
-                    <td>{{x.product_qty}}</td>
-                    <td>{{x.prod_price}}</td>
-                </tr>
-                {%endfor%}
+                {% for x in order_details %}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td>{{x.Ord_details_prod_info.product_name}}</td>
+                        <td>{{x.product_qty}}</td>
+                        <td>{{x.prod_price}}</td>
+                    </tr>
+                {% endfor %}
                 <tr>
                     <td>Total<td>
                     <td colspan='2'>{{payable}}<td>
                 </tr>
             </tbody>
         </table>
-        <a href="/call/paystack/" class="btn btn-success form-control" id='paymentLink'>Pay With Paystack</a>
+        <a href="/proceed-to-payment/" class="btn btn-success form-control" id='paymentLink'>Proceed to Payment</a>
     </div>
 </div>
 {%endblock content%}

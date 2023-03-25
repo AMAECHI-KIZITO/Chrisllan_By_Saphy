@@ -4,7 +4,7 @@
 
 
 {%block styles%}
-#loginrow{
+#loginrow {
     min-height:400px;
     display:flex;
     align-items:center;
@@ -42,13 +42,16 @@
             <button type='submit' id='btnLOGIN' class='btn btn-success form-control'>LOGIN</button>
         </form>
         <p class='text-center'>Don't have an account?</p>
-        <p class='text-center'><a href='/customer/account/' style='text-decoration:none; color:green' id='signupLINK'>SIGN UP</a></p>
+        <p class='text-center'>
+            <a href='/customer/account/' style='text-decoration:none; color:green' id='signupLINK'>SIGN UP</a> | <a type="button" id="forgotPasswordBtn" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#forgotPassword"  style='text-decoration:none; color:green'>Forgot password?</a>
+        </p>
     </div>
 </div>
 {%endblock content%}
 
+{% block modal %}
 
-
+{% endblock modal %}
 
 {%block scripts%}
 <script type='text/javascript' language='javascript'>
@@ -135,6 +138,43 @@
             },
             error:function(errormessage){
                 console.log(errormessage)
+            }
+        })
+    })
+
+    // Forgot password form
+    $('#submitResetPasswordBtn').click(function(){
+        var form = document.getElementById('forgotPswdForm');
+        var formdata= new FormData(form);
+    
+        $.ajax({
+            url:"/user-forgot-password/",
+            data:formdata,
+            dataType:"text",
+            type:"post",
+            cache:false,
+            processData:false,
+            contentType:false,
+            beforeSend:function(){
+                if ( $('#forgotPasswordEmailAddress').val() == "") {
+                    alert("Email Field required");
+                    return false;
+                }
+            },
+            success:function(rsp){
+                var user_email = $('#forgotPasswordEmailAddress').val();
+                
+                if(rsp == `A reset password link has been sent to ${user_email}`){
+                    swal("Thank you", `Please check your email for a reset link`, "success");
+                    document.getElementById("forgotPasswordEmailAddress").value='';
+                }
+                else{
+                    swal("Thank you", `Please check your email for a reset link`, "success");
+                    document.getElementById("forgotPasswordEmailAddress").value='';
+                }
+            },  
+            error:function(msg){
+                console.log(msg)
             }
         })
     })

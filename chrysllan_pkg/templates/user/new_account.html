@@ -6,13 +6,15 @@
 <div class='row'>
     <!--Create account-->
     <div class='col-md-6' id='create_acct_div'>
-        <h2>Create Account</h2>
+        <h3 class='mt-2 text-canter'>Create Account</h3>
+        <p>Sign up in less than a minute</p>
         <div id="feedback"></div>
         <form class='row row-cols-md-2' id='create_account_form'>
             <div class='mb-2'>
                 <label class='form-label' for='firstname'>First Name</label>
                 <input type='text' class='form-control' id='firstname' name='firstname'>
             </div>
+            
             <div class='mb-2'>
                 <label class='form-label' for='lastname'>Last Name</label>
                 <input type='text' class='form-control' id='lastname' name='lastname'>
@@ -30,11 +32,16 @@
                 <input type='password' class='form-control' id='pswd' name='pswd'>
             </div>
             <input type='hidden' class='form-control' name='csrf_token' value='{{csrf_token()}}' id='csrf_token'>
-            <button type='button' class='btn btn-success form-control rounded-pill' id='createAccountBtn'>Create Account</button>
-            <button type='reset' class='btn btn-danger form-control rounded-pill d-none' id='createAccountResetBtn'>Erase Form</button>
+            <button type='button' class='btn btn-success form-control' id='createAccountBtn'>Create Account</button>
+            <button type='reset' class='btn btn-danger form-control d-none' id='createAccountResetBtn'>Erase Form</button>
         </form>
         <p class='text-center'>Already have an account?</p>
         <p class='text-center'><a href='/customer/login/' style='text-decoration:none; color:green' id='loginLINK'>LOGIN</a></p>
+    </div>
+    <div class='col-md-6'>
+        <div>
+            <img src="{{url_for('static', filename='images/bicycle.png')}}" alt='A png photo of lady riding a bicycle' class='img-fluid'/>
+        </div>
     </div>
 </div>
 {%endblock content%}

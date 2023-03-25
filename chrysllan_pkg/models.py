@@ -52,9 +52,9 @@ class Order(db.Model):
     shipping_address=db.Column(db.Text(),nullable=False)
     ref_no=db.Column(db.Integer(), nullable=False)
     order_date=db.Column(db.Date(), nullable=False, default=date.today())
-    order_status=db.Column(db.Enum('Completed', 'Pending','Network Failed'), nullable=False)
+    order_status=db.Column(db.Enum('Completed', 'Pending','Network Failed','Cancelled'), nullable=False)
     order_amount=db.Column(db.Float(), nullable=False)
-    order_payment=db.Column(db.Enum('Paid', 'Pending', 'Failed'), nullable=True, default='Pending')
+    order_payment=db.Column(db.Enum('Paid', 'Pending', 'Failed','Cancelled'), nullable=True, default='Pending')
     
     
     who_ordered=db.relationship('Customer',backref='cust_orders')

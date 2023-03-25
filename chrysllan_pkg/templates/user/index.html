@@ -173,6 +173,7 @@
   						</div>
 					</div>
 				</div>
+
                 <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
 					<div class="card" style="width: 18rem;">
   						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/women_bags.jpg')}}" alt="Female Bag">
@@ -182,6 +183,7 @@
   						</div>
 					</div>
 				</div>
+
                 <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
 					<div class="card" style="width: 18rem;">
   						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/snow.jpg')}}" alt="Saphire Snow">
@@ -235,7 +237,7 @@
                 <div class='row'>
                     <div class='col-12'>
                         <p class='text-center' style="font-size:10px">
-                            &copy; 2022<a href="mailto:thisisamaechi@gmail.com" style="text-decoration:none; color:orange"> Amaechi. </a>All Rights Reserved.
+                            &copy; {{year}}<span style="text-decoration:none; color:orange"> Chrisllan By Saphy. </span>All Rights Reserved.
                         </p>
                     </div>
                 </div>
@@ -389,7 +391,7 @@
                             <div class="row">
                                 
                             	<div class="col-12">
-                            		<form action="/confirm_order/" method="post">
+                            		<form action="/confirm-order/" method="post">
                                         <div class="row mb-2 d-none d-md-flex">
                                             <label class='col-md-5'><b>Product Name</b></label>
                                             
@@ -455,6 +457,36 @@
 
 
         {% block orderModal %}
+        <!-- Forgot password modal -->
+        <div class="modal fade" id="forgotPassword" tabindex="-1" aria-labelledby="Chrisllan_by_saphy_forgot_password_modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                <div class="modal-content" id="content_modal">
+                    <div class="modal-header">
+                        <h5 modal-dialog-scrollable id="Chrisllan_by_saphy_forgot_password_modal">Reset Your Password</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <small>Lost your password? Please enter your email address. You will receive a link to create a new password via email.</small>
+
+                            <form class="row mt-2" id='forgotPswdForm'>
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" id="forgotPasswordEmailAddress" name="forgotPasswordEmailAddress" placeholder="name@example.com">
+                                    <label for="forgotPasswordEmailAddress">Email address</label>
+                                </div>
+                                <input type='hidden' name='csrf_token' value="{{csrf_token()}}">
+                                <div class="">
+                                    <button type="button" id='submitResetPasswordBtn' class="btn btn-success">RESET PASSWORD</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
         {% endblock orderModal %}
 
         {%autoescape false%}
@@ -464,7 +496,7 @@
         {%block scripts%}
         <script type='text/javascript'>
             $(document).ready(function(){
-
+                // News letter subscription
                 $('#subscribeBTN').click(function(){
 
                     var form = document.getElementById('newsletter')
@@ -479,7 +511,9 @@
                         processData:false,
                         contentType:false,
                         beforeSend:function(){
-                            
+                            if ( $('#email').val() == "") {
+                                return false;
+                            }
                         },
                         success:function(rsp){
                             if(rsp=='Successfully Registered'){
