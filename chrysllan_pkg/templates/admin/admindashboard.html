@@ -75,7 +75,7 @@
                                 <a href="/admin/allproducts/" class="nav-link text-light">All Products</a>
                             </li>
                             <li class="nav-item navig mb-1">
-                                <a href="/admin/today-orders/" class="nav-link text-light">Today Orders</a>
+                                <a href="/admin/all-orders/" class="nav-link text-light">All Orders</a>
                             </li>
                             <li class="nav-item navig mb-1">
                                 <a href="/admin/messages/" class="nav-link text-light">Messages</a>
@@ -110,9 +110,14 @@
                 </div>
 
                 <div class='row mt-3'>
-                    <div class='col-md-5' style='background-color:#336666; color:#fff'>
+                    <div class='col-md-5 mt-2' style='background-color:#336666; color:#fff'>
                         <h2 class='text-center'>{{todayorder}}</h2>
                         <h3 class='text-center'>Today's Orders</h3>
+                    </div>
+
+                    <div class='col-md-5 offset-md-1 mt-2' style='background-color:#336666; color:#fff'>
+                        <h2 class='text-center'>&#8358;{{revenue}}</h2>
+                        <h3 class='text-center'>Total Revenue</h3>
                     </div>
                 </div>
                 {% endblock contents %}
@@ -144,7 +149,7 @@
                             <a href="/admin/allproducts/" class="nav-link text-light">All Products</a>
                         </li>
                         <li class="nav-item navig mb-1">
-                            <a href="/admin/allorders/" class="nav-link text-light">Today Orders</a>
+                            <a href="/admin/all-orders/" class="nav-link text-light">All Orders</a>
                         </li>
                         <li class="nav-item navig mb-1">
                             <a href="/admin/messages/" class="nav-link text-light">Messages</a>

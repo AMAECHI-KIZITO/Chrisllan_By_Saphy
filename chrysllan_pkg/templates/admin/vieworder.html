@@ -19,6 +19,7 @@ Chrisllan - View Orders Details
         <h2 class='text-center'>Order Details</h2><hr>
         <h6>Shipping Address: {{order.shipping_address}}</h6>
         <h6>Reference Number: {{order.ref_no}}</h6>
+        <h6>Order Date: {{order.order_date}}</h6>
         <h6>Payment Status: {{order.order_payment}}</h6>
         <h6>Order Status: {{order.order_status}}</h6>
     </div>
@@ -51,7 +52,7 @@ Chrisllan - View Orders Details
             </tbody>
         </table>
         {% if order.order_status != 'Completed'%}
-        <form action='/update_order_status/{{id}}' method='post'>
+        <form action='/update-order-status/{{id}}' method='post'>
             <input type='hidden' value='{{csrf_token()}}' name="csrf_token">
             <button class='btn btn-success btn-sm'>Change Status</button>
         </form>

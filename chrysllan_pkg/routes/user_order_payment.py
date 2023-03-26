@@ -12,6 +12,15 @@ def send_order_email(recipient, username, order_id, total_amount):
     msg.html = render_template('order_placed.html', recipient=recipient, username=username, year=date.today().year, order_details=details_of_order, amount=total_amount)
     mail.send(msg)
     return 200
+
+
+def inform_saphire(recipient, username, order_id, total_amount):
+    details_of_order = db.session.query(Order_details).filter(Order_details.order_id==order_id).all()
+    
+    msg = Message("An Order Has Been Placed", sender=('Chrisllan By Saphy', 'konkakira1960@gmail.com'), recipients=['chrisllanbysaphy@gmail.com', 'saphirebongos@gmail.com'])
+    msg.html = render_template('inform_saph.html', recipient=recipient, username=username, year=date.today().year, order_details=details_of_order, amount=total_amount)
+    mail.send(msg)
+    return 200
      
      
      
@@ -51,13 +60,14 @@ def pay_for_order():
             "amount": orderinfo.order_amount * 100, 
             "reference": session.get('txn_ref'),
             "metadata": {
-                "cancel_action": f"http://127.0.0.1:8700/cancel-order/{orderinfo.order_id}"
+                "cancel_action": f"https://chrisllanbysaphy.com.ng/cancel-order/{orderinfo.order_id}"
             },
-            "callback_url":"http://127.0.0.1:8700/verify-payment/"
+            "callback_url":"https://chrisllanbysaphy.com.ng/verify-payment/"
         }
         headers = {
             "Content-Type": "application/json",
-            "Authorization":"Bearer sk_test_2d885e99a5f8c0ca434f5862d78a5de5603962cd"
+            "Authorization":"Bearer sk_live_e46ccc6f1e1d1dc125aae7d032846b8b97adad49"
+            # "Authorization":"Bearer sk_test_2d885e99a5f8c0ca434f5862d78a5de5603962cd"
         }
         
         try:
@@ -124,7 +134,7 @@ def paystack_landing():
         
         headers = {
             "Content-Type": "application/json",
-            "Authorization":"Bearer sk_test_2d885e99a5f8c0ca434f5862d78a5de5603962cd"
+            "Authorization":"Bearer sk_live_e46ccc6f1e1d1dc125aae7d032846b8b97adad49"
         }
         
         response = requests.get(f"https://api.paystack.co/transaction/verify/{ref}", headers=headers)
@@ -150,6 +160,7 @@ def paystack_landing():
             
             
             inform_customer = send_order_email(customerdeets.cust_email, customerdeets.cust_firstname, pOID, actual_amt)
+            inform_sapphire = inform_saphire(customerdeets.cust_email, customerdeets.cust_firstname, pOID, actual_amt)
             
             return render_template('user/txn_success.html', customer=f'{customerdeets.cust_firstname} {customerdeets.cust_lastname}', trn_ref=ref, currency=data['currency'], amount=actual_amt, day_of_txn=date.today())
         else:

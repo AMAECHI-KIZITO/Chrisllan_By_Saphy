@@ -17,5 +17,6 @@ app.config.from_pyfile('config.py')
 app.config.from_object(config.LiveConfig)
 csrf=CSRFProtect(app)
 db=SQLAlchemy(app)
-from chrysllan_pkg.routes import user_route, admin_route, contact_us, error_handlers, newsletter, shop_pages, user_accounts, user_cart, user_login, user_order_payment, user_forgot_pswd, user_track_orders
+from chrysllan_pkg.routes import user_route, contact_us, error_handlers, newsletter, shop_pages, user_accounts, user_cart, user_login, user_order_payment, user_forgot_pswd, user_track_orders
+from chrysllan_pkg.routes.admin_routes import admin_route, admin_login, add_product, all_products, edit_product, admin_password_change, admin_orders, admin_messages
 from chrysllan_pkg import models
