@@ -1,0 +1,182 @@
+{%extends 'user/index.html'%}
+
+{%block title%}Chrysllan - Login{%endblock%}
+
+
+{%block styles%}
+#loginrow {
+    min-height:400px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+{%endblock styles%}
+
+
+{%block content%}
+<div class='row' id='loginrow'>
+    <!--Login-->
+    <div class='col-md-6' id='logindiv'>
+        <h2 class='text-center' style='font-family:"lucida-calligraphy";'>Login</h2>
+        {%set badLogin=get_flashed_messages(category_filter="wrong_details")%}
+        {%for x in badLogin%}
+        <div class="alert alert-danger">{{x}}</div>
+        {%endfor%}
+
+        {%set please_register=get_flashed_messages(category_filter="reg_needed")%}
+        {%for i in please_register%}
+        <div class="alert alert-danger">{{i}}</div>
+        {%endfor%}
+
+
+        <form action='/user/login/' method='post'>
+            <div class='mb-2'>
+                <label class='form-label' for='login_email'>Email Address</label>
+                <input type='email' class='form-control' id='login_email' name='login_email'>
+            </div>
+            <div class='mb-2'>
+                <label class='form-label' for='login_pswd'>Password</label>
+                <input type='password' class='form-control' id='login_pswd' name='login_pswd'>
+            </div>
+            <input type='hidden' class='form-control' name='csrf_token' value='{{csrf_token()}}' id='csrf_token'>
+            <button type='submit' id='btnLOGIN' class='btn btn-success form-control'>LOGIN</button>
+        </form>
+        <p class='text-center'>Don't have an account?</p>
+        <p class='text-center'>
+            <a href='/customer/account/' style='text-decoration:none; color:green' id='signupLINK'>SIGN UP</a> | <a type="button" id="forgotPasswordBtn" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#forgotPassword"  style='text-decoration:none; color:green'>Forgot password?</a>
+        </p>
+    </div>
+</div>
+{%endblock content%}
+
+{% block modal %}
+
+{% endblock modal %}
+
+{%block scripts%}
+<script type='text/javascript' language='javascript'>
+    $(document).ready(function(){
+
+        {# Create Account Ajax Call #}
+
+        $('#createAccountBtn').click(function(){
+            var form=document.getElementById('create_account_form')
+            var formdata=new FormData(form)
+            $.ajax({
+                url:"/user_account_registration/",
+                data:formdata,
+                dataType:"text",
+                type:"post",
+                cache:false,
+                contentType:false,
+                processData:false,
+                success:function(rsp){
+                    if(rsp=="Thank you. Registration Successful."){
+                        $('#feedback').addClass('alert alert-success')
+                        $('#feedback').html(rsp)
+                        $('#createAccountBtn').prop('disabled',true)
+                    }
+                    else{
+                        $('#feedback').addClass('alert alert-danger')
+                        $('#feedback').html(rsp)
+                    }
+                },
+                error:function(errormsg){
+                    console.log(errormsg)
+                }
+            })
+        }) 
+    })
+</script>
+
+
+<!--This controls the modal delete item ajax-->
+{% for c in cartdeets %}
+<script type='text/javascript'>
+    $('#removeitem{{c.cart_id}}').click(function(){
+        
+        discardID=$('#discard{{c.cart_id}}').val();
+
+        var data2send={'trash':discardID}
+
+        $.ajax({
+            url:"/removeitem/",
+            data:data2send,
+            dataType:"text",
+            type:"get",
+            beforeSend:function(){},
+            success:function(rsp){
+                $('#deleteitemFeedback').addClass('alert alert-success')
+                $('#deleteitemFeedback').text(rsp)
+                location.reload()
+            },  
+            error:function(errormessage){
+                console.log(errormessage)
+            }
+        })
+    })
+</script>
+{% endfor %}
+
+<script type='text/javascript'>
+    // empty cart
+    $('#btnEmptyCart').click(function(){
+        cartuseriD={{session.get('user_cart_id')}}
+
+        var data2send={'emptycartID':cartuseriD}
+
+        $.ajax({
+            url:"/emptycart/",
+            data:data2send,
+            dataType:"text",
+            type:"get",
+            beforeSend:function(){},
+            success:function(rsp){
+                $('#deleteitemFeedback').addClass('alert alert-success');
+                $('#deleteitemFeedback').text(rsp);
+                location.reload()
+            },
+            error:function(errormessage){
+                console.log(errormessage)
+            }
+        })
+    })
+
+    // Forgot password form
+    $('#submitResetPasswordBtn').click(function(){
+        var form = document.getElementById('forgotPswdForm');
+        var formdata= new FormData(form);
+    
+        $.ajax({
+            url:"/user-forgot-password/",
+            data:formdata,
+            dataType:"text",
+            type:"post",
+            cache:false,
+            processData:false,
+            contentType:false,
+            beforeSend:function(){
+                if ( $('#forgotPasswordEmailAddress').val() == "") {
+                    alert("Email Field required");
+                    return false;
+                }
+            },
+            success:function(rsp){
+                var user_email = $('#forgotPasswordEmailAddress').val();
+                
+                if(rsp == `A reset password link has been sent to ${user_email}`){
+                    swal("Thank you", `Please check your email for a reset link`, "success");
+                    document.getElementById("forgotPasswordEmailAddress").value='';
+                }
+                else{
+                    swal("Thank you", `Please check your email for a reset link`, "success");
+                    document.getElementById("forgotPasswordEmailAddress").value='';
+                }
+            },  
+            error:function(msg){
+                console.log(msg)
+            }
+        })
+    })
+</script>
+{%endblock scripts%}

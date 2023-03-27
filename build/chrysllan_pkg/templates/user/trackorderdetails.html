@@ -1,0 +1,54 @@
+{% extends 'user/trackorders.html' %}
+
+{%block title%}Order Details{%endblock%}
+
+{%block styles%}
+@media screen and (max-width:375px){
+    .table{
+        font-size:12px;
+    }
+}
+{%endblock styles%}
+
+
+{%block content%}
+<div class="row">
+    <div class="col mt-3" style=" font-family:'lucida-calligraphy'; ">
+        <h2 class='text-center'>Order Details</h2><hr>
+        <h6>Shipping Address: {{order.shipping_address}}</h6>
+        <h6>Reference Number: {{order.ref_no}}</h6>
+        <h6>Payment Status: {{order.order_payment}}</h6>
+        <h6>Order Status: {{order.order_status}}</h6>
+    </div>
+</div>
+
+
+<div class="row mt-2">
+    <div class="col">
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price(&#8358;)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for i in order_deets%}
+                <tr class='ord_details'>
+                    <td>{{loop.index}}</td>
+                    <td>{{i.Ord_details_prod_info.product_name}}</td>
+                    <td>{{i.product_qty}}</td>
+                    <td>{{i.prod_price}}</td>
+                </tr>
+                {%endfor%}
+                <tr>
+                    <td><b>Total</b><td>
+                    <td colspan='2'><b>&#8358;{{order.order_amount}}</b><td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{%endblock content%}

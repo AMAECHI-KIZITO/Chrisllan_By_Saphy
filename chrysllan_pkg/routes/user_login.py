@@ -36,7 +36,7 @@ def user_login_verification():
         if user_deets and check_password_hash(user_deets.cust_pswd,user_password):
             session['username']=user_deets.cust_firstname
             session['user_id']=user_deets.cust_id
-            return redirect("/chrisllan/")
+            return redirect("/")
         else:
             flash('Invalid Login Credentials', category='wrong_details')
             return redirect('/customer/login/')

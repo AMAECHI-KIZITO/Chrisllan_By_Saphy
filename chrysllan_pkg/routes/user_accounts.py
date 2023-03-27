@@ -56,13 +56,15 @@ def create_account():
             if valid_phone:
                 email_validation = validate_email(user_email)
                 if email_validation is True:
-                    try:
+                    email_existence = Customer.query.filter(Customer.cust_email==user_email).first()
+                    if email_existence is None:
                         User=Customer(cust_firstname=user_fname,cust_lastname=user_lname,cust_phone=user_phone,cust_pswd=formatted_pswd,cust_email=user_email)
                         db.session.add(User)
                         db.session.commit()
+                        
                         welcome_user = send_welcome_mail(user_email, user_fname)
                         return f"Thank you. Registration Successful."
-                    except:
+                    else:
                         return "Sorry. This email is already registered"
                 else:
                     return "Sorry. Only gmail, yahoo and hotmail accounts are allowed"

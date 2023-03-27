@@ -5,7 +5,6 @@ from chrysllan_pkg.models import *
 
 ## Home Page Route
 @app.route('/')
-@app.route('/chrisllan/')
 def home():
     shopping_ID = session.get('user_cart_id')
     if shopping_ID == None:

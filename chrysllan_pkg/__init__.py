@@ -7,8 +7,8 @@ app=Flask(__name__,instance_relative_config=True)
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'konkakira1960@gmail.com'
-app.config['MAIL_PASSWORD'] = 'sscewykbsxnfhqhv'
+app.config['MAIL_USERNAME'] = 'XXXXXXXX@gmail.com'
+app.config['MAIL_PASSWORD'] = 'XXXXXXX'
 app.config['MAIL_USE_SSL'] = True
 app.config['TESTING'] = False
 app.config['MAIL_SUPPRESS_SEND '] = False

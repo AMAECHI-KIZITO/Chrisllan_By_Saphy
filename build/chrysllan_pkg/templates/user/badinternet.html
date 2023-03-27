@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>{%block title%}No Internet Connection{%endblock%}</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/bootstrap.css')}}">
+		<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='font/css/all.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='JQanimate.css')}}">
+        <link rel="shortcut icon" href="{{url_for('static',filename="images/myicon.ico")}}" type="image/x-icon">
+        <link rel="icon" href="{{url_for('static',filename="images/myicon.ico")}}" type="image/x-icon">
+
+		<style type="text/css">
+            
+            .container-fluid{
+                min-height:534px;
+                background-image: url("{{url_for('static',filename='images/bad_network.png')}}");
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: contain;
+            }
+        </style>
+    </head>
+    <body style='background-color:#ECE8D9'>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <a class="navbar-brand brandname" style="font-family:'lucida-calligraphy';"><h2 id='herBRAND'>Chrisllan by Saphy</h2></a>
+                </div>
+            </div>
+            <div class="row align-items-center"  style="min-height:450px;">
+                <div class="col-6 offset-6 mt-5">
+                    <h3 class="text-center text-danger">Oops! Seems like you have lost your internet connection.</h3>
+                    <p class="text-center"> Transaction failed.</p>
+                    <a href="/" class='btn btn-warning float-end'>Home</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

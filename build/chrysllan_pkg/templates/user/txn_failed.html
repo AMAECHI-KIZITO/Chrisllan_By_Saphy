@@ -1,0 +1,43 @@
+{%extends 'user/index.html'%}
+
+{%block title%}Transaction Receipt{%endblock%}
+
+{%block navigation%}
+<div class="row" style="position:sticky; top:0px; z-index:5">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light pt-1 pb-1">
+        <div class="container-fluid">
+            <a class="navbar-brand brandname" style="font-family:'lucida-calligraphy';"><h2 id='herBRAND'>Chrisllan by Saphy</h2></a>
+        </div>
+    </nav>
+</div>
+{%endblock navigation%}
+
+{%block content%}
+<div class='row mb-2'>
+    <div class="row pt-1 align-items-center">
+        <div class="col-md-6 offset-md-3 pb-3">
+            <h2 class="text-center" style="font-family: 'lucida-calligraphy'; color: #704e2e;">Transaction Status</h2><hr><br>
+            <p class="text-center"><img class="img-fluid" src="{{url_for('static',filename='images/failed2.png')}}" width="250px" height="250px"></p>
+            <h4 class="text-center text-danger" style="font-weight:bolder">Transaction Failed.</h4>
+        </div>
+        <div class="col-md-6 offset-md-3 pb-3">
+            <h4 style="font-weight:bolder">Transaction Details</h4>
+            <span class='d-block'><b>Customer Name:</b> {{customer}}</span>
+            <span class='d-block'><b>Transaction Ref:</b> {{trn_ref}}</span>
+            <span class='d-block'><b>Transaction Total:</b> {{currency}} {{amount}}</span>
+            <span class='d-block'><b>Transaction Date:</b> {{day_of_txn}}</span>
+            <a href="/" class='btn btn-danger form-control'>Home</a>
+        </div>
+    </div>
+</div>
+{%endblock content%}
+
+
+{%block footer%}
+<div class="d-none"></div>
+{%endblock footer%}
+
+
+{%block scripts%}
+
+{%endblock scripts%}

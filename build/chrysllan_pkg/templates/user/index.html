@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>{%block title%}Chrysllan - Home{%endblock%}</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="author" content="Amaechi Tochukwu">
+		<meta name="keywords" content="Affordable Footwares in Nigeria, Men footware, shoe brands in Nigeria">
+		<meta name="description" content="Buy affordable footwares from the Chrysllan by Saphy Footwear brand at great prices.">
+		<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/bootstrap.css')}}">
+		<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='font/css/all.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='JQanimate.css')}}">
+        <link rel="shortcut icon" href="{{url_for('static',filename="images/myicon.ico")}}" type="image/x-icon">
+        <link rel="icon" href="{{url_for('static',filename="images/myicon.ico")}}" type="image/x-icon">
+
+		<style type="text/css">
+            .topside{
+                background-color:#000;
+            }
+            .imageside{
+                min-height:400px;
+                background-image: url("{{url_for("static",filename="images/removedBG.png")}}");
+                background-position: top;
+                background-repeat: no-repeat;
+                background-attachment: scroll;
+                background-size: cover;
+            }
+            .small{
+                min-height:400px;
+            }
+            .links{
+				text-decoration: none;
+				color: #fff;
+			}
+            .links:hover{
+				color: orange;
+			}
+
+            {%block styles%}
+            {%endblock styles%}
+
+            @media screen and (max-width:375px){
+                #herBRAND{
+                    font-size:22px
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container-fluid">
+            {%block navigation%}
+            <!--Navigation-->
+            <div class="row" style="position:sticky; top:0px; z-index:5">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light pt-1 pb-1">
+                    <div class="container-fluid">
+                        <a class="navbar-brand brandname animate__animated animate__bounce" href="/chrisllan/" style="font-family:'lucida-calligraphy';"><h2 id='herBRAND'>Chrisllan by Saphy</h2></a>
+
+                        <button class=" btn btn-sm navbar-toggler d-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <button class="btn btn-outline-dark d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasStart" aria-controls="offcanvasStart">
+                            <i class="fa-solid fa-bars" style="color: #000000;"></i>
+                        </button>
+                        
+                        
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="/chrisllan/"><b>Home</b></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="/contact-us/"><b>Contact Us</b></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="/track-orders/"><b>Track Orders</b></a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link active dropdown-toggle" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>Categories</b>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li><a class="dropdown-item" href="/shop/men/">Men Footware</a></li>
+                                        <li><a class="dropdown-item" href="/shop/men/accessories/">Men Accessories</a></li>
+                                        <li><a class="dropdown-item" href="/shop/women/">Female Footware</a></li>
+                                        <li><a class="dropdown-item" href="/shop/women/accessories/">Female Accessories</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <div>
+                                {%if session.get('username')==None and session.get('user_id')==None%}
+                                <a href='/customer/account/'><i class="fa-solid fa-user pe-2"></i></a>
+                                {%else%}
+                                <a>Hello {{session.get('username')}}</a>
+                                {%endif%}
+
+                                
+
+
+                                <button type="button" id="shopcart" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#orderPlaced" style="position: relative">
+
+                                    <i class="fa-solid fa-cart-shopping">
+                                        {% if usercart != 0%}
+                                            <span class="badge bg-danger rounded-pill" id='items_in_cart' style="position: absolute; font-size: 10px">{{usercart}}</span>
+                                        {% endif %}
+                                    </i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            {%endblock navigation%}
+
+            {%block content%}
+            <!--First part-->
+            <div class='row topside align-items-center'>
+                <div class='col-md-6 imageside'>
+                    <div class='row small align-items-center d-md-none text-center'>
+                        <div class='col pt-5'>
+                            <h2 style="color:white; font-family:'lucida-calligraphy'">Good Footware Takes You Good Places</h2>
+                            <a href='#categories' class='btn btn-warning'>Shop</a>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-md-6 d-none d-md-block'>
+                    <h2 style="color:white; font-family:'lucida-calligraphy'; font-size:35px" class='d-none d-md-block text-center'>Good Footware Takes You Good Places</h2>
+                    <p class="text-center"><a href='#categories' class='btn btn-warning btn-lg'>Shop Now</a></p>
+                </div>
+            </div>
+
+            <!--Newsletter-->
+            <div class='row py-5' style="background-color:#ECE8D9">
+                <div class='col'>
+                    <h2 class='text-center animate__animated animate__backInRight' style="font-family:'lucida-calligraphy'">Stay Updated</h2>
+                    <p class='text-center'>Be the first to know about our latest collection, flash sales and discounts. Chrisllan has your back <i class='fa-solid fa-face-smile text-success'></i></p>
+
+                    <form class="row" id='newsletter'>
+                        <div class="col-md-6 offset-md-3 mb-3">
+                            <input type="email" id="email" name="emailaddress" placeholder="Example@gmail.com" class="form-control" style="color:#B0B8C2">
+                            <input type="hidden" name="csrf_token" id='csrf' class="form-control" value="{{csrf_token()}}">
+                        </div>
+                        <div class="col-md-6 offset-md-3">
+                            <button type="button" id='subscribeBTN' class="btn col-md-4 offset-md-4" style="background-color:#384A62; color:#fff;">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!--Popular products-->
+            <div class="row mt-5">
+				<div class="col-5">
+					<h3 class="ps-3 animate__animated animate__flip" id="categories" style="color:#384A62; font-family: 'Times-new-roman';">Categories</h3>
+				</div>
+			</div>
+
+            <div class="row mx-auto">
+				<div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+					<div class="card" style="width: 18rem;">
+  						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/male_belt.jpg')}}" alt="bond belt">
+  						<div class="card-body">
+    						<h5 class="card-title" style="font-size: 15px;">Male Accessories</h5>
+                            <a href="/shop/men/accessories/" class="btn btn-warning">View</a>
+  						</div>
+					</div>
+				</div>
+
+				<div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+					<div class="card" style="width: 18rem;">
+  						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/turu_ugo.jpg')}}" alt="Saphire Turu Ugo">
+  						<div class="card-body">
+    						<h5 class="card-title" style="font-size: 15px;">Male Footware</h5>
+    						<a href="/shop/men/" class="btn btn-warning">View</a>
+  						</div>
+					</div>
+				</div>
+
+                <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+					<div class="card" style="width: 18rem;">
+  						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/women_bags.jpg')}}" alt="Female Bag">
+  						<div class="card-body">
+    						<h5 class="card-title" style="font-size: 15px;">Female Bags</h5>
+    						<a href="/shop/women/accessories/" class="btn btn-warning">View</a>
+  						</div>
+					</div>
+				</div>
+
+                <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+					<div class="card" style="width: 18rem;">
+  						<img class="card-img-top img-fluid" src="{{url_for('static', filename='images/snow.jpg')}}" alt="Saphire Snow">
+  						<div class="card-body">
+    						<h5 class="card-title" style="font-size: 15px;">Female Footware</h5>
+    						<a href="/shop/women/" class="btn btn-warning">View</a>
+  						</div>
+					</div>
+				</div>
+            </div>
+            {%endblock content%}
+
+            {%block footer%}
+            <!--Footer-->
+            <div class='row align-items-center' style="background-color: #000; color:#fff;">
+                <div class='col-md-5'>
+                    <p class='text-center'><img src="{{url_for('static', filename='images/correctlogo.png')}}" class='img-fluid'></p>
+                </div>
+                <div class='col-md-7'>
+                    <div class='row'>
+                        <div class="col-md-3 mb-2">
+                            <h5>Information</h5>
+                            <a href='/chrisllan/' class="d-block links">Home</a>
+                            <a href="#" class="d-block links">About Us</a>
+                            <a href='/contact-us/' class="d-block links">Contact Us</a>
+                            {#<a href="#" class="d-block links">Terms & Conditions</a>#}
+                            
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <h5>Account</h5>
+                            <a href='/customer/account/' class="d-block links">Login/Register</a>
+                            <a href='/customer/logout/' class="d-block links">Logout</a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <h5>Follow us</h5>
+                            <div class="row">
+                                <div class="col-1">
+                                    <a class="d-block links" href='tel:+2347085684444'><i class="fa-solid fa-phone text-warning"></i></a>
+                                </div>
+                                <div class="col-1">
+                                    <a class="d-block links" href='https://instagram.com/chrisllanbysaphy?igshid=YmMyMTA2M2Y='><i class='fa-brands fa-instagram' style='color:#c13584'></i></a>
+                                </div>
+                                <div class="col-1">
+                                    <a class="d-block links" href='https://api.whatsapp.com/message/UNJ47YVYH3EGO1?autoload=1&app_absent=0'><i class='fa-brands fa-whatsapp text-success'></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class='row'>
+                    <div class='col-12'>
+                        <p class='text-center' style="font-size:10px">
+                            &copy; {{year}}<span style="text-decoration:none; color:orange"> Chrisllan By Saphy. </span>All Rights Reserved.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {%endblock footer%}
+        </div>
+        
+
+        <!-- Off canvas-->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasStart" aria-labelledby="offcanvasStartLabel" style="color:black; background-color:#ECE8D9">
+            <div class="offcanvas-header">
+                <h2 style="font-family:'lucida-calligraphy';">Chrisllan by Saphy</h2>
+                <button type="button" class="btn-close text-reset btn-outline-dark" data-bs-dismiss="offcanvas" aria-label="Close" style="background-color:#ECE8D9"></button>
+            </div>
+            <div class="offcanvas-body">
+                
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <p class="text-center">
+                                    <a class="nav-link active" aria-current="page" href="/chrisllan/" style="text-decoration:none; color:#000">
+                                        <b>Home</b>
+                                    </a>
+                                </p>
+                            </li>
+
+                            <li class="nav-item">
+                                <p class="text-center">
+                                    <a class="nav-link active" href="/contact-us/" style="text-decoration:none; color:#000">
+                                        <b>Contact Us</b>
+                                    </a>
+                                </p>
+                            </li>
+
+                            <li class="nav-item">
+                                <p class="text-center">
+                                    <a class="nav-link active" href="/track-orders/" style="text-decoration:none; color:#000">
+                                        <b>Track Orders</b>
+                                    </a>
+                                </p>
+                            </li>
+
+                            <li class="nav-item">
+                                <p class="text-center">
+                                    <a type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" aria-controls="offcanvasEnd"><b>Categories</b>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <div class="col-12">
+                        {%if session.get('username')==None and session.get('user_id')==None%}
+                            <a href='/customer/login/' class="ms-2"><i class="fa-solid fa-user pe-2"></i></a>
+                        {%else%}
+                            <a>Hi, {{session.get('username')}}</a>
+                        {%endif%}
+
+                        <button type="button" id="shopcart" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#orderPlaced" style="position: relative">
+
+                            <i class="fa-solid fa-cart-shopping">
+                                {% if usercart != 0%}
+                                    <span class="badge bg-danger rounded-pill" id='items_in_cart' style="position: absolute; font-size: 10px">{{usercart}}</span>
+                                {% endif %}
+                            </i>
+
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories Off canvas-->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel" style="color:black; background-color:#ECE8D9">
+            <div class="offcanvas-header">
+                <h2 style="font-family:'lucida-calligraphy';">Categories</h2>
+                <button type="button" class="btn-close text-reset btn-outline-dark" data-bs-dismiss="offcanvas" aria-label="Close" style="background-color:#ECE8D9"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                            <li class="nav-item">
+                                <p class="text-center">
+                                    <a class="nav-link active" href="/shop/men/" style="text-decoration:none; color:#000">Men Footware</a>
+                                </p>
+                            </li>
+
+                            <li class="nav-item">
+                                <p class="text-center">
+                                    <a class="nav-link active" href="/shop/men/accessories/" style="text-decoration:none; color:#000">Men Accessories</a>
+                                </p>
+                            </li>
+
+                            <li class="nav-item">
+                                <p class="text-center">
+                                    <a class="nav-link active" href="/shop/women/" style="text-decoration:none; color:#000">Female Footware</a>
+                                </p>
+                            </li>
+
+                            <li class="nav-item">
+                                <p class="text-center">
+                                    <a class="nav-link active" href="/shop/women/accessories/" style="text-decoration:none; color:#000">Female Accessories</a>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-12">
+                        {%if session.get('username')==None and session.get('user_id')==None%}
+                            <a href='/customer/login/' class="ms-2"><i class="fa-solid fa-user pe-2"></i></a>
+                        {%else%}
+                            <a>Hi, {{session.get('username')}}</a>
+                        {%endif%}
+
+                        <button type="button" id="shopcart" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#orderPlaced" style="position: relative">
+
+                            <i class="fa-solid fa-cart-shopping">
+                                {% if usercart != 0%}
+                                    <span class="badge bg-danger rounded-pill" id='items_in_cart' style="position: absolute; font-size: 10px">{{usercart}}</span>
+                                {% endif %}
+                            </i>
+
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Cart MODAL-->
+		<div class="modal fade" id="orderPlaced" tabindex="-1" aria-labelledby="Chrisllan_by_saphy" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
+                <div class="modal-content" id="content_modal">
+                    <div class="modal-header">
+                        <h5 modal-dialog-scrollable id="Chrisllan_by_saphy">Your Shopping Cart</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    {%if usercart!=0%}
+
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                            	<div class="col-12 text-center">
+                            		<h3><b>Products List</b></h3>
+                                    <p id='deleteitemFeedback'></p>
+                            	</div>
+                            </div>
+                            
+                            <div class="row">
+                                
+                            	<div class="col-12">
+                            		<form action="/confirm-order/" method="post">
+                                        <div class="row mb-2 d-none d-md-flex">
+                                            <label class='col-md-5'><b>Product Name</b></label>
+                                            
+                                            <div class='col-md-3'>
+                                                <label><b>Amount(&#8358;)</b></label>
+                                            </div>
+                                            <div class='col-md-2'>
+                                                <label><b>Qty</b></label>
+                                            </div>
+                                        </div>
+                                        {%for c in cartdeets%}
+                                        <div class="row mb-2">
+                                            <label class='col-md-5' style='font-size:14px'>{{c.cartprods.product_name}}</label>
+                                            
+                                            <div class='col-md-3'>
+                                                <input type='number' class='form-control' value='{{c.amount}}' style="border:none" readonly>
+                                            </div>
+                                            <div class='col-md-2'>
+                                                <input type='number' name='adjusted_quantity' class='form-control' min='1' value='{{c.product_qty}}' readonly>
+                                            </div>
+                                            <div class='col-md-2 d-none'>
+                                                <input type='hidden' name='discard{{c.cart_id}}' id='discard{{c.cart_id}}' class='form-control' value='{{c.cart_id}}' readonly>
+                                            </div>
+                                            <div class='col-md-2'>
+                                                <button type="button" id='removeitem{{c.cart_id}}' class='btn btn-danger btn-sm'><i class='fa-solid fa-trash-can'></i></button>
+                                            </div>
+                                        </div>
+                                        {%endfor%}
+                                        <div>
+                                            <textarea class="form-control" name="shipping_address" id="shipping_address" placeholder="Provide your shipping address"  required></textarea>
+                                        </div>
+                                        <input type='hidden' name='csrf_token' value="{{csrf_token()}}">
+                                        <input type='hidden' name='userCartNumber' value="{{session.get('user_cart_id')}}" readonly>
+
+                                        <input type='hidden' class='form-control' name='totalamt' value='{{total}}' style="border:none" readonly>
+
+                                        <button type="submit" id='confirmOrder' class="btn form-control btn-success mt-4">Confirm Order</button>
+                                    </form>
+                            	</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row mb-2">
+                            <label class='col-md-5'><b>Total(&#8358;)</b></label>
+                            
+                            <div class='col-md-7'>
+                                <input type='number' class='form-control' value='{{total}}' style="border:none" readonly>
+                            </div>
+                        </div>
+                        <button type='button' class='btn btn-danger btn-sm' id='btnEmptyCart'>Empty Cart</button>
+                    </div>
+
+                    {%else%}
+                    <div>
+                        <p class="text-center"><img class="img-fluid" src="{{url_for('static', filename='images/empty_cart.png')}}" width='100px' height='100px'></p>
+                    </div>
+                    <h3 class='text-center'>Nothing in cart</h3> 
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+
+
+        {% block orderModal %}
+        <!-- Forgot password modal -->
+        <div class="modal fade" id="forgotPassword" tabindex="-1" aria-labelledby="Chrisllan_by_saphy_forgot_password_modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                <div class="modal-content" id="content_modal">
+                    <div class="modal-header">
+                        <h5 modal-dialog-scrollable id="Chrisllan_by_saphy_forgot_password_modal">Reset Your Password</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <small>Lost your password? Please enter your email address. You will receive a link to create a new password via email.</small>
+
+                            <form class="row mt-2" id='forgotPswdForm'>
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" id="forgotPasswordEmailAddress" name="forgotPasswordEmailAddress" placeholder="name@example.com">
+                                    <label for="forgotPasswordEmailAddress">Email address</label>
+                                </div>
+                                <input type='hidden' name='csrf_token' value="{{csrf_token()}}">
+                                <div class="">
+                                    <button type="button" id='submitResetPasswordBtn' class="btn btn-success">RESET PASSWORD</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock orderModal %}
+
+        {%autoescape false%}
+        <script type="text/javascript" src="{{url_for('static',filename='jquery/jquery.min.js')}}"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+        {%block scripts%}
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                // News letter subscription
+                $('#subscribeBTN').click(function(){
+
+                    var form = document.getElementById('newsletter')
+                    var formdata= new FormData(form)  
+                
+                    $.ajax({
+                        url:"/subscribe_newsletter/",
+                        data:formdata,
+                        dataType:"text",
+                        type:"post",
+                        cache:false,
+                        processData:false,
+                        contentType:false,
+                        beforeSend:function(){
+                            if ( $('#email').val() == "") {
+                                return false;
+                            }
+                        },
+                        success:function(rsp){
+                            if(rsp=='Successfully Registered'){
+                                swal("Thank you", "Registration Successful", "success");
+                                document.getElementById("email").value='';
+                            }
+                            else{
+                                swal("Registration Unsuccessful", rsp, "error");
+                            }
+                                
+                        },  
+                        error:function(msg){
+                            console.log(msg)
+                        }
+                    })
+                })
+            })
+        </script>
+
+
+        <!--This controls the modal delete item ajax-->
+        {% for c in cartdeets %}
+            <script type='text/javascript'>
+                $('#removeitem{{c.cart_id}}').click(function(){
+                    
+                    discardID=$('#discard{{c.cart_id}}').val();
+
+                    var data2send={'trash':discardID}
+
+                    $.ajax({
+                        url:"/removeitem/",
+                        data:data2send,
+                        dataType:"text",
+                        type:"get",
+                        beforeSend:function(){},
+                        success:function(rsp){
+                            $('#deleteitemFeedback').addClass('alert alert-success')
+                            $('#deleteitemFeedback').text(rsp)
+                            location.reload()
+                        },  
+                        error:function(errormessage){
+                            console.log(errormessage)
+                        }
+                    })
+                })
+            </script>
+        {% endfor %}
+
+
+        <script type='text/javascript'>
+            // empty cart
+            $('#btnEmptyCart').click(function(){
+                cartuseriD={{session.get('user_cart_id')}}
+    
+                var data2send={'emptycartID':cartuseriD}
+
+                $.ajax({
+                    url:"/emptycart/",
+                    data:data2send,
+                    dataType:"text",
+                    type:"get",
+                    beforeSend:function(){},
+                    success:function(rsp){
+                        $('#deleteitemFeedback').addClass('alert alert-success');
+                        $('#deleteitemFeedback').text(rsp);
+                        location.reload()
+                    },
+                    error:function(errormessage){
+                        console.log(errormessage)
+                    }
+                })
+            })
+        </script>
+
+        {%endblock scripts%}
+        <script type="text/javascript" src="{{url_for('static',filename='js/bootstrap.bundle.js')}}"></script>
+        {%endautoescape%}
+    </body>
+</html>

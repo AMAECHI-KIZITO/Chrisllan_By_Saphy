@@ -1,0 +1,26 @@
+{%extends 'admin/admindashboard.html'%}
+
+{%block title%}
+Chrisllan - Admin Messages
+{%endblock title%}
+
+{%block otherpage_styles%}
+{%endblock otherpage_styles%}
+
+{%block contents%}
+<div class="row">
+    <h1 style='font-family:"lucida-calligraphy"'>Message Information</h1>
+    <div class="col pt-md-3">
+        <h6>Sender: {{specific.name}}</h6>
+        <h6>Email: {{specific.email}}</h6>
+        <h6>Date: {{specific.date_sent}}</h6><hr>
+        <h6>Message Details</h6>
+        <p>{{specific.message}}</p>
+    </div>
+</div>
+{%endblock contents%}
+
+{%block scripts%}
+<script type="text/javascript">
+</script>
+{%endblock scripts%}
