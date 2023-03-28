@@ -66,8 +66,7 @@ def pay_for_order():
         }
         headers = {
             "Content-Type": "application/json",
-            "Authorization":"Bearer sk_live_e46ccc6f1e1d1dc125aae7d032846b8b97adad49"
-            # "Authorization":"Bearer sk_test_2d885e99a5f8c0ca434f5862d78a5de5603962cd"
+            "Authorization":"Bearer"
         }
         
         try:
@@ -134,7 +133,7 @@ def paystack_landing():
         
         headers = {
             "Content-Type": "application/json",
-            "Authorization":"Bearer sk_live_e46ccc6f1e1d1dc125aae7d032846b8b97adad49"
+            "Authorization":"Bearer"
         }
         
         response = requests.get(f"https://api.paystack.co/transaction/verify/{ref}", headers=headers)

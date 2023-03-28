@@ -12,14 +12,14 @@
     </div>
     {%for f in women_acc %}
     <div class="col-md-6 col-lg-4 mb-1">
-        <div class="card" style="width: 18rem;">
+        <div>
             <img class="card-img-top img-fluid" src="{{url_for('static', filename='productimages/'+f.product_image)}}" alt="{{f.product_name}}">
-            <div class="card-body">
-                <h5 class="card-title" style="font-size: 15px;">{{f.product_name}}</h5>
-                <p><span style="font-size: 22px">&#8358 {{"{:,.0f}".format(f.product_price)}} </span></p>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title" style="font-size: 15px;">{{f.product_name}}</h5>
+            <p><span style="font-size: 22px">&#8358 {{"{:,.0f}".format(f.product_price)}} </span></p>
 
-                <button type="button" id="shopcart" class="btn btn-warning btn-sm float-end" data-bs-toggle="modal" data-bs-target="#menfootware{{f.product_id}}">Order</button>
-            </div>
+            <button type="button" id="shopcart" class="btn btn-warning btn-sm float-end" data-bs-toggle="modal" data-bs-target="#menfootware{{f.product_id}}">Order</button>
         </div>
     </div>
     {%endfor%}
@@ -29,62 +29,62 @@
 
 {% block orderModal %}
 
-{%for x in women_acc%}
-<div class="modal fade" id="menfootware{{x.product_id}}" tabindex="-1" aria-labelledby="Products" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md">
-        <div class="modal-content" id="content_modal">
+    {%for x in women_acc%}
+        <div class="modal fade" id="menfootware{{x.product_id}}" tabindex="-1" aria-labelledby="Products" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md">
+                <div class="modal-content" id="content_modal">
 
-            <!--modal header-->
-            <div class="modal-header">
-                <h5 modal-dialog-scrollable id="Products">{{x.product_name}}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+                    <!--modal header-->
+                    <div class="modal-header">
+                        <h5 modal-dialog-scrollable id="Products">{{x.product_name}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
 
-            <!--modal body-->
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <div id='feedback{{x.product_id}}'></div>
-                            <h6>Quantity</h6>
-                            <button type='button' class='btn btn-success btn-sm' onclick='addition{{x.product_id}}()'>
-                                <span><i class='fa-solid fa-plus'></i></span>
-                            </button> 
+                    <!--modal body-->
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div id='feedback{{x.product_id}}'></div>
+                                    <h6>Quantity</h6>
+                                    <button type='button' class='btn btn-success btn-sm' onclick='addition{{x.product_id}}()'>
+                                        <span><i class='fa-solid fa-plus'></i></span>
+                                    </button> 
 
-                            <span id='quantity{{x.product_id}}'>1</span> 
-                            
-                            <button type='button' class='btn btn-danger btn-sm' onclick='substract{{x.product_id}}()'>
-                                <span><i class='fa-solid fa-minus'></i></span>
-                            </button><br><br>
+                                    <span id='quantity{{x.product_id}}'>1</span> 
+                                    
+                                    <button type='button' class='btn btn-danger btn-sm' onclick='substract{{x.product_id}}()'>
+                                        <span><i class='fa-solid fa-minus'></i></span>
+                                    </button><br><br>
 
-                            <input type='hidden' id='number_of_item{{x.product_id}}' class='form-control'  value=1>
-                            <input type='hidden' id='itemprice{{x.product_id}}' class='form-control' value='{{x.product_price}}'>
+                                    <input type='hidden' id='number_of_item{{x.product_id}}' class='form-control'  value=1>
+                                    <input type='hidden' id='itemprice{{x.product_id}}' class='form-control' value='{{x.product_price}}'>
 
-                            <button type='button' class='btn btn-success btn-sm float-end d-none' id='addtocart{{x.product_id}}'>
-                                Add into cart
-                            </button>
+                                    <button type='button' class='btn btn-success btn-sm float-end d-none' id='addtocart{{x.product_id}}'>
+                                        Add into cart
+                                    </button>
 
-                            <button type='button' class='btn btn-success btn-sm float-end' id='insertToCart{{x.product_id}}'>
-                                Add To Cart
-                            </button>
+                                    <button type='button' class='btn btn-success btn-sm float-end' id='insertToCart{{x.product_id}}'>
+                                        Add To Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--modal footer-->
+                    <div class="modal-footer">
+                        <div class="row mb-2">
+                            <label class='col-md-5'><b>Total(&#8358;)</b></label>
+                            <div class='col-md-7'>
+                                <input type='number' id='total{{x.product_id}}' class='form-control' value='{{x.product_price}}' style="border:none" readonly>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!--modal footer-->
-            <div class="modal-footer">
-                <div class="row mb-2">
-                    <label class='col-md-5'><b>Total(&#8358;)</b></label>
-                    <div class='col-md-7'>
-                        <input type='number' id='total{{x.product_id}}' class='form-control' value='{{x.product_price}}' style="border:none" readonly>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
-</div>
-{%endfor%}
+    {%endfor%}
 {% endblock orderModal %}
 
 

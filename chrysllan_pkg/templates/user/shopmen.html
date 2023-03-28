@@ -9,14 +9,14 @@
     </div>
     {%for i in MFoot%}
     <div class="col-md-6 col-lg-4 mb-3">
-        <div class="card" style="width: 18rem;">
+        <div>
             <img class="card-img-top img-fluid" src="{{url_for('static', filename='productimages/'+i.product_image)}}" alt="{{i.product_name}}">
-            <div class="card-body">
-                <h5 class="card-title" style="font-size: 15px;">{{i.product_name}}</h5>
-                <p><span style="font-size: 22px">&#8358; {{"{:,.0f}".format(i.product_price)}} </span></p>
+        </div>
+        <div>
+            <h5 class="card-title" style="font-size: 15px;">{{i.product_name}}</h5>
+            <p><span style="font-size: 22px">&#8358; {{"{:,.0f}".format(i.product_price)}} </span></p>
 
-                <button type="button" id="shopcart" class="btn btn-warning btn-sm float-end" data-bs-toggle="modal" data-bs-target="#menfootware{{i.product_id}}">Order</button>
-            </div>
+            <button type="button" id="shopcart" class="btn btn-warning btn-sm float-end" data-bs-toggle="modal" data-bs-target="#menfootware{{i.product_id}}">Order</button>
         </div>
     </div>
     {%endfor%}
