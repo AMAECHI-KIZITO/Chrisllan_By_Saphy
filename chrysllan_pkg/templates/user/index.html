@@ -1,12 +1,33 @@
 <!DOCTYPE html>
 <html lang='en'>
     <head>
-        <title>{%block title%}Chrysllan - Home{%endblock%}</title>
-		<meta charset="utf-8">
+        <meta charset="utf-8">
+        <meta property="og:type" content="product" />
+        <meta property="og:site_name" content="Chrisllan By Saphy" />
+        <meta property="og:title" content="Chrysllan By Saphy - Online shopping for affordable footwares, accessories &amp; more in Nigeria!" />
+        <meta property="og:description" content="Chrysllan By Saphy - The no1 Online shopping store for affordable footwares, accessories &amp; more in Nigeria. Enjoy great prices and offers, quality products you can trust and a secure means of payment." />
+        <meta property="og:url" content="/" />
+        <meta property="og:image" content="https://chrisllanbysaphy.com.ng/static/images/cs_black_prev_ui.png" />
+        <meta property="og:locale" content="en_NG" />
+
+        <meta name="robots" content="index, follow" />
+
+        <title>{%block title%}Chrysllan By Saphy - Online shopping for affordable footwares, accessories &amp; more in Nigeria!{%endblock%}</title>
+
+		
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="author" content="Amaechi Tochukwu">
+		<meta name="author" content="Tochukwu Amaechi">
 		<meta name="keywords" content="Affordable Footwares in Nigeria, Men footware, shoe brands in Nigeria">
 		<meta name="description" content="Buy affordable footwares from the Chrysllan by Saphy Footwear brand at great prices.">
+
+        <meta name="twitter:card" content="summary" />
+        <!--<meta name="twitter:site" content="@this_amaechi" />-->
+        <meta name="twitter:title" content="Chrysllan by Saphy | Online shopping for affordable footwares, accessories &amp; more in Nigeria!"/>
+        <meta name="twitter:description" content="Looking for a skilled software developer? Look no further. Tochukwu offers top-notch software development services for businesses of all sizes. With years of experience and a passion for innovation, I can help bring your ideas to life. Contact me today to learn more." />
+        <meta name="twitter:image" content="https://chrisllanbysaphy.com.ng/static/images/cs_black_prev_ui.png" />
+
+        
+
 		<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/bootstrap.css')}}">
 		<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='font/css/all.css')}}">
         <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='JQanimate.css')}}">
@@ -72,9 +93,13 @@
                                 <li class="nav-item">
                                     <a class="nav-link active" href="/contact-us/"><b>Contact Us</b></a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="/track-orders/"><b>Track Orders</b></a>
-                                </li>
+
+                                {%if session.get('username') != None and session.get('user_id') != None%}
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="/track-orders/"><b>Track Orders</b></a>
+                                    </li>
+                                {%endif%}
+                                
                                 <li class="nav-item dropdown">
                                     <a class="nav-link active dropdown-toggle" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>Categories</b>
                                     </a>
@@ -201,12 +226,12 @@
             <!--Footer-->
             <div class='row align-items-center' style="background-color: #000; color:#fff;">
                 <div class='col-md-5'>
-                    <p class='text-center'><img src="{{url_for('static', filename='images/correctlogo.png')}}" class='img-fluid'></p>
+                    <p class="text-center"><img src="{{url_for('static', filename='images/cs_white_prev_ui.png')}}" class='img-fluid' width="250px" height="250px"></p>
                 </div>
                 <div class='col-md-7'>
                     <div class='row'>
                         <div class="col-md-3 mb-2">
-                            <h5>Information</h5>
+                            <h4>Information</h4>
                             <a href='/' class="d-block links">Home</a>
                             <a href="#" class="d-block links">About Us</a>
                             <a href='/contact-us/' class="d-block links">Contact Us</a>
@@ -214,14 +239,18 @@
                             
                         </div>
                         <div class="col-md-3 mb-2">
-                            <h5>Account</h5>
-                            <a href='/customer/account/' class="d-block links">Login/Register</a>
-                            <a href='/customer/logout/' class="d-block links">Logout</a>
+                            <h4>Account</h4>
+                            <a href='/customer/account/' class="d-block links">Create Account</a>
+                            {%if session.get('username') == None and session.get('user_id') == None%}
+                                <a href='/customer/login/' class="d-block links">Login</a>
+                            {%else%}
+                                <a href='/customer/logout/' class="d-block links">Logout</a>
+                            {%endif%}
                         </div>
                         <div class="col-md-3 mb-2">
-                            <h5>Follow us</h5>
+                            <h4>Follow us</h4>
                             <div class="row">
-                                <div class="col-1">
+                                {#<div class="col-1">
                                     <a class="d-block links" href='tel:+2347085684444'><i class="fa-solid fa-phone text-warning"></i></a>
                                 </div>
                                 <div class="col-1">
@@ -229,6 +258,16 @@
                                 </div>
                                 <div class="col-1">
                                     <a class="d-block links" href='https://api.whatsapp.com/message/UNJ47YVYH3EGO1?autoload=1&app_absent=0'><i class='fa-brands fa-whatsapp text-success'></i></a>
+                                </div>#}
+
+                                <div class="col-12">
+                                    <a class="d-block links" href='tel:+2347085684444'>Telephone</a>
+                                </div>
+                                <div class="col-12">
+                                    <a class="d-block links" href='https://instagram.com/chrisllanbysaphy?igshid=YmMyMTA2M2Y='>Instagram</i></a>
+                                </div>
+                                <div class="col-12">
+                                    <a class="d-block links" href='https://api.whatsapp.com/message/UNJ47YVYH3EGO1?autoload=1&app_absent=0'>Whatsapp</i></a>
                                 </div>
                             </div>
                         </div>
@@ -254,14 +293,13 @@
                 <button type="button" class="btn-close text-reset btn-outline-dark" data-bs-dismiss="offcanvas" aria-label="Close" style="background-color:#ECE8D9"></button>
             </div>
             <div class="offcanvas-body">
-                
                 <div class="row">
                     <div class="col-12">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
                                 <p class="text-center">
                                     <a class="nav-link active" aria-current="page" href="/" style="text-decoration:none; color:#000">
-                                        <b>Home</b>
+                                        <b>HOME</b>
                                     </a>
                                 </p>
                             </li>
@@ -269,22 +307,27 @@
                             <li class="nav-item">
                                 <p class="text-center">
                                     <a class="nav-link active" href="/contact-us/" style="text-decoration:none; color:#000">
-                                        <b>Contact Us</b>
+                                        <b>CONTACT US</b>
                                     </a>
                                 </p>
                             </li>
 
-                            <li class="nav-item">
-                                <p class="text-center">
-                                    <a class="nav-link active" href="/track-orders/" style="text-decoration:none; color:#000">
-                                        <b>Track Orders</b>
-                                    </a>
-                                </p>
-                            </li>
+                            {%if session.get('username') != None and session.get('user_id') != None%}
+                                <li class="nav-item">
+                                    <p class="text-center">
+                                        <a class="nav-link active" href="/track-orders/" style="text-decoration:none; color:#000">
+                                            <b>TRACK ORDER</b>
+                                        </a>
+                                    </p>
+                                </li>
+                            {%endif%}
+                            
 
                             <li class="nav-item">
                                 <p class="text-center">
-                                    <a type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" aria-controls="offcanvasEnd"><b>Categories</b>
+                                    <a type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" aria-controls="offcanvasEnd">
+                                        <b>PRODUCT CATEGORIES <i class="fa-solid fa-arrow-right"></i></b>
+                                    </a>
                                 </p>
                             </li>
                         </ul>
@@ -325,25 +368,25 @@
 
                             <li class="nav-item">
                                 <p class="text-center">
-                                    <a class="nav-link active" href="/shop/men/" style="text-decoration:none; color:#000">Men Footware</a>
+                                    <a class="nav-link active" href="/shop/men/" style="text-decoration:none; color:#000"><b>MALE FOOTWARE</b></a>
                                 </p>
                             </li>
 
                             <li class="nav-item">
                                 <p class="text-center">
-                                    <a class="nav-link active" href="/shop/men/accessories/" style="text-decoration:none; color:#000">Men Accessories</a>
+                                    <a class="nav-link active" href="/shop/women/" style="text-decoration:none; color:#000"><b>FEMALE FOOTWARE</b></a>
                                 </p>
                             </li>
 
                             <li class="nav-item">
                                 <p class="text-center">
-                                    <a class="nav-link active" href="/shop/women/" style="text-decoration:none; color:#000">Female Footware</a>
+                                    <a class="nav-link active" href="/shop/men/accessories/" style="text-decoration:none; color:#000"><b>MALE ACCESSORIES</b></a>
                                 </p>
                             </li>
-
+                            
                             <li class="nav-item">
                                 <p class="text-center">
-                                    <a class="nav-link active" href="/shop/women/accessories/" style="text-decoration:none; color:#000">Female Accessories</a>
+                                    <a class="nav-link active" href="/shop/women/accessories/" style="text-decoration:none; color:#000"><b>FEMALE ACCESSORIES</b></a>
                                 </p>
                             </li>
                         </ul>
