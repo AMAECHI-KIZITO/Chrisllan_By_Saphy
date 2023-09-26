@@ -2,17 +2,18 @@
 <html lang='en'>
     <head>
         <meta charset="utf-8">
-        <meta property="og:type" content="product" />
+        <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Chrisllan By Saphy" />
         <meta property="og:title" content="Chrysllan By Saphy - Online shopping for affordable footwares, accessories &amp; more in Nigeria!" />
-        <meta property="og:description" content="Chrysllan By Saphy - The no1 Online shopping store for affordable footwares, accessories &amp; more in Nigeria. Enjoy great prices and offers, quality products you can trust and a secure means of payment." />
+        <meta property="og:description" content="Chrysllan By Saphy - Online shopping store for affordable footwares, accessories &amp; more in Nigeria. Enjoy great prices and offers, quality products you can trust and a secure means of payment. Fast Shipping and Delivery." />
+        <meta property="og:locale" content="en_US" />
         <meta property="og:url" content="/" />
         <meta property="og:image" content="https://chrisllanbysaphy.com.ng/static/images/cs_black_prev_ui.png" />
         <meta property="og:locale" content="en_NG" />
 
         <meta name="robots" content="index, follow" />
 
-        <title>{%block title%}Chrysllan By Saphy - Online shopping for affordable footwares, accessories &amp; more in Nigeria!{%endblock%}</title>
+        <title>{%block title%}Chrysllan By Saphy - Online shopping for affordable footwares, accessories &amp; more in Nigeria. {%endblock%}</title>
 
 		
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,9 +22,8 @@
 		<meta name="description" content="Buy affordable footwares from the Chrysllan by Saphy Footwear brand at great prices.">
 
         <meta name="twitter:card" content="summary" />
-        <!--<meta name="twitter:site" content="@this_amaechi" />-->
-        <meta name="twitter:title" content="Chrysllan by Saphy | Online shopping for affordable footwares, accessories &amp; more in Nigeria!"/>
-        <meta name="twitter:description" content="Looking for a skilled software developer? Look no further. Tochukwu offers top-notch software development services for businesses of all sizes. With years of experience and a passion for innovation, I can help bring your ideas to life. Contact me today to learn more." />
+        <meta name="twitter:title" content="Chrysllan by Saphy - Online shopping for affordable footwares, accessories &amp; more in Nigeria!"/>
+        <meta name="twitter:description" content="Chrysllan By Saphy - Online shopping store for affordable footwares, accessories &amp; more in Nigeria. Enjoy great prices and offers, quality products you can trust and a secure means of payment. Fast Shipping and Delivery." />
         <meta name="twitter:image" content="https://chrisllanbysaphy.com.ng/static/images/cs_black_prev_ui.png" />
 
         
@@ -31,7 +31,6 @@
 		<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/bootstrap.css')}}">
 		<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='font/css/all.css')}}">
         <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='JQanimate.css')}}">
-        <link rel="shortcut icon" href="{{url_for('static',filename="images/myicon.ico")}}" type="image/x-icon">
         <link rel="icon" href="{{url_for('static',filename="images/myicon.ico")}}" type="image/x-icon">
 
 		<style type="text/css">
@@ -54,7 +53,7 @@
 				color: #fff;
 			}
             .links:hover{
-				color: orange;
+				color: #E7ECEF;
 			}
 
             {%block styles%}
@@ -143,112 +142,249 @@
                     <div class='row small align-items-center d-md-none text-center'>
                         <div class='col pt-5'>
                             <h2 style="color:white; font-family:'lucida-calligraphy'">Good Footware Takes You Good Places</h2>
-                            <a href='#categories' class='btn btn-warning'>Shop</a>
+                            <a href='#categories' class='btn' style="background-color:#70587c; color:white">Shop</a>
                         </div>
                     </div>
                 </div>
                 <div class='col-md-6 d-none d-md-block'>
                     <h2 style="color:white; font-family:'lucida-calligraphy'; font-size:35px" class='d-none d-md-block text-center'>Good Footware Takes You Good Places</h2>
-                    <p class="text-center"><a href='#categories' class='btn btn-warning btn-lg'>Shop Now</a></p>
+                    <p class="text-center"><a href='#categories' class='btn btn-lg' style="background-color:#70587c; color:white">Shop Now</a></p>
                 </div>
             </div>
 
-            <!--Newsletter-->
-            <div class='row py-5' style="background-color:#ECE8D9">
-                <div class='col'>
-                    <h2 class='text-center animate__animated animate__backInRight' style="font-family:'lucida-calligraphy'">Stay Updated</h2>
-                    <p class='text-center'>Be the first to know about our latest collection, flash sales and discounts. Chrisllan has your back <i class='fa-solid fa-face-smile text-success'></i></p>
+            
+            <!--Popular categories-->
+            <div>
+                <div class="row my-5">
+                    <div>
+                        <h1 class="ps-3 animate__animated animate__flip text-center" id="categories" style="color:#000; font-family: 'Times-new-roman'; font-weight: bolder">Featured Categories</h1>
+                    </div>
+                </div>
 
+                <div class="row mx-auto">
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+                        <div>
+                            <img class="card-img-top img-fluid" src="{{url_for('static', filename='images/male_belt.jpg')}}" alt="bond belt">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 15px;">Male Accessories</h5>
+                            <a href="/shop/men/accessories/" class="btn text-light" style="background-color: #70587c">View</a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+                        <div>
+                            <img class="card-img-top img-fluid" src="{{url_for('static', filename='images/turu_ugo.jpg')}}" alt="Saphire Turu Ugo">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 15px;">Male Footware</h5>
+                            <a href="/shop/men/" class="btn text-light" style="background-color: #70587c">View</a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+                        <div>
+                            <img class="card-img-top img-fluid" src="{{url_for('static', filename='images/women_bags.jpg')}}" alt="Female Bag">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 15px;">Female Bags</h5>
+                            <a href="/shop/women/accessories/" class="btn text-light" style="background-color: #70587c">View</a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+                        <div>
+                            <img class="card-img-top img-fluid" src="{{url_for('static', filename='images/snow.jpg')}}" alt="Saphire Snow">
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 15px;">Female Footware</h5>
+                            <a href="/shop/women/" class="btn text-light" style="background-color: #70587c">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Trending-->
+            <div class='row' style="background-color:#E7ECEF">
+                <div class='col-12 my-4'>
+                    <h1 class="ps-3 text-center" id="categories" style="color:#000; font-family: 'Times-new-roman'; font-weight: bolder">Trending</h1>
+                </div>
+
+                <div class="row mx-auto">
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+                        <div>
+                            <p class="text-center"><img class="img-fluid" src="{{url_for('static', filename='images/trespass.jpg')}}" alt="Chrisllan tresspass female sandals" width="250px"></p>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 15px;">Trespass Sandals</h5>
+                            <a href="/shop/women/" class="btn text-light" style="background-color: #70587c">View</a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+                        <div>
+                            <p class="text-center"><img class="img-fluid" src="{{url_for('static', filename='images/Usman.jpeg')}}" alt="Chilvary Male Slippers" width="250px"></p>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 15px;">Usman</h5>
+                            <a href="/shop/men/" class="btn text-light" style="background-color: #70587c">View</a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+                        <div>
+                            <p class="text-center"><img class="img-fluid" src="{{url_for('static', filename='images/muna.jpg')}}" alt="Muna Female Slippers" width="250px"></p>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 15px;">Muna</h5>
+                            <a href="/shop/women/" class="btn text-light" style="background-color: #70587c">View</a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+                        <div>
+                            <p class="text-center"><img class="img-fluid" src="{{url_for('static', filename='images/solace.jpg')}}" alt="Solace Male Slippers" width="250px"></p>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 15px;">Solace</h5>
+                            <a href="/shop/men/" class="btn text-light" style="background-color: #70587c">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--New Arrivals-->
+            <!--<div>
+                <div class="row my-5">
+                    <div>
+                        <h1 class="ps-3 text-center" id="categories" style="color:#000; font-family: 'Times-new-roman'; font-weight: bolder">New Arrivals</h1>
+                    </div>
+                </div>
+
+                <div class="row mx-auto">
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+                        <div>
+                            <img class="card-img-top img-fluid" src="{{url_for('static', filename='images/male_belt.jpg')}}" alt="bond belt">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 15px;">Male Accessories</h5>
+                            <a href="/shop/men/accessories/" class="btn text-light" style="background-color: #70587c">View</a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+                        <div>
+                            <img class="card-img-top img-fluid" src="{{url_for('static', filename='images/turu_ugo.jpg')}}" alt="Saphire Turu Ugo">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 15px;">Male Footware</h5>
+                            <a href="/shop/men/" class="btn text-light" style="background-color: #70587c">View</a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+                        <div>
+                            <img class="card-img-top img-fluid" src="{{url_for('static', filename='images/women_bags.jpg')}}" alt="Female Bag">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 15px;">Female Bags</h5>
+                            <a href="/shop/women/accessories/" class="btn text-light" style="background-color: #70587c">View</a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
+                        <div>
+                            <img class="card-img-top img-fluid" src="{{url_for('static', filename='images/snow.jpg')}}" alt="Saphire Snow">
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 15px;">Female Footware</h5>
+                            <a href="/shop/women/" class="btn text-light" style="background-color: #70587c">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!--Newsletter-->
+            <div class='row py-5'>
+                <div class='col-md-4'>
+                    <h2 class='text-center' style="font-family:'lucida-calligraphy'; font-weight: bolder">Newsletter Subscription</h2>
+                    <p class='text-center'>Get Product Updates &amp; Offers directly to your inbox</p>
+                </div>
+                <div class='col-md-8'>
                     <form class="row" id='newsletter'>
-                        <div class="col-md-6 offset-md-3 mb-3">
-                            <input type="email" id="email" name="emailaddress" placeholder="Example@gmail.com" class="form-control" style="color:#B0B8C2">
+                        <div class="col-md-6 offset-md-3 mb-1">
+                            <input type="email" id="email" name="emailaddress" placeholder="example@gmail.com" class="form-control" style="color:#B0B8C2">
                             <input type="hidden" name="csrf_token" id='csrf' class="form-control" value="{{csrf_token()}}">
                         </div>
-                        <div class="col-md-6 offset-md-3">
-                            <button type="button" id='subscribeBTN' class="btn col-md-4 offset-md-4" style="background-color:#384A62; color:#fff;">Subscribe</button>
+                        <div class="col-12">
+                            <p class='text-center'><button type="button" id='subscribeBTN' class="btn" style="background-color:#384A62; color:#fff;">Subscribe</button></p>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <!--Popular products-->
-            <div class="row mt-5">
-				<div class="col-5">
-					<h3 class="ps-3 animate__animated animate__flip" id="categories" style="color:#384A62; font-family: 'Times-new-roman';">Categories</h3>
-				</div>
-			</div>
-
-            <div class="row mx-auto">
-				<div class="col-md-6 col-lg-4 col-xl-3 mb-1">
-					<div>
-                        <img class="card-img-top img-fluid" src="{{url_for('static', filename='images/male_belt.jpg')}}" alt="bond belt">
+            <!--Testimonials-->
+            <div class='row py-5' style="background-color:#E7ECEF">
+                <div class='col-12'>
+                    <h1 class='text-center' style="font-family:'lucida-calligraphy'; font-weight: bolder">Tetimonials</h1>
+                    <h6 class='text-center' style="font-family:'lucida-calligraphy'">From the customer's mouth to your hearts</h6>
+                </div>
+                <div class='col-12'>
+                    <div class='d-md-flex align-items-center' style="justify-content: space-around">
+                        <div style="box-shadow: 3px 3px 7px grey" class='mb-2'>
+                            <div class='row py-3'>
+                                <div class="col-12">
+                                    <h6 class="text-center">Excellent quality of footware<br/>I am satisfied and definitely recommend</h6>
+                                </div>
+                                <div class="col-12 px-5">
+                                    <h5 class="text-end"> - Alero</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="box-shadow: 3px 3px 7px grey" class='mb-2'>
+                            <div class='row py-3'>
+                                <div class="col-12">
+                                    <h6 class="text-center">The male footware bestows an air of prestige.<br/>The Idan of footwares.</h6>
+                                </div>
+                                <div class="col-12 px-5">
+                                    <h5 class="text-end"> - Jeffery</h5>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title" style="font-size: 15px;">Male Accessories</h5>
-                        <a href="/shop/men/accessories/" class="btn btn-warning">View</a>
-                    </div>
-				</div>
-
-				<div class="col-md-6 col-lg-4 col-xl-3 mb-1">
-					<div>
-                        <img class="card-img-top img-fluid" src="{{url_for('static', filename='images/turu_ugo.jpg')}}" alt="Saphire Turu Ugo">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title" style="font-size: 15px;">Male Footware</h5>
-                        <a href="/shop/men/" class="btn btn-warning">View</a>
-                    </div>
-				</div>
-
-                <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
-					<div>
-                        <img class="card-img-top img-fluid" src="{{url_for('static', filename='images/women_bags.jpg')}}" alt="Female Bag">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title" style="font-size: 15px;">Female Bags</h5>
-                        <a href="/shop/women/accessories/" class="btn btn-warning">View</a>
-                    </div>
-				</div>
-
-                <div class="col-md-6 col-lg-4 col-xl-3 mb-1">
-					<div>
-                        <img class="card-img-top img-fluid" src="{{url_for('static', filename='images/snow.jpg')}}" alt="Saphire Snow">
-                    </div>
-
-                    <div class="card-body">
-                        <h5 class="card-title" style="font-size: 15px;">Female Footware</h5>
-                        <a href="/shop/women/" class="btn btn-warning">View</a>
-                    </div>
-				</div>
+                </div>
             </div>
+
             {%endblock content%}
 
             {%block footer%}
             <!--Footer-->
-            <div class='row align-items-center' style="background-color: #000; color:#fff;">
-                <div class='col-md-5'>
+            <div class='row align-items-center' style="background-color: #30332e; color:#fff">
+                <div class='col-md-3'>
                     <p class="text-center"><img src="{{url_for('static', filename='images/cs_white_prev_ui.png')}}" class='img-fluid' width="250px" height="250px"></p>
                 </div>
-                <div class='col-md-7'>
+                <div class='col-md-9'>
                     <div class='row'>
                         <div class="col-md-3 mb-2">
-                            <h4>Information</h4>
+                            <h4 style="color: #E7ECEF">Information</h4>
                             <a href='/' class="d-block links">Home</a>
                             <a href="#" class="d-block links">About Us</a>
                             <a href='/contact-us/' class="d-block links">Contact Us</a>
                             {#<a href="#" class="d-block links">Terms & Conditions</a>#}
-                            
                         </div>
                         <div class="col-md-3 mb-2">
-                            <h4>Account</h4>
+                            <h4 style="color: #E7ECEF">Account</h4>
                             <a href='/customer/account/' class="d-block links">Create Account</a>
                             {%if session.get('username') == None and session.get('user_id') == None%}
-                                <a href='/customer/login/' class="d-block links">Login</a>
+                                <a href='/customer/login/' class="d-block links">My Account</a>
                             {%else%}
                                 <a href='/customer/logout/' class="d-block links">Logout</a>
                             {%endif%}
                         </div>
                         <div class="col-md-3 mb-2">
-                            <h4>Follow us</h4>
+                            <h4 style="color: #E7ECEF">Follow us</h4>
                             <div class="row">
                                 {#<div class="col-1">
                                     <a class="d-block links" href='tel:+2347085684444'><i class="fa-solid fa-phone text-warning"></i></a>
@@ -276,8 +412,8 @@
                 
                 <div class='row'>
                     <div class='col-12'>
-                        <p class='text-center' style="font-size:10px">
-                            &copy; {{year}}<span style="text-decoration:none; color:orange"> Chrisllan By Saphy. </span>All Rights Reserved.
+                        <p class='text-center' style="font-size:16px">
+                            &copy; {{year}}<span style="text-decoration:none; color:#E7ECEF"> Chrisllan By Saphy. </span>All Rights Reserved.
                         </p>
                     </div>
                 </div>

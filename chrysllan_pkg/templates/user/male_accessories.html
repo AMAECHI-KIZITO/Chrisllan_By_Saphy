@@ -5,21 +5,23 @@
 {%block content%}
 <div class='row'>
     <div class='col-12 py-3'>       
-        <h3 style="font-family:'lucida-calligraphy'">Male Accessories</h3>
+        <h3 style="font-family:'lucida-calligraphy'; font-weight: bolder">Male Accessories</h3>
     </div>
-    
-    {%for x in menAcc%}
-    <div class="col-md-6 col-lg-4 mb-3">
-        <div>
-            <img class="card-img-top img-fluid" src="{{url_for('static', filename='productimages/'+x.product_image)}}" alt="{{x.product_name}}">
-        </div>
-        <div class="card-body">
-            <h5 class="card-title" style="font-size: 15px;">{{x.product_name}}</h5>
-            <p><span style="font-size: 22px">&#8358 {{"{:,.0f}".format(x.product_price)}} </span></p>
+</div>
 
-            <button type="button" id="shopcart" class="btn btn-warning btn-sm float-end" data-bs-toggle="modal" data-bs-target="#menfootware{{x.product_id}}">Order</button>
+<div class='row mt-3'>
+    {%for x in menAcc%}
+        <div class="col-md-3 mb-1">
+            <div>
+                <p class="text-center"><img class="img-fluid" src="{{url_for('static', filename='productimages/'+x.product_image)}}" alt="{{x.product_name}}" width="220px"></p>
+            </div>
+            <div class="card-body">
+                <h5 style="font-size: 15px;">{{x.product_name}}</h5>
+                <p><span style="font-size: 15px">&#8358; {{"{:,.0f}".format(x.product_price)}} </span></p>
+
+                <button type="button" id="shopcart" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#menfootware{{x.product_id}}" style="background-color: #70587c; color:#fff">Order</button>
+            </div>
         </div>
-    </div>
     {%endfor%}
 </div>
 {%endblock content%}

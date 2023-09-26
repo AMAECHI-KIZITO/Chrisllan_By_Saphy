@@ -72,7 +72,7 @@ def pay_for_order():
         try:
             response = requests.post("https://api.paystack.co/transaction/initialize", headers=headers, data=json.dumps(data))
             rsp_json = response.json()
-            
+            print(rsp_json)
             if rsp_json['status'] == True and rsp_json['message'] == "Authorization URL created":
                 url = rsp_json['data']['authorization_url']
                 
